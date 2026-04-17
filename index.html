@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cuemath · Trial Mastery — Teacher Refresher Module</title>
+  <link rel="stylesheet" href="bundle.css">
+  <style>
+    body { background: var(--bg-primary); color: var(--text-primary); }
+
+    /* ── Login ── */
+    .login-screen { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--neutral-1000); color: var(--text-on-inverse); }
+    .login-hero { text-align: center; margin-bottom: var(--space-48); }
+    .login-hero img { height: 48px; margin-bottom: var(--space-24); filter: brightness(0) invert(1); }
+    .login-hero h1 { font-family: var(--font-display); font-size: 40px; font-weight: 400; letter-spacing: -0.01em; margin-bottom: var(--space-8); }
+    .login-hero p { font-family: var(--font-body); font-size: 16px; color: var(--neutral-500); max-width: 420px; }
+    .login-card { background: var(--bg-secondary); color: var(--text-primary); padding: var(--space-40); width: 420px; box-shadow: var(--shadow-lg); }
+    .login-card label { font-family: var(--font-label); font-size: 12px; font-weight: 500; color: var(--text-tertiary); display: block; margin-bottom: var(--space-4); text-transform: uppercase; letter-spacing: 0.3px; }
+    .login-card input { width: 100%; padding: var(--space-12) var(--space-16); border: 1px solid var(--border-secondary); background: var(--bg-tertiary); font-size: 14px; font-family: var(--font-body); margin-bottom: var(--space-16); color: var(--text-primary); }
+    .login-card input:focus { border-color: var(--border-interactive); outline: none; }
+    .login-card .login-btn { width: 100%; padding: var(--space-12); background: var(--bg-brand); color: var(--neutral-1000); border: none; font-size: 14px; font-weight: 500; cursor: pointer; font-family: var(--font-label); margin-top: var(--space-4); }
+    .login-card .login-btn:hover { background: var(--gold-600); }
+    .login-note { font-family: var(--font-body); font-size: 12px; color: var(--neutral-600); margin-top: var(--space-16); text-align: center; max-width: 420px; }
+
+    /* ── Module ── */
+    .module { display: none; }
+    .module.active { display: block; }
+
+    /* ── Topbar ── */
+    .topbar { background: var(--bg-secondary); border-bottom: 1px solid var(--border-tertiary); padding: var(--space-12) var(--space-24); position: sticky; top: 0; z-index: var(--z-sticky); display: flex; align-items: center; justify-content: space-between; }
+    .topbar-left { display: flex; align-items: center; gap: var(--space-12); }
+    .topbar-left img { height: 18px; }
+    .topbar-title { font-family: var(--font-body); font-size: 13px; color: var(--text-tertiary); }
+    .topbar-right { display: flex; align-items: center; gap: var(--space-12); }
+    .user-info { font-family: var(--font-label); font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: var(--space-8); }
+    .user-avatar { width: 24px; height: 24px; border-radius: var(--radius-full); background: var(--bg-brand); color: var(--neutral-1000); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 11px; }
+    .pill { font-family: var(--font-label); font-size: 11px; font-weight: 500; padding: 3px var(--space-8); border-radius: var(--radius-full); }
+    .pill-gold { background: var(--gold-100); color: var(--gold-800); }
+    .pill-green { background: var(--success-100); color: var(--success-700); }
+    .signout-btn { background: none; border: 1px solid var(--border-tertiary); padding: 3px var(--space-8); font-family: var(--font-label); font-size: 11px; color: var(--text-tertiary); cursor: pointer; }
+    .signout-btn:hover { border-color: var(--border-secondary); color: var(--text-secondary); }
+
+    /* ── Progress ── */
+    .progress-wrap { background: var(--bg-secondary); padding: var(--space-8) var(--space-24); border-bottom: 1px solid var(--border-tertiary); display: flex; align-items: center; gap: var(--space-12); position: sticky; top: 45px; z-index: 41; }
+    .progress-track { flex: 1; background: var(--neutral-300); height: 3px; }
+    .progress-fill { background: var(--gold-500); height: 100%; transition: width var(--duration-normal) var(--ease-default); }
+    .progress-label { font-family: var(--font-label); font-size: 11px; color: var(--text-tertiary); white-space: nowrap; }
+
+    /* ── Layout: sticky left sidebar + content ── */
+    .layout { display: grid; grid-template-columns: 260px 1fr; max-width: 1200px; margin: 0 auto; align-items: start; }
+    .sidenav { position: sticky; top: 68px; height: calc(100vh - 68px); overflow-y: auto; background: var(--bg-secondary); border-right: 1px solid var(--border-tertiary); padding: var(--space-20) var(--space-16); }
+    .sidenav::-webkit-scrollbar { width: 4px; }
+    .sidenav::-webkit-scrollbar-thumb { background: var(--neutral-400); }
+
+    /* ── Stepper (vertical inside sidebar) ── */
+    .stepper { display: flex; flex-direction: column; gap: 2px; }
+    .step-group-label { font-family: var(--font-label); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-tertiary); padding: var(--space-16) var(--space-8) var(--space-4); }
+    .step-group-label:first-child { padding-top: 0; }
+    .step-sep { display: none; }
+    .step-chip { display: flex; flex-direction: row; align-items: center; gap: var(--space-12); padding: var(--space-8) var(--space-12); cursor: pointer; min-width: 0; width: 100%; border-radius: var(--radius-sm); transition: background var(--duration-fast) var(--ease-default); }
+    .step-chip:not(.locked):hover { background: var(--bg-primary); }
+    .step-dot { width: 26px; height: 26px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-family: var(--font-label); font-size: 10px; font-weight: 600; background: var(--neutral-200); color: var(--text-tertiary); border: 1.5px solid var(--neutral-300); flex-shrink: 0; }
+    .step-chip.locked { cursor: not-allowed; opacity: 0.45; }
+    .step-chip.current { background: var(--gold-100); }
+    .step-chip.current .step-dot { background: var(--bg-brand); color: var(--neutral-1000); border-color: var(--gold-700); box-shadow: 0 0 0 3px var(--gold-100); }
+    .step-chip.done .step-dot { background: var(--success-500); color: var(--neutral-100); border-color: var(--success-500); }
+    .step-label { font-family: var(--font-body); font-size: 12px; color: var(--text-secondary); line-height: 1.3; text-align: left; }
+    .step-chip.current .step-label { color: var(--text-primary); font-weight: 600; }
+    .step-chip.done .step-label { color: var(--success-700); }
+
+    /* ── Scroll anchor: ensure sticky bars don't cover section top ── */
+    .sec, .part-divider, .final, .framework, .age-timeline, .close-flow, #quiz-gate { scroll-margin-top: 78px; }
+
+    /* Locked & current section */
+    .sec.locked { opacity: 0.45; }
+    .sec.locked .sec-head { cursor: not-allowed; }
+    .sec.locked .sec-head:hover { background: var(--bg-secondary); }
+    .sec.current { border-left: 3px solid var(--gold-500); box-shadow: var(--shadow-sm); }
+
+    /* Key-point banner (TL;DR at top of section) */
+    .key-point { background: linear-gradient(90deg, var(--gold-100), var(--bg-secondary)); border-left: 3px solid var(--gold-500); padding: var(--space-12) var(--space-16); margin-bottom: var(--space-20); display: flex; align-items: flex-start; gap: var(--space-12); }
+    .key-point-icon { width: 28px; height: 28px; flex-shrink: 0; background: var(--gold-500); color: var(--neutral-1000); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-family: var(--font-label); font-size: 11px; font-weight: 700; }
+    .key-point-text { font-family: var(--font-body); font-size: 13px; font-weight: 500; color: var(--text-primary); line-height: 1.55; }
+
+    /* Acknowledge → Reframe → Anchor framework */
+    .framework { background: var(--bg-secondary); border: 1px solid var(--border-tertiary); padding: var(--space-20) var(--space-24); margin: var(--space-16) 0 var(--space-24); }
+    .framework-title { font-family: var(--font-label); font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-tertiary); text-align: center; margin-bottom: var(--space-12); }
+    .framework-flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: var(--space-8); align-items: stretch; }
+    .framework-step { padding: var(--space-12); background: var(--gold-100); border: 1.5px solid var(--gold-500); text-align: center; }
+    .framework-step-n { font-family: var(--font-label); font-size: 10px; color: var(--gold-700); font-weight: 600; letter-spacing: 0.5px; }
+    .framework-step-name { font-family: var(--font-heading); font-size: 14px; font-weight: 700; color: var(--text-primary); margin-top: 2px; }
+    .framework-step-desc { font-family: var(--font-body); font-size: 11px; color: var(--text-secondary); margin-top: var(--space-4); line-height: 1.4; }
+    .framework-arrow { color: var(--gold-500); font-size: 20px; font-weight: 700; display: flex; align-items: center; }
+
+    /* Age timeline (Part C) */
+    .age-timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-8); margin: var(--space-16) 0 var(--space-24); }
+    .age-col { padding: var(--space-16); background: var(--info-100); border-left: 3px solid var(--info-500); }
+    .age-col-label { font-family: var(--font-label); font-size: 10px; font-weight: 600; color: var(--info-700); text-transform: uppercase; letter-spacing: 0.5px; }
+    .age-col-name { font-family: var(--font-heading); font-size: 14px; font-weight: 700; color: var(--text-primary); margin-top: 2px; }
+    .age-col-focus { font-family: var(--font-body); font-size: 11px; color: var(--text-secondary); margin-top: var(--space-8); line-height: 1.5; }
+
+    /* Closure flow (Part D) */
+    .close-flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; margin: var(--space-16) 0 var(--space-24); }
+    .close-step { padding: var(--space-12) var(--space-8); background: var(--success-100); border-left: 3px solid var(--success-500); text-align: left; }
+    .close-step-n { font-family: var(--font-label); font-size: 9px; font-weight: 600; color: var(--success-700); letter-spacing: 0.5px; }
+    .close-step-name { font-family: var(--font-heading); font-size: 12px; font-weight: 700; color: var(--text-primary); margin-top: 2px; line-height: 1.3; }
+
+    /* Toast */
+    .toast { position: fixed; bottom: var(--space-24); left: 50%; transform: translateX(-50%); background: var(--neutral-900); color: var(--neutral-100); padding: var(--space-12) var(--space-20); font-family: var(--font-body); font-size: 13px; z-index: 1000; box-shadow: var(--shadow-lg); opacity: 0; pointer-events: none; transition: opacity var(--duration-fast) var(--ease-default); }
+    .toast.show { opacity: 1; }
+
+    /* ── Content ── */
+    .content { max-width: 780px; margin: 0; padding: var(--space-32) var(--space-40) var(--space-80); min-width: 0; }
+
+    /* ── Intro ── */
+    .intro { background: var(--gold-100); border-left: 3px solid var(--gold-500); padding: var(--space-24); margin-bottom: var(--space-40); }
+    .intro h2 { font-family: var(--font-heading); font-size: 18px; font-weight: 700; margin-bottom: var(--space-8); }
+    .intro p { font-family: var(--font-body); font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
+
+    /* ── Part Divider ── */
+    .part-divider { margin-top: var(--space-48); margin-bottom: var(--space-24); padding-bottom: var(--space-16); border-bottom: 1px solid var(--border-tertiary); }
+    .part-divider .part-label { font-family: var(--font-label); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: var(--space-4); }
+    .part-divider .part-name { font-family: var(--font-heading); font-size: 22px; font-weight: 700; }
+    .part-divider .part-desc { font-family: var(--font-body); font-size: 14px; color: var(--text-secondary); margin-top: var(--space-4); }
+    .label-gold { color: var(--gold-700); }
+    .label-red { color: var(--error-700); }
+    .label-blue { color: var(--info-700); }
+    .label-green { color: var(--success-700); }
+
+    /* ── Screenshot ── */
+    .screenshot { margin: var(--space-16) 0; text-align: center; }
+    .screenshot img { max-width: 360px; width: 100%; border: 1px solid var(--border-tertiary); box-shadow: var(--shadow-sm); }
+    .screenshot figcaption { font-family: var(--font-label); font-size: 11px; color: var(--text-tertiary); margin-top: var(--space-4); }
+
+    /* ── Section Card ── */
+    .sec { background: var(--bg-secondary); border: 1px solid var(--border-tertiary); margin-bottom: var(--space-8); transition: box-shadow var(--duration-fast) var(--ease-default); }
+    .sec:hover { box-shadow: var(--shadow-sm); }
+    .sec.done { border-left: 3px solid var(--success-500); }
+    .sec-head { display: flex; align-items: center; justify-content: space-between; padding: var(--space-16) var(--space-20); cursor: pointer; user-select: none; }
+    .sec-head:hover { background: var(--bg-primary); }
+    .sec-left { display: flex; align-items: center; gap: var(--space-12); }
+    .sec-num { font-family: var(--font-label); font-size: 11px; font-weight: 500; width: 26px; height: 26px; border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .n-gold { background: var(--gold-100); color: var(--gold-800); }
+    .n-red { background: var(--error-100); color: var(--error-700); }
+    .n-blue { background: var(--info-100); color: var(--info-700); }
+    .n-green { background: var(--success-100); color: var(--success-700); }
+    .n-done { background: var(--success-500); color: var(--neutral-100); }
+    .sec-title { font-family: var(--font-heading); font-size: 14px; font-weight: 700; }
+    .sec-sub { font-family: var(--font-body); font-size: 12px; color: var(--text-tertiary); margin-top: 1px; }
+    .chev { font-size: 14px; color: var(--text-tertiary); transition: transform var(--duration-fast) var(--ease-default); }
+    .chev.open { transform: rotate(90deg); }
+    .sec-body { display: none; padding: 0 var(--space-20) var(--space-24); }
+    .sec-body.open { display: block; }
+
+    /* ── Body Content ── */
+    .sec-body h3 { font-family: var(--font-heading); font-size: 15px; font-weight: 700; margin-top: var(--space-24); margin-bottom: var(--space-8); }
+    .sec-body h4 { font-family: var(--font-heading); font-size: 13px; font-weight: 700; margin-top: var(--space-16); margin-bottom: var(--space-4); color: var(--text-secondary); }
+    .sec-body p { font-family: var(--font-body); font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: var(--space-8); }
+    .sec-body ul, .sec-body ol { font-family: var(--font-body); font-size: 14px; color: var(--text-secondary); padding-left: var(--space-20); margin-bottom: var(--space-8); line-height: 1.65; }
+    .sec-body li { margin-bottom: var(--space-4); }
+    .sec-body strong { color: var(--text-primary); }
+
+    /* ── Callout ── */
+    .callout { background: var(--gold-100); border-left: 3px solid var(--gold-500); padding: var(--space-12) var(--space-16); margin: var(--space-16) 0; font-family: var(--font-body); font-size: 14px; line-height: 1.6; color: var(--text-secondary); }
+    .callout strong { color: var(--gold-900); }
+
+    /* ── Quote ── */
+    .quote { border-left: 3px solid var(--neutral-400); padding: var(--space-12) var(--space-16); margin: var(--space-12) 0; background: var(--bg-primary); }
+    .quote-label { font-family: var(--font-label); font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-tertiary); margin-bottom: var(--space-4); }
+    .quote p { font-family: var(--font-body); font-size: 14px; font-style: italic; color: var(--text-secondary); margin: 0; }
+
+    /* ── Do / Don't ── */
+    .dd { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); margin: var(--space-16) 0; }
+    .dd-do, .dd-dont { padding: var(--space-16); font-family: var(--font-body); font-size: 13px; line-height: 1.6; }
+    .dd-do { background: var(--success-100); }
+    .dd-do::before { content: 'DO'; font-family: var(--font-label); font-weight: 500; font-size: 11px; letter-spacing: 0.5px; color: var(--success-700); display: block; margin-bottom: var(--space-8); }
+    .dd-dont { background: var(--error-100); }
+    .dd-dont::before { content: 'DON\'T'; font-family: var(--font-label); font-weight: 500; font-size: 11px; letter-spacing: 0.5px; color: var(--error-700); display: block; margin-bottom: var(--space-8); }
+    .dd-do ul, .dd-dont ul { padding-left: var(--space-16); }
+    .dd-do li, .dd-dont li { margin-bottom: var(--space-4); }
+
+    /* ── Battlecard ── */
+    .bcard { background: var(--info-100); padding: var(--space-16); margin: var(--space-8) 0; }
+    .bcard h4 { margin-top: 0; color: var(--info-700); font-size: 13px; }
+    .bcard p { font-size: 13px; }
+
+    /* ── Scenario ── */
+    .scenario { background: var(--bg-tertiary); border: 1px solid var(--border-tertiary); padding: var(--space-16); margin: var(--space-16) 0; }
+    .scenario-q { font-family: var(--font-body); font-size: 14px; font-style: italic; color: var(--text-secondary); margin-bottom: var(--space-12); }
+    .scenario-q::before { content: 'SCENARIO'; font-style: normal; font-family: var(--font-label); font-size: 10px; font-weight: 500; letter-spacing: 0.5px; color: var(--text-tertiary); display: block; margin-bottom: var(--space-4); }
+    .think-prompt { font-family: var(--font-label); font-size: 11px; color: var(--gold-700); margin-bottom: var(--space-8); font-style: normal; }
+    .scenario-a { display: none; background: var(--bg-secondary); padding: var(--space-12); margin-top: var(--space-8); font-family: var(--font-body); font-size: 13px; color: var(--text-secondary); line-height: 1.6; border-left: 3px solid var(--success-500); }
+    .scenario-a.show { display: block; }
+    .reveal-btn { background: var(--bg-secondary); border: 1px solid var(--border-secondary); padding: var(--space-4) var(--space-12); font-family: var(--font-label); font-size: 12px; color: var(--text-secondary); cursor: pointer; }
+    .reveal-btn:hover { border-color: var(--border-interactive); }
+
+    /* ── Table ── */
+    .tbl { width: 100%; border-collapse: collapse; margin: var(--space-12) 0; font-family: var(--font-body); font-size: 13px; }
+    .tbl th { background: var(--neutral-300); text-align: left; padding: var(--space-8) var(--space-12); font-family: var(--font-label); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; color: var(--text-tertiary); }
+    .tbl td { padding: var(--space-8) var(--space-12); border-bottom: 1px solid var(--border-tertiary); color: var(--text-secondary); }
+    .tbl td strong { color: var(--text-primary); }
+
+    /* ── Cheat Sheet ── */
+    .cheat-card { background: var(--bg-secondary); border: 1px solid var(--border-tertiary); padding: var(--space-32); }
+    .cheat-header { text-align: center; margin-bottom: var(--space-20); padding-bottom: var(--space-16); border-bottom: 2px solid var(--gold-500); }
+    .cheat-logo { height: 22px; margin-bottom: var(--space-8); }
+    .cheat-title { font-family: var(--font-heading); font-size: 20px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; }
+    .cheat-subtitle { font-family: var(--font-label); font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.6px; margin-top: var(--space-4); }
+    .cheat-table { width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 13px; }
+    .cheat-table th { background: var(--neutral-200); text-align: left; padding: var(--space-8) var(--space-12); font-family: var(--font-label); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; color: var(--text-secondary); border-bottom: 1px solid var(--border-secondary); }
+    .cheat-table td { padding: var(--space-12); border-bottom: 1px solid var(--border-tertiary); color: var(--text-secondary); vertical-align: top; line-height: 1.5; }
+    .cheat-table td:first-child { background: var(--gold-50, #FFF9E6); }
+    .cheat-table td strong { color: var(--text-primary); font-weight: 600; }
+    .cheat-table tr:last-child td { border-bottom: none; }
+    .cheat-footer { display: flex; align-items: center; justify-content: space-between; margin-top: var(--space-20); padding-top: var(--space-16); border-top: 1px solid var(--border-tertiary); font-family: var(--font-body); font-size: 12px; color: var(--text-secondary); }
+    .cheat-footer strong { color: var(--gold-800); }
+    .cheat-print-btn { background: var(--gold-500); color: var(--neutral-1000); border: none; padding: var(--space-8) var(--space-20); font-family: var(--font-label); font-size: 12px; font-weight: 500; cursor: pointer; }
+    .cheat-print-btn:hover { background: var(--gold-600); }
+
+    /* ── Ack ── */
+    .ack { display: flex; align-items: center; gap: var(--space-12); margin-top: var(--space-20); padding-top: var(--space-16); border-top: 1px solid var(--border-tertiary); }
+    .ack-btn { font-family: var(--font-label); padding: var(--space-8) var(--space-20); font-size: 13px; font-weight: 500; cursor: pointer; border: none; }
+    .ack-btn.pending { background: var(--gold-500); color: var(--neutral-1000); }
+    .ack-btn.pending:hover { background: var(--gold-600); }
+    .ack-btn.acked { background: var(--success-100); color: var(--success-700); cursor: default; }
+    #intro-ack-btn.pending { animation: introPulse 2s ease-in-out infinite; }
+    @keyframes introPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(201, 162, 39, 0.5); } 50% { box-shadow: 0 0 0 8px rgba(201, 162, 39, 0); } }
+
+    /* ── Final ── */
+    .final { background: var(--bg-secondary); border: 2px solid var(--border-tertiary); padding: var(--space-40); text-align: center; margin-top: var(--space-48); }
+    .final h2 { font-family: var(--font-heading); font-size: 22px; font-weight: 700; margin-bottom: var(--space-8); }
+    .final p { font-family: var(--font-body); font-size: 14px; color: var(--text-secondary); margin-bottom: var(--space-24); }
+    .final-btn { font-family: var(--font-label); padding: var(--space-12) var(--space-32); font-size: 14px; font-weight: 500; border: none; cursor: pointer; }
+    .final-btn.ready { background: var(--success-500); color: var(--neutral-100); border-color: var(--success-500); }
+    .final-btn.ready:hover { background: var(--success-600); }
+    .final-btn.off { background: var(--neutral-300); color: var(--neutral-500); cursor: not-allowed; }
+    .final-ok { margin-top: var(--space-16); font-family: var(--font-body); font-size: 14px; font-weight: 500; color: var(--success-700); display: none; }
+
+    /* ── Tablet: tighter sidebar ── */
+    @media (max-width: 1024px) {
+      .layout { grid-template-columns: 220px 1fr; }
+      .content { padding: var(--space-32) var(--space-24) var(--space-80); }
+    }
+
+    /* ── Mobile: sidebar becomes compact horizontal strip ── */
+    @media (max-width: 768px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidenav { position: sticky; top: 64px; height: auto; overflow-y: visible; overflow-x: auto; border-right: none; border-bottom: 1px solid var(--border-tertiary); padding: var(--space-8) var(--space-12); z-index: 40; }
+      .stepper { flex-direction: row; flex-wrap: nowrap; gap: 2px; }
+      .step-group-label { display: none; }
+      .step-chip { flex-direction: column; width: auto; min-width: 36px; padding: 4px 6px; gap: 2px; align-items: center; flex-shrink: 0; }
+      .step-chip.current { background: transparent; }
+      .step-dot { width: 24px; height: 24px; }
+      .step-label { font-size: 9px; letter-spacing: 0.4px; text-align: center; max-width: 48px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .content { max-width: 100%; }
+      .sec, .part-divider, .final, .framework, .age-timeline, .close-flow, #quiz-gate { scroll-margin-top: 130px; }
+    }
+
+    @media (max-width: 640px) {
+      .login-card { width: 90%; padding: var(--space-24); }
+      .login-hero h1 { font-size: 28px; }
+      .content { padding: var(--space-24) var(--space-16) var(--space-64); }
+      .dd { grid-template-columns: 1fr; }
+      .topbar { padding: var(--space-8) var(--space-16); }
+      .topbar-title { display: none; }
+      .screenshot img { max-width: 100%; }
+      .framework-flow { grid-template-columns: 1fr; gap: var(--space-4); }
+      .framework-arrow { transform: rotate(90deg); justify-content: center; }
+      .age-timeline { grid-template-columns: 1fr; }
+      .close-flow { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════ LOGIN ════════ -->
+<div id="login-screen" class="login-screen">
+  <div class="login-hero">
+    <img src="img/cuemath-wordmark-tagline.svg" alt="Cuemath — Making kids MathFit" onerror="this.outerHTML='<div style=\'font-family:Georgia,serif;font-size:28px;margin-bottom:24px\'>CUEMATH</div>'">
+    <h1>Trial Mastery: Australia</h1>
+    <p>Teacher Refresher Module: Effectively Handling Parent Objections</p>
+  </div>
+  <div class="login-card">
+    <label>Registered Email</label>
+    <input id="login-email" type="email" placeholder="Enter your registered email">
+    <label>Registered Mobile Number</label>
+    <input id="login-mobile" type="tel" placeholder="Enter your registered mobile number">
+    <label>Full Name</label>
+    <input id="login-name" type="text" placeholder="Enter your full name">
+    <button class="login-btn" onclick="formLogin()">Continue</button>
+  </div>
+  <p class="login-note">Sign in with your registered email and mobile number with Cuemath.<br>Your completion will be recorded for the training team.</p>
+</div>
+
+<!-- ════════ MODULE ════════ -->
+<div id="module" class="module">
+  <div class="topbar">
+    <div class="topbar-left">
+      <img src="img/cuemath-wordmark.svg" alt="Cuemath" style="height:16px" onerror="this.outerHTML='<span style=\'font-family:Georgia,serif;font-size:16px;font-weight:700\'>CUEMATH</span>'">
+      <span class="topbar-title">Trial Mastery</span>
+    </div>
+    <div class="topbar-right">
+      <span id="progress-pill" class="pill pill-gold">0 / 13</span>
+      <span id="user-info" class="user-info"></span>
+      <button class="signout-btn" onclick="logout()">Sign out</button>
+    </div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-track"><div id="progress-fill" class="progress-fill" style="width:0%"></div></div>
+    <span id="progress-label" class="progress-label">0%</span>
+  </div>
+  <div class="layout">
+  <aside class="sidenav">
+    <nav class="stepper" id="stepper"></nav>
+  </aside>
+  <div class="content">
+    <div class="intro">
+      <h2>Why This Module Exists</h2>
+      <p>We have analysed past trials across Australia, and found that in trials that did not convert into an enrolment, there were a significant number of objections from parents attending the trial class. If these objections were handled effectively, we believe there would be a meaningful jump in conversions.</p>
+      <p style="margin-top:var(--space-8)">This is critical — during the trial, the parent is actively making a decision. <strong>Every objection that goes unaddressed or is deflected can turn into a rejection.</strong></p>
+      <p style="margin-top:var(--space-8)">This module gives you a clear framework on how to handle every type of objection that comes your way. It takes about <strong>30 minutes</strong> to complete.</p>
+      <div style="margin-top:var(--space-16);padding-top:var(--space-16);border-top:1px solid var(--gold-300)">
+        <button id="intro-ack-btn" class="ack-btn pending" onclick="ackIntro()">I understand</button>
+      </div>
+    </div>
+
+    <!-- ═══════ PART A — AUSTRALIA CONTEXT ═══════ -->
+    <div class="part-divider">
+      <div class="part-label label-gold">Part A</div>
+      <div class="part-name">Understanding the Australian Education System</div>
+      <div class="part-desc">The context you need to connect with Australian parents confidently.</div>
+    </div>
+
+    <!-- A1 -->
+    <div class="sec" data-id="a1">
+      <div class="sec-head" onclick="toggle('a1')">
+        <div class="sec-left">
+          <span class="sec-num n-gold" id="n-a1">A1</span>
+          <div><div class="sec-title">Year, Not Grade — Australian Terminology</div><div class="sec-sub">The language that builds instant credibility</div></div>
+        </div>
+        <span class="chev" id="c-a1">›</span>
+      </div>
+      <div class="sec-body" id="b-a1">
+        <div class="callout"><strong>Using the wrong terminology is the fastest way to lose credibility.</strong> Australian parents say "Year 4" not "Grade 4." Getting this right signals that you understand their system.</div>
+
+        <h3>Grade to Year Mapping</h3>
+        <table class="tbl">
+          <thead><tr><th>What We Say (India)</th><th>What They Say (Australia)</th><th>Age</th></tr></thead>
+          <tbody>
+            <tr><td>Kindergarten / LKG-UKG</td><td><strong>Foundation / Prep / Kindy</strong></td><td>4-5</td></tr>
+            <tr><td>Grade 1-6</td><td><strong>Year 1-6</strong> (Primary School)</td><td>6-11</td></tr>
+            <tr><td>Grade 7-10</td><td><strong>Year 7-10</strong> (High School)</td><td>12-15</td></tr>
+            <tr><td>Grade 11-12</td><td><strong>Year 11-12</strong> (Senior Secondary)</td><td>16-17</td></tr>
+          </tbody>
+        </table>
+
+        <h3>States & Cities You'll Encounter</h3>
+        <table class="tbl">
+          <thead><tr><th>State</th><th>City</th><th>Key Context</th></tr></thead>
+          <tbody>
+            <tr><td><strong>NSW</strong></td><td>Sydney</td><td>Largest market. OC Test + Selective School entry — very competitive.</td></tr>
+            <tr><td><strong>VIC</strong></td><td>Melbourne</td><td>Second largest. Scholarship exams (ACER, Edutest) for private schools.</td></tr>
+            <tr><td><strong>QLD</strong></td><td>Brisbane, Gold Coast</td><td>Growing market. Academic excellence programs.</td></tr>
+            <tr><td><strong>WA</strong></td><td>Perth</td><td>GATE (Gifted and Talented) testing. Parents often mention curriculum feels "behind."</td></tr>
+            <tr><td><strong>SA</strong></td><td>Adelaide</td><td>Smaller but engaged parent base.</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Key Cultural Points</h3>
+        <ul>
+          <li>The <strong>Indian diaspora</strong> is our largest segment. Many are first-generation immigrants who highly value education.</li>
+          <li>Australian parents are <strong>respectful but direct</strong>. They appreciate honesty about their child's level.</li>
+          <li>The school year runs <strong>February to December</strong> (4 terms), not April to March.</li>
+          <li>Australia has 3 time zones. Sydney/Melbourne (AEST) vs Perth (AWST) is a 2-3 hour difference.</li>
+        </ul>
+
+        <div class="ack"><button class="ack-btn pending" onclick="ack('a1')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- A2 -->
+    <div class="sec" data-id="a2">
+      <div class="sec-head" onclick="toggle('a2')">
+        <div class="sec-left">
+          <span class="sec-num n-gold" id="n-a2">A2</span>
+          <div><div class="sec-title">OC Test, Selective Schools, Scholarships & NAPLAN</div><div class="sec-sub">The goals that drive Australian parents to Cuemath</div></div>
+        </div>
+        <span class="chev" id="c-a2">›</span>
+      </div>
+      <div class="sec-body" id="b-a2">
+        <div class="callout"><strong>When a parent mentions OC, selective school, or a scholarship exam, they are highly motivated.</strong> Understanding what these tests are helps you connect their goal to what Cuemath offers.</div>
+
+        <h3>OC Test (Opportunity Class) — NSW</h3>
+        <ul>
+          <li>Entry test for <strong>Year 5-6 Opportunity Classes</strong> in NSW government schools. These are advanced classes for academically gifted students.</li>
+          <li>Students sit the test in <strong>Year 4</strong> (for Year 5 entry). It tests reading, mathematical reasoning, and thinking skills.</li>
+          <li>Extremely competitive — thousands of students apply for limited places.</li>
+          <li>Parents in Sydney start preparing as early as <strong>Year 3</strong>. If a parent mentions "OC," they are very focused and time-sensitive.</li>
+          <li><strong>How Cuemath helps:</strong> Our conceptual approach builds the mathematical reasoning that the OC test specifically measures — not just computation.</li>
+          <li><strong>Test Prep Module:</strong> Cuemath has a dedicated <strong>OC & Selective Test Prep module</strong> that you can assign to students. It includes mock tests and sample practice papers that the student can work through in their own time. <strong>Mention this to the parent if they bring up OC or selective preparation.</strong></li>
+        </ul>
+
+        <h3>Selective School Entry — NSW</h3>
+        <ul>
+          <li>Highly competitive entry test for <strong>Year 7</strong> in NSW government selective high schools (e.g., James Ruse, Sydney Boys/Girls).</li>
+          <li>Students sit the test in <strong>Year 6</strong>. It tests mathematical reasoning, reading, writing, and general ability.</li>
+          <li>Parents often start preparation in <strong>Year 4-5</strong>. This is one of the highest-intent goals you'll encounter.</li>
+          <li><strong>How Cuemath helps:</strong> The test requires deep problem-solving, not memorised shortcuts. Our approach builds exactly this.</li>
+          <li><strong>Test Prep Module:</strong> The same OC & Selective Test Prep module applies here — mock tests and practice papers that prepare students specifically for these exams. Let the parent know this is available.</li>
+        </ul>
+
+        <h3>Scholarship Exams — VIC & Other States</h3>
+        <ul>
+          <li>Private schools in Melbourne and other cities offer <strong>academic scholarships</strong> via exams (ACER, Edutest, AAS).</li>
+          <li>Tests are typically in <strong>Year 5-6</strong> for Year 7 entry. They assess math, reading, writing, and reasoning.</li>
+          <li><strong>ICAS / AMC / SASMO:</strong> National and international math competitions. Parents mention these as goals — treat them as high-intent signals.</li>
+        </ul>
+
+        <h3>NAPLAN</h3>
+        <ul>
+          <li><strong>NAPLAN</strong> (National Assessment Program) is the standardised test all students take in <strong>Year 3, 5, 7, and 9</strong>.</li>
+          <li>It tests numeracy, reading, writing, and language. The math section focuses on <strong>conceptual understanding and problem-solving</strong>.</li>
+          <li>NAPLAN happens in <strong>March</strong> each year. Parents think about preparation 2-3 months ahead.</li>
+          <li>Results are reported in <strong>bands</strong> (1-10). Parents often reference their child's band.</li>
+          <li><strong>How Cuemath helps:</strong> NAPLAN tests reasoning, not rote calculation — this directly aligns with our methodology.</li>
+          <li><strong>Test Prep Module:</strong> Cuemath also has a <strong>NAPLAN Test Prep module</strong> with mock tests and practice papers. You can assign this to students preparing for NAPLAN so they can practise in their own time. Mention this when NAPLAN prep comes up.</li>
+        </ul>
+
+        <div class="scenario">
+          <div class="scenario-q">A parent says: "We're preparing for the OC test next year. Can Cuemath help with that specifically?"</div>
+          <p class="think-prompt">Think about what you'd say to this parent before revealing the approach.</p>
+          <button class="reveal-btn" onclick="reveal(this)">Show recommended approach</button>
+          <div class="scenario-a">Acknowledge the specific goal and timeline. Explain that the OC test assesses mathematical reasoning and problem-solving — which is exactly what Cuemath's methodology builds. During the trial, demonstrate this by focusing on reasoning-type questions. When you get to the Learning Plan screen, connect the chapters back to OC-relevant skills. Also mention: "We have a dedicated OC & Selective Test Prep module with mock tests and practice papers that [child] can work through in their own time — I can assign this once they're enrolled."</div>
+        </div>
+
+        <div class="ack"><button class="ack-btn pending" onclick="ack('a2')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- ═══════ PART B — OBJECTION HANDLING ═══════ -->
+    <div class="part-divider">
+      <div class="part-label label-red">Part B</div>
+      <div class="part-name">Handling Parent Objections</div>
+      <div class="part-desc">The 6 objection types we've identified — with approaches for each.</div>
+    </div>
+
+    <div class="framework">
+      <div class="framework-title">The 3-Step Framework — Use For Every Objection</div>
+      <div class="framework-flow">
+        <div class="framework-step">
+          <div class="framework-step-n">STEP 1</div>
+          <div class="framework-step-name">Acknowledge</div>
+          <div class="framework-step-desc">Never dismiss. Make the parent feel heard first.</div>
+        </div>
+        <div class="framework-arrow">→</div>
+        <div class="framework-step">
+          <div class="framework-step-n">STEP 2</div>
+          <div class="framework-step-name">Reframe</div>
+          <div class="framework-step-desc">Shift from doubt to clarity — with facts, not pressure.</div>
+        </div>
+        <div class="framework-arrow">→</div>
+        <div class="framework-step">
+          <div class="framework-step-n">STEP 3</div>
+          <div class="framework-step-name">Anchor</div>
+          <div class="framework-step-desc">Tie back to the child's goal the parent shared at the start.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- B1 -->
+    <div class="sec" data-id="b1">
+      <div class="sec-head" onclick="toggle('b1')">
+        <div class="sec-left">
+          <span class="sec-num n-red" id="n-b1">B1</span>
+          <div><div class="sec-title">"Is this aligned with the school curriculum?"</div><div class="sec-sub">Curriculum concerns — common during goal setting</div></div>
+        </div>
+        <span class="chev" id="c-b1">›</span>
+      </div>
+      <div class="sec-body" id="b-b1">
+        <div class="callout"><strong>Parents want to be sure that what Cuemath teaches will directly help their child at school.</strong> This is a very reasonable concern — and you're well-equipped to address it.</div>
+
+        <h3>What Parents Say</h3>
+        <div class="quote"><div class="quote-label">Parent — AU trial</div><p>"No. It's not. So just stick to the Australian curriculum, it's fine."</p></div>
+        <div class="quote"><div class="quote-label">Parent — AU trial</div><p>"Is it Australian curriculum? Okay."</p></div>
+
+        <h3>How To Respond</h3>
+        <ul>
+          <li>Our curriculum is <strong>aligned to Australian national standards</strong> — you're selecting their specific state curriculum during the goal-setting phase</li>
+          <li>Cuemath goes deeper into <strong>conceptual understanding</strong>, which is what the Australian curriculum emphasises — and what NAPLAN, OC, and selective tests actually measure</li>
+          <li>Name specific topics from their child's year level to show you know the curriculum</li>
+          <li>Reassure them that the Learning Plan is personalised to their school curriculum and goals</li>
+        </ul>
+
+        <figure class="screenshot">
+          <img src="img/screen-curriculum.jpg" alt="Curriculum selection screen">
+          <figcaption>The curriculum dropdown — select their specific state curriculum</figcaption>
+        </figure>
+
+        <h3>Key Points To Remember</h3>
+        <ul>
+          <li>Cuemath's curriculum maps to AU/NZ/SG/UK national standards</li>
+          <li>We go deeper, not sideways — it's a complement, not a replacement</li>
+          <li>If you don't know their specific curriculum, ask: "What's [child] working on at school right now?" Then connect</li>
+        </ul>
+
+        <div class="scenario">
+          <div class="scenario-q">A parent says: "We follow the Victorian curriculum. Will this cover what she's doing at school?"</div>
+          <p class="think-prompt">Think about what you'd say to this parent before revealing the approach.</p>
+          <button class="reveal-btn" onclick="reveal(this)">Show recommended approach</button>
+          <div class="scenario-a">Select "Victorian Curriculum and Assessment Authority" from the curriculum dropdown. Then say: "Our program maps directly to the Victorian curriculum. For Year [X], we'll cover [name specific topics]. The difference is that we go deeper into understanding the 'why' — which is exactly what helps students perform better in school assessments and scholarship exams."</div>
+        </div>
+
+        <div class="ack"><button class="ack-btn pending" onclick="ack('b1')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- B2 -->
+    <div class="sec" data-id="b2">
+      <div class="sec-head" onclick="toggle('b2')">
+        <div class="sec-left">
+          <span class="sec-num n-red" id="n-b2">B2</span>
+          <div><div class="sec-title">"I want my child to improve in [specific area]"</div><div class="sec-sub">Connecting the trial to the parent's specific goal</div></div>
+        </div>
+        <span class="chev" id="c-b2">›</span>
+      </div>
+      <div class="sec-body" id="b-b2">
+        <div class="callout"><strong>This is the most common concern parents raise.</strong> They come with a specific goal and want to see that the trial addresses it. Your job is to carry their goal through the entire session — from goal-setting to insights.</div>
+
+        <h3>Common Goals and How to Connect</h3>
+        <table class="tbl">
+          <thead><tr><th>Goal</th><th>How to Spot It</th><th>How to Connect</th></tr></thead>
+          <tbody>
+            <tr><td>OC / Selective prep</td><td>"Preparing for OC test" / "Selective school"</td><td>Focus on reasoning questions. Mention the Test Prep module with mock tests and practice papers they can use at home.</td></tr>
+            <tr><td>NAPLAN prep</td><td>"NAPLAN is coming up"</td><td>Emphasise conceptual understanding. Mention the NAPLAN Test Prep module with mock tests and practice papers.</td></tr>
+            <tr><td>School improvement</td><td>"She's getting Bs, I want As"</td><td>Identify the specific gap in the trial, show how you'd close it in 8-12 sessions.</td></tr>
+            <tr><td>Filling gaps</td><td>"He's behind in fractions"</td><td>Start at their level, demonstrate the learning path to close the gap.</td></tr>
+            <tr><td>Building confidence</td><td>"He hates math" / "She's anxious"</td><td>Start easy, build wins. Let the parent see their child succeeding.</td></tr>
+          </tbody>
+        </table>
+
+        <h3>The 3-Step Approach</h3>
+        <ol>
+          <li><strong>Acknowledge the goal</strong> during the goal-setting phase</li>
+          <li><strong>Reference it during the learning session</strong> — "This is exactly the kind of problem that comes up in OC tests"</li>
+          <li><strong>Connect it in your summary</strong> — "You mentioned OC prep. The reasoning skills we worked on today are directly what the OC test assesses"</li>
+        </ol>
+
+        <div class="scenario">
+          <div class="scenario-q">A parent selects "Build fundamentals" and "Prepare for a contest or external test" on the goals screen. During the trial, you notice the child struggles with word problems. How do you connect this?</div>
+          <p class="think-prompt">Think about what you'd say to this parent before revealing the approach.</p>
+          <button class="reveal-btn" onclick="reveal(this)">Show recommended approach</button>
+          <div class="scenario-a">During the summary, say: "You mentioned wanting to build fundamentals and prepare for tests. Today I noticed [child] has strong number sense but finds word problems challenging — that's a very common gap at this age. Word problems are a big part of NAPLAN and OC tests, so our Learning Plan prioritises this. We also have a Test Prep module with mock tests and practice papers that [child] can work through at home. Within a few weeks, you'll see a clear improvement."</div>
+        </div>
+
+        <div class="ack"><button class="ack-btn pending" onclick="ack('b2')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- B3 -->
+    <div class="sec" data-id="b3">
+      <div class="sec-head" onclick="toggle('b3')">
+        <div class="sec-left">
+          <span class="sec-num n-red" id="n-b3">B3</span>
+          <div><div class="sec-title">"What's the pricing?" / "It's too expensive"</div><div class="sec-sub">Handling pricing concerns — focus on value, not numbers</div></div>
+        </div>
+        <span class="chev" id="c-b3">›</span>
+      </div>
+      <div class="sec-body" id="b-b3">
+        <div class="callout"><strong>Pricing questions are natural — almost every parent thinks about cost.</strong> The important thing is not to freeze or feel uncomfortable. You have a clear role: focus on value. The Admissions Manager handles the specifics.</div>
+
+        <h3>The Framework: Value Before Price</h3>
+        <p>Your role is to help the parent see the value of what their child experienced. The Admissions Manager handles pricing details, payment plans, and offers.</p>
+        <ol>
+          <li><strong>The pricing and applicable offers are shown towards the end of the trial class, once the session is over.</strong> The parent will be able to see them on the screen. The Admissions Manager will walk them through the details.</li>
+          <li><strong>Focus on what the parent just saw:</strong> Reference the child's performance, the learning plan, and the specific goals you discussed.</li>
+          <li><strong>Highlight what's included:</strong> 1-on-1 tutoring with a dedicated expert, a personalised learning plan, daily practice on the app, and parent-tutor conferences.</li>
+          <li><strong>Hand off warmly:</strong> "Our counsellor will share the detailed pricing and find the best plan for your family."</li>
+        </ol>
+
+        <div class="dd">
+          <div class="dd-do"><ul>
+            <li>Acknowledge the concern calmly</li>
+            <li>Emphasise value (1-on-1, personalised, expert)</li>
+            <li>Compare to local alternatives (tutors are $60-80/hr)</li>
+            <li>Transition to the counsellor confidently</li>
+          </ul></div>
+          <div class="dd-dont"><ul>
+            <li>Freeze or go silent when pricing comes up</li>
+            <li>Apologise: "I know it's expensive…"</li>
+            <li>Offer discounts yourself (that's the AM's call)</li>
+            <li>Rush: "the counsellor will tell you everything"</li>
+          </ul></div>
+        </div>
+
+        <div class="scenario">
+          <div class="scenario-q">A parent asks: "This all looks good, but how much does it cost? Is it worth it for just math?"</div>
+          <p class="think-prompt">Think about what you'd say to this parent before revealing the approach.</p>
+          <button class="reveal-btn" onclick="reveal(this)">Show recommended approach</button>
+          <div class="scenario-a">Stay calm and confident. Say: "Great question. The pricing details and any current offers will be shared with you — our counsellor will walk you through everything. What I can say is that [child] gets a dedicated math expert, a personalised learning plan based on what we identified today, plus daily practice tools. Most local math tutors charge $60-80 per hour without this kind of structure." Then move naturally to the next screen.</div>
+        </div>
+
+        <div class="ack"><button class="ack-btn pending" onclick="ack('b3')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- B4 -->
+    <div class="sec" data-id="b4">
+      <div class="sec-head" onclick="toggle('b4')">
+        <div class="sec-left">
+          <span class="sec-num n-red" id="n-b4">B4</span>
+          <div><div class="sec-title">"We've also been looking at Kumon / Cluey / a tutor"</div><div class="sec-sub">When parents mention competitors — how to differentiate</div></div>
+        </div>
+        <span class="chev" id="c-b4">›</span>
+      </div>
+      <div class="sec-body" id="b-b4">
+        <div class="callout"><strong>It's completely normal for parents to explore multiple options.</strong> When a parent mentions another program, it means they're actively looking for the best fit — which is a positive sign. You just need to help them understand what makes Cuemath different.</div>
+
+        <div class="bcard"><h4>vs Kumon</h4><p>"Kumon is great for building repetition habits. Cuemath takes a different approach — we focus on conceptual understanding, so your child doesn't just know how to solve a problem, they understand <em>why</em> the method works. Also, Cuemath is 1-on-1 with a live tutor, while Kumon is primarily worksheet-based."</p></div>
+        <div class="bcard"><h4>vs Offline Tutoring</h4><p>"A local tutor is helpful, but with Cuemath, [child] gets a structured, research-backed curriculum — not just homework help. Plus, you can track progress through our parent app. Most local tutors charge $60-80/hr with no structured plan."</p></div>
+        <div class="bcard"><h4>vs Cluey Learning</h4><p>"Cluey is curriculum-aligned, and so are we. Where we go further is depth — we teach the conceptual 'why' behind every topic. Students who understand the reasoning perform better on assessments like NAPLAN, OC, and selective tests."</p></div>
+
+        <p><strong>Key rule: Never bash the competitor.</strong> Acknowledge them, then differentiate. The parent chose to trial Cuemath — your job is to show why it's the right choice.</p>
+
+        <div class="scenario">
+          <div class="scenario-q">A parent says: "My son was doing Kumon but I felt it was too repetitive. I want something that makes him actually understand math."</div>
+          <p class="think-prompt">Think about what you'd say to this parent before revealing the approach.</p>
+          <button class="reveal-btn" onclick="reveal(this)">Show recommended approach</button>
+          <div class="scenario-a">This is a gift — the parent has already identified what they don't want. Say: "That's exactly why many parents come to Cuemath. Our approach focuses on building understanding, not memorisation. During this trial, you'll see how we guide [child] to figure out the 'why' behind each problem. That's what builds real confidence — and what tests like NAPLAN and OC actually measure. We also have dedicated test prep modules with mock tests and practice papers if [child] is preparing for any of those."</div>
+        </div>
+
+        <div class="ack"><button class="ack-btn pending" onclick="ack('b4')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- B5 -->
+    <div class="sec" data-id="b5">
+      <div class="sec-head" onclick="toggle('b5')">
+        <div class="sec-left">
+          <span class="sec-num n-red" id="n-b5">B5</span>
+          <div><div class="sec-title">"Let me think about it" / "I'll discuss with my husband"</div><div class="sec-sub">When parents need time — how to keep the door open</div></div>
+        </div>
+        <span class="chev" id="c-b5">›</span>
+      </div>
+      <div class="sec-body" id="b-b5">
+        <div class="callout"><strong>It's natural for parents to want time to decide, especially when a partner is involved.</strong> The key is to respect their need for time while making it easy for them to move forward when they're ready.</div>
+
+        <h3>What Parents Say</h3>
+        <div class="quote"><div class="quote-label">Parent — Year 4</div><p>"I'm just gonna discuss with my husband."</p></div>
+        <div class="quote"><div class="quote-label">Parent — Year 1</div><p>"Let me think for some time, and then I will get back to you."</p></div>
+
+        <h3>How To Handle This</h3>
+        <ol>
+          <li><strong>Respect the request:</strong> "Absolutely, it's an important decision and I completely understand."</li>
+          <li><strong>Offer to help:</strong> "Would it be useful if I summarised what I observed about [child] today? That way, you have something concrete to share with your partner."</li>
+          <li><strong>Still confirm tentative timings:</strong> You can still fill in preferred session times: "Let's select preferred timings for now, so there's a slot reserved. Your counsellor will confirm everything."</li>
+          <li><strong>Warm handoff:</strong> "Our counsellor will be in touch shortly and can answer any questions you or your partner may have."</li>
+        </ol>
+
+        <p><strong>The key principle:</strong> Don't just accept the deferral and end the conversation. A summary of the child's performance and tentative timings give the parent something to act on.</p>
+
+        <div class="scenario">
+          <div class="scenario-q">At the Class Timings screen, the parent says: "I need to check with my husband before committing to anything."</div>
+          <p class="think-prompt">Think about what you'd say to this parent before revealing the approach.</p>
+          <button class="reveal-btn" onclick="reveal(this)">Show recommended approach</button>
+          <div class="scenario-a">"Of course — it's a big decision and it's great that you're making it together. Let me quickly summarise what I noticed about [child] today, so you have specifics to share. And let's select tentative session times so there's a slot held for [child] — there's no commitment, and your counsellor will confirm everything with you both."</div>
+        </div>
+
+        <div class="dd">
+          <div class="dd-do"><ul>
+            <li>Respect the request — never pressure</li>
+            <li>Offer a summary they can share with their partner</li>
+            <li>Still select tentative session timings</li>
+            <li>Hand off warmly to the counsellor</li>
+          </ul></div>
+          <div class="dd-dont"><ul>
+            <li>Accept the deferral and immediately end the conversation</li>
+            <li>Push back: "But you should decide now"</li>
+            <li>Skip the timings screen entirely</li>
+            <li>Sound disappointed or deflated</li>
+          </ul></div>
+        </div>
+
+        <div class="ack"><button class="ack-btn pending" onclick="ack('b5')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- B6 -->
+    <div class="sec" data-id="b6">
+      <div class="sec-head" onclick="toggle('b6')">
+        <div class="sec-left">
+          <span class="sec-num n-red" id="n-b6">B6</span>
+          <div><div class="sec-title">"My child didn't seem interested"</div><div class="sec-sub">Addressing engagement concerns during or after the session</div></div>
+        </div>
+        <span class="chev" id="c-b6">›</span>
+      </div>
+      <div class="sec-body" id="b-b6">
+        <div class="callout"><strong>Sometimes a child may seem quiet or disengaged, and the parent notices.</strong> It's important to address this directly and honestly — the parent is looking for reassurance.</div>
+
+        <h3>How To Respond</h3>
+        <h4>If the child was quiet but participated</h4>
+        <p>Normalise it — many children are reserved in a first session. Share a specific positive moment: "When we got to [problem], [child] figured out the pattern on their own — that tells me the thinking ability is there."</p>
+
+        <h4>If the child found it challenging</h4>
+        <p>Reframe constructively: finding areas to work on is exactly what the trial is for. The Learning Plan is personalised to address those exact gaps.</p>
+
+        <h4>If the child was genuinely disengaged</h4>
+        <p>Be honest: "I noticed [child] found it hard to stay focused today. This is common in a first session. In regular sessions, the child gets comfortable and we adjust the pace. Most children open up significantly by session 2 or 3."</p>
+
+        <h3>Prevention During the Session</h3>
+        <ul>
+          <li>Switch activities every 7-10 minutes for younger children</li>
+          <li>Celebrate wins out loud — the parent is watching</li>
+          <li>If the child goes quiet, ask: "What do you think would happen if we tried…?"</li>
+          <li>Involve the parent: "Mrs [name], [child] just solved that beautifully — did you see?"</li>
+        </ul>
+
+        <div class="scenario">
+          <div class="scenario-q">During the summary, the parent says: "She seemed bored during the session. I'm not sure this is the right fit."</div>
+          <p class="think-prompt">Think about what you'd say to this parent before revealing the approach.</p>
+          <button class="reveal-btn" onclick="reveal(this)">Show recommended approach</button>
+          <div class="scenario-a">"I understand your concern. First sessions can be tricky — new teacher, new platform, and the pressure of a parent watching. What I did notice is that when we worked on [specific topic], she engaged well and [specific positive]. In regular sessions, once she's comfortable with me and the format, you'll see a different level of engagement. Most children really open up by the second or third session."</div>
+        </div>
+
+        <div class="dd">
+          <div class="dd-do"><ul>
+            <li>Normalise it — first sessions are often like this</li>
+            <li>Share a specific positive moment you noticed</li>
+            <li>Reframe challenges as "we've found exactly where to help"</li>
+            <li>Proactively keep younger children engaged during the session</li>
+          </ul></div>
+          <div class="dd-dont"><ul>
+            <li>Ignore the concern and move on</li>
+            <li>Agree with the parent: "Yes, they did seem distracted"</li>
+            <li>Give a generic response with no specific examples</li>
+            <li>Let 20+ minutes pass without involving the parent</li>
+          </ul></div>
+        </div>
+
+        <div class="ack"><button class="ack-btn pending" onclick="ack('b6')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- ═══════ PART C — GRADE TIPS ═══════ -->
+    <div class="part-divider">
+      <div class="part-label label-blue">Part C</div>
+      <div class="part-name">Grade-Specific Tips</div>
+      <div class="part-desc">Different age groups trigger different objections. Adapt your approach.</div>
+    </div>
+
+    <div class="age-timeline">
+      <div class="age-col">
+        <div class="age-col-label">Year K-2 · Ages 5-7</div>
+        <div class="age-col-name">Engage the child</div>
+        <div class="age-col-focus">Short. Fun. Parent watches. If the child enjoys it, the parent says yes.</div>
+      </div>
+      <div class="age-col">
+        <div class="age-col-label">Year 3-5 · Ages 8-10</div>
+        <div class="age-col-name">The sweet spot</div>
+        <div class="age-col-focus">Goal-driven parents (OC, NAPLAN, Selective). Show depth and visible progress.</div>
+      </div>
+      <div class="age-col">
+        <div class="age-col-label">Year 6-8 · Ages 11-13</div>
+        <div class="age-col-name">Make the child advocate</div>
+        <div class="age-col-focus">Start challenging. Involve the student. Connect to Year 7 jump & high stakes.</div>
+      </div>
+    </div>
+
+    <!-- C1 -->
+    <div class="sec" data-id="c1">
+      <div class="sec-head" onclick="toggle('c1')">
+        <div class="sec-left">
+          <span class="sec-num n-blue" id="n-c1">C1</span>
+          <div><div class="sec-title">Year K-2 (Ages 5-7)</div><div class="sec-sub">Keep it short, keep it fun, involve the parent</div></div>
+        </div>
+        <span class="chev" id="c-c1">›</span>
+      </div>
+      <div class="sec-body" id="b-c1">
+        <div class="callout"><strong>Young children have shorter attention spans.</strong> When the session runs too long, they lose focus — and the parent notices. Keeping the trial focused and age-appropriate makes a big difference.</div>
+        <table class="tbl">
+          <thead><tr><th>Approach</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Keep under 50-55 minutes</strong></td><td>A focused 50-min trial is better than a rambling 70-min one.</td></tr>
+            <tr><td><strong>Switch activities every 5-7 minutes</strong></td><td>Young children need variety. Use the math game and puzzles actively.</td></tr>
+            <tr><td><strong>Involve the parent every 10 minutes</strong></td><td>"See how [child] figured that out?" Keeps the parent invested.</td></tr>
+            <tr><td><strong>Celebrate generously</strong></td><td>Be vocal about wins — the parent is watching.</td></tr>
+          </tbody>
+        </table>
+        <p><strong>Common objection:</strong> Child engagement (B6). Parents of young children are most likely to say "my child didn't seem interested." Prevention is key — keep the energy high and interactive.</p>
+        <div class="ack"><button class="ack-btn pending" onclick="ack('c1')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- C2 -->
+    <div class="sec" data-id="c2">
+      <div class="sec-head" onclick="toggle('c2')">
+        <div class="sec-left">
+          <span class="sec-num n-blue" id="n-c2">C2</span>
+          <div><div class="sec-title">Year 3-5 (Ages 8-10)</div><div class="sec-sub">The sweet spot — OC, selective, NAPLAN parents</div></div>
+        </div>
+        <span class="chev" id="c-c2">›</span>
+      </div>
+      <div class="sec-body" id="b-c2">
+        <div class="callout"><strong>This is the most productive trial age group.</strong> Parents often have clear goals (OC test, selective school, NAPLAN), and children are old enough to engage meaningfully. Match their energy.</div>
+        <ul>
+          <li><strong>Ask early:</strong> "What's [child] working on at school right now?" — this gives you the hook for the entire trial.</li>
+          <li><strong>Connect everything to their test:</strong> "This is exactly the kind of reasoning the OC test / selective exam / NAPLAN measures."</li>
+          <li><strong>Mention the Test Prep module:</strong> "We have a dedicated test prep module with mock tests and practice papers for OC, selective, and NAPLAN that [child] can use at home."</li>
+          <li><strong>Show the gap clearly:</strong> "I see [child] can do [X] but gets stuck when [Y]. Our program bridges that gap."</li>
+          <li>Standard 55-60 minute format works well for this age.</li>
+        </ul>
+        <p><strong>Common objections:</strong> Curriculum alignment (B1) and goal mismatch (B2). These parents know what they want — make sure your trial connects to it.</p>
+        <div class="ack"><button class="ack-btn pending" onclick="ack('c2')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- C3 -->
+    <div class="sec" data-id="c3">
+      <div class="sec-head" onclick="toggle('c3')">
+        <div class="sec-left">
+          <span class="sec-num n-blue" id="n-c3">C3</span>
+          <div><div class="sec-title">Year 6-8 (Ages 11-13)</div><div class="sec-sub">Upper grades — demonstrate depth and address cost</div></div>
+        </div>
+        <span class="chev" id="c-c3">›</span>
+      </div>
+      <div class="sec-body" id="b-c3">
+        <div class="callout"><strong>Upper-grade parents tend to be more analytical about value.</strong> The child's own opinion matters at this age. Select Advanced level and show challenging content — if the trial feels too easy, both parent and child lose interest.</div>
+        <ul>
+          <li><strong>Start with challenging content.</strong> Show problems that impress both child and parent.</li>
+          <li><strong>Connect to high stakes:</strong> Selective school, scholarship exams, strong high school foundation.</li>
+          <li><strong>Involve the student more.</strong> Ask directly: "What do you find hardest in math?" Older kids who feel ownership become your advocate.</li>
+          <li><strong>Show the consequence of inaction:</strong> "The gap between Year 6 and Year 7 is one of the biggest jumps."</li>
+        </ul>
+        <p><strong>Common objections:</strong> Pricing (B3) and competitor comparison (B4). These parents are calculating value — make the depth and personalisation visible.</p>
+        <div class="ack"><button class="ack-btn pending" onclick="ack('c3')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- ═══════ PART D — CLOSURE ═══════ -->
+    <div class="part-divider">
+      <div class="part-label label-green">Part D</div>
+      <div class="part-name">Closing the Trial on a Strong Note</div>
+      <div class="part-desc">The last 10 minutes decide whether the parent moves forward. Make them count.</div>
+    </div>
+
+    <div class="close-flow">
+      <div class="close-step"><div class="close-step-n">1</div><div class="close-step-name">Student Insights</div></div>
+      <div class="close-step"><div class="close-step-n">2</div><div class="close-step-name">Learning Plan</div></div>
+      <div class="close-step"><div class="close-step-n">3</div><div class="close-step-name">Class Timings</div></div>
+      <div class="close-step"><div class="close-step-n">4</div><div class="close-step-name">Way Forward</div></div>
+      <div class="close-step"><div class="close-step-n">5</div><div class="close-step-name">Thank You</div></div>
+    </div>
+
+    <!-- D1 -->
+    <div class="sec" data-id="d1">
+      <div class="sec-head" onclick="toggle('d1')">
+        <div class="sec-left">
+          <span class="sec-num n-green" id="n-d1">D1</span>
+          <div><div class="sec-title">Summarising Insights & Connecting to Goals</div><div class="sec-sub">Be specific, be honest, reference what the parent told you</div></div>
+        </div>
+        <span class="chev" id="c-d1">›</span>
+      </div>
+      <div class="sec-body" id="b-d1">
+        <div class="callout"><strong>The Student Insights screen is the most important moment for the parent.</strong> They've sat through the entire session — this is where they hear what you observed. What you add with your own words makes the difference between a generic demo and a personalised assessment.</div>
+
+        <h3>What Makes a Great Summary</h3>
+        <ol>
+          <li><strong>Be specific about the child.</strong> Not "your child did well" but "[child] solved the array problem independently — that shows strong visual reasoning."</li>
+          <li><strong>Name the gap constructively.</strong> Not "they struggled" but "fractions is an area where we can build a stronger foundation — and that's exactly what the Learning Plan focuses on."</li>
+          <li><strong>Connect back to their goals.</strong> If they mentioned OC prep: "The reasoning skills we worked on today are directly what the OC test assesses." If they wanted to fill gaps: name the specific gap you found.</li>
+          <li><strong>Be honest.</strong> If the child struggled, say so constructively. Parents appreciate honesty over flattery.</li>
+        </ol>
+
+        <div class="dd">
+          <div class="dd-do"><ul>
+            <li>Name specific strengths with examples from the trial</li>
+            <li>Reference the parent's goals from the start</li>
+            <li>Give a clear, personalised recommendation</li>
+            <li>Walk through the Learning Plan and connect chapters to goals</li>
+          </ul></div>
+          <div class="dd-dont"><ul>
+            <li>"Your child did well overall" — too vague</li>
+            <li>Skip the summary and jump to timings</li>
+            <li>Focus only on weaknesses</li>
+            <li>Rush through the Learning Plan</li>
+          </ul></div>
+        </div>
+
+        <div class="ack"><button class="ack-btn pending" onclick="ack('d1')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- D2 -->
+    <div class="sec" data-id="d2">
+      <div class="sec-head" onclick="toggle('d2')">
+        <div class="sec-left">
+          <span class="sec-num n-green" id="n-d2">D2</span>
+          <div><div class="sec-title">Ending with Confidence & Warmth</div><div class="sec-sub">Timings, parent app, way forward — and leaving a lasting impression</div></div>
+        </div>
+        <span class="chev" id="c-d2">›</span>
+      </div>
+      <div class="sec-body" id="b-d2">
+        <div class="callout"><strong>A strong close leaves the parent feeling that their child's time was well spent.</strong> A weak or rushed close undoes all the good work from the session. Take your time with these final screens.</div>
+
+        <figure class="screenshot">
+          <img src="img/screen-wayforward.jpg" alt="Way Forward screen">
+          <figcaption>The Way Forward screen — personalised sessions, regular practice, parent-tutor conference</figcaption>
+        </figure>
+
+        <h3>How to End Well</h3>
+        <ol>
+          <li><strong>Class Timings:</strong> Guide the parent to select days and times confidently — this is a natural next step, not a hard sell. If they hesitate, see B5.</li>
+          <li><strong>Way Forward:</strong> Highlight the three pillars — personalised sessions, regular practice on the app, and parent-tutor conference after 8 sessions. The conference shows ongoing accountability.</li>
+          <li><strong>Questions:</strong> Invite them to ask anything. Redirect pricing or difficult questions to the Admissions Manager — that's their domain.</li>
+          <li><strong>End with warmth:</strong> Thank the parent for their time, appreciate the child's effort, and express genuine enthusiasm about working with the student. The parent should leave the call feeling positive.</li>
+        </ol>
+
+        <div class="dd">
+          <div class="dd-do"><ul>
+            <li>Take your time with the final screens — don't rush</li>
+            <li>End on a specific, positive note about the child</li>
+            <li>Mention the parent-tutor conference — parents value accountability</li>
+            <li>Be warm and genuine — this is about the child, not the sale</li>
+          </ul></div>
+          <div class="dd-dont"><ul>
+            <li>End abruptly or seem like you're in a hurry</li>
+            <li>Make it feel transactional</li>
+            <li>Try to answer pricing questions yourself</li>
+            <li>Forget to thank both parent and child</li>
+          </ul></div>
+        </div>
+
+        <p><strong>Remember:</strong> After the trial ends, the Admissions Manager follows up. If the parent remembers your specific observations, your connection to their goals, and your genuine enthusiasm — they are far more likely to move forward.</p>
+
+        <div class="ack"><button class="ack-btn pending" onclick="ack('d2')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- ═══════ QUIZ ═══════ -->
+    <div class="part-divider" id="quiz-gate" style="display:none">
+      <div class="part-label label-gold">Final Step</div>
+      <div class="part-name">Quick Assessment</div>
+      <div class="part-desc">6 scenario-based questions. Score 5 out of 6 to complete the module.</div>
+    </div>
+    <div id="quiz-container" style="display:none"></div>
+
+    <!-- ═══════ CHEAT SHEET ═══════ -->
+    <div id="cheatsheet" style="display:none; margin-top:var(--space-48)">
+      <div class="cheat-card">
+        <div class="cheat-header">
+          <img src="img/cuemath-wordmark.svg" alt="Cuemath" class="cheat-logo" onerror="this.style.display='none'">
+          <div class="cheat-title">Objection Handling — Quick Reference Card</div>
+          <div class="cheat-subtitle">Trial Mastery · Australia · Keep near your screen during trials</div>
+        </div>
+        <table class="cheat-table" id="cheat-table">
+          <thead><tr><th style="width:24%">If the parent says…</th><th>Your response approach</th></tr></thead>
+          <tbody>
+            <tr><td><strong>"Is this the school curriculum?"</strong></td><td>Yes — you're selecting their specific state curriculum on screen. Cuemath goes deeper into conceptual understanding, which is what AU curriculum and NAPLAN/OC tests actually measure.</td></tr>
+            <tr><td><strong>"I want [specific goal]"</strong></td><td>Acknowledge the goal. Connect everything in the trial back to it. In your summary, reference it by name. Mention Test Prep modules for OC/Selective/NAPLAN.</td></tr>
+            <tr><td><strong>"What's the pricing?"</strong></td><td>Pricing and offers are shown at the end of the trial. Focus on value: 1-on-1 expert, personalised plan, daily practice. Hand off details to the Admissions Manager.</td></tr>
+            <tr><td><strong>"We're looking at Kumon / others"</strong></td><td>Never bash. Differentiate: Cuemath builds understanding (not repetition), 1-on-1 with a live tutor, structured curriculum + progress tracking. "Compare what [child] experienced today."</td></tr>
+            <tr><td><strong>"Let me think / ask my husband"</strong></td><td>Respect it. Offer a summary they can share. Still select tentative timings. Warm handoff to counsellor.</td></tr>
+            <tr><td><strong>"My child wasn't interested"</strong></td><td>Normalise first sessions. Share a specific positive moment. Reframe challenges as "we've found exactly where to help." Most children open up by session 2-3.</td></tr>
+          </tbody>
+        </table>
+        <div class="cheat-footer">
+          <span>Golden rule: <strong>Acknowledge → Reframe → Anchor to the child's goal</strong></span>
+          <button class="cheat-print-btn" onclick="window.print()">Print Cheat Sheet</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════ FINAL ═══════ -->
+    <div class="final" id="final">
+      <h2 id="final-heading">Almost There</h2>
+      <p id="final-text">Acknowledge all 13 sections, then pass the quick assessment to complete.</p>
+      <button class="final-btn off" id="final-btn" onclick="startQuiz()">Take Assessment</button>
+      <div class="final-ok" id="final-ok">You've completed the Trial Mastery module. Your cheat sheet is below — print it and keep it near your screen.</div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ════════ PRINT STYLES ════════ -->
+<style media="print">
+  @page { size: A4 portrait; margin: 10mm 10mm; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+  .login-screen, .topbar, .progress-wrap, .intro, .part-divider, .sec, .final, #quiz-gate, #quiz-container, .signout-btn, .cheat-print-btn { display: none !important; }
+  body { background: #fff !important; }
+  .module { display: block !important; }
+  .content { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+  #cheatsheet { display: block !important; margin: 0 !important; }
+  .cheat-card { border: none !important; padding: 0 !important; box-shadow: none !important; page-break-inside: avoid; }
+  .cheat-header { margin-bottom: 8px !important; padding-bottom: 8px !important; border-bottom: 1.5px solid #C9A227 !important; }
+  .cheat-logo { height: 18px !important; margin-bottom: 4px !important; }
+  .cheat-title { font-size: 16px !important; }
+  .cheat-subtitle { font-size: 9px !important; margin-top: 2px !important; }
+  .cheat-table { font-size: 10.5px !important; }
+  .cheat-table th { padding: 5px 8px !important; font-size: 9px !important; background: #E5E5E5 !important; }
+  .cheat-table td { padding: 7px 8px !important; line-height: 1.4 !important; }
+  .cheat-table td:first-child { background: #FFF9E6 !important; }
+  .cheat-footer { margin-top: 10px !important; padding-top: 8px !important; font-size: 10px !important; }
+  .cheat-footer strong { color: #8A6A0B !important; }
+</style>
+
+<!-- ════════ SCRIPT ════════ -->
+<script>
+const TRACKING_URL = 'https://script.google.com/macros/s/AKfycbzb_sSqW4q6lULCot0WjccyWAU_ErNkRgYCuAa9r57ZR2_IqkWNpEgIg4qdVxKcxUXxjg/exec';
+const SECTION_META = [
+  { id:'a1', part:'A', short:'A1', nav:'AU terminology', tl:'Say "Year" not "Grade". Use Australian test names (NAPLAN, OC, Selective). It signals you are in their world.' },
+  { id:'a2', part:'A', short:'A2', nav:'Tests & scholarships', tl:'4 tests drive AU parents: NAPLAN, OC, Selective, Scholarships. Know which one applies to each child.' },
+  { id:'b1', part:'B', short:'B1', nav:'Curriculum alignment', tl:'Yes — you\'re selecting their state curriculum live. Cuemath goes deeper, not sideways.' },
+  { id:'b2', part:'B', short:'B2', nav:'Specific goals', tl:'Acknowledge the goal. Connect every screen back to it. Mention Test Prep for OC/NAPLAN.' },
+  { id:'b3', part:'B', short:'B3', nav:'Pricing', tl:'Pricing reveals at the end. During the trial, build value — 1-on-1, personalised, progress tracking.' },
+  { id:'b4', part:'B', short:'B4', nav:'Competitors', tl:'Never bash competitors. Differentiate: understanding > repetition, live tutor > worksheets.' },
+  { id:'b5', part:'B', short:'B5', nav:'"Let me think"', tl:'Respect the pause. Offer a summary they can share. Still pick tentative timings.' },
+  { id:'b6', part:'B', short:'B6', nav:'Child not engaged', tl:'First sessions can feel flat. Normalise, share a specific positive, reframe gaps as "we found the spot to help".' },
+  { id:'c1', part:'C', short:'C1', nav:'Year K-2', tl:'Short. Fun. Parent involved. If the child enjoys it, the parent says yes.' },
+  { id:'c2', part:'C', short:'C2', nav:'Year 3-5', tl:'The sweet spot. Parents are goal-driven. Show depth + visible progress.' },
+  { id:'c3', part:'C', short:'C3', nav:'Year 6-8', tl:'Start challenging. Involve the student — older kids become your advocate. Name the Year 7 jump.' },
+  { id:'d1', part:'D', short:'D1', nav:'Insights & goals', tl:'Student Insights = moment of truth. Specific > generic. Reference the parent\'s goals by name.' },
+  { id:'d2', part:'D', short:'D2', nav:'Close strong', tl:'Close warm. Tentative timings. Show the 3 pillars. Thank both parent and child by name.' },
+];
+const PART_LABELS = { A: 'Part A · Context', B: 'Part B · Objections', C: 'Part C · By age group', D: 'Part D · Closure' };
+const SECTIONS = SECTION_META.map(s => s.id);
+const TOTAL = SECTIONS.length;
+const SEC_COLORS = {a:'n-gold',b:'n-red',c:'n-blue',d:'n-green'};
+let user = null;
+let acked = JSON.parse(localStorage.getItem('cm_ack') || '{}');
+let introAcked = localStorage.getItem('cm_intro') === 'true';
+let quizPassed = localStorage.getItem('cm_quiz') === 'true';
+let done = localStorage.getItem('cm_done') === 'true';
+let sectionOpenTime = {};
+
+// ── Quiz Questions ──
+const QUIZ = [
+  { q: 'A parent asks: "Is this aligned with the NSW curriculum?" What is the most effective first response?',
+    opts: ['Tell them to check the website for details', 'Explain that you are selecting their specific state curriculum right now on screen, and that Cuemath builds the conceptual understanding the AU curriculum emphasises', 'Say pricing includes curriculum alignment', 'Skip the question and move to the next slide'],
+    ans: 1 },
+  { q: 'A parent mentions their child is preparing for the OC test. What should you highlight?',
+    opts: ['That Cuemath covers all subjects, not just math', 'That the OC test is easy and they don\'t need to worry', 'That Cuemath\'s approach builds mathematical reasoning — exactly what the OC test measures — and that you have a dedicated Test Prep module with mock tests and practice papers', 'That you\'ll assign extra homework after each session'],
+    ans: 2 },
+  { q: 'A parent says: "We\'ve been looking at Kumon as well." What should you NOT do?',
+    opts: ['Acknowledge Kumon and then differentiate Cuemath\'s approach', 'Explain that Cuemath focuses on understanding while Kumon focuses on repetition', 'Criticise Kumon and say it doesn\'t work', 'Highlight that Cuemath offers 1-on-1 live tutoring vs worksheet-based learning'],
+    ans: 2 },
+  { q: 'At the end of the trial, a parent says: "Let me discuss with my husband first." What is the best approach?',
+    opts: ['Accept it and end the call immediately', 'Pressure them to decide now before the offer expires', 'Respect the request, offer a summary they can share with their partner, and still select tentative session timings', 'Tell them the counsellor will call their husband directly'],
+    ans: 2 },
+  { q: 'During the Student Insights screen, what makes the biggest difference?',
+    opts: ['Reading out the numbers shown on screen without adding your own observations', 'Sharing specific, personalised observations about the child and connecting them back to the goals the parent shared at the start', 'Skipping the insights and moving quickly to class timings', 'Telling the parent their child needs a lot of improvement'],
+    ans: 1 },
+  { q: 'A Year 2 child seems disengaged during the learning session. The parent looks concerned. What should you do?',
+    opts: ['Ignore it and keep going — children are always like this', 'Address it proactively: share a specific positive moment you noticed, normalise first-session nerves, and explain that most children open up by session 2-3', 'Agree with the parent that the child seems bored', 'End the trial early since it\'s not working'],
+    ans: 1 },
+];
+
+function ackIntro() {
+  introAcked = true;
+  localStorage.setItem('cm_intro', 'true');
+  const btn = document.getElementById('intro-ack-btn');
+  btn.className = 'ack-btn acked';
+  btn.textContent = 'Acknowledged ✓';
+  btn.onclick = null;
+  track('acknowledge', 'intro');
+  renderStepper();
+  updateSectionStates();
+  const firstId = SECTIONS[currentIdx()];
+  if (firstId) {
+    setTimeout(() => gotoSection(firstId), 300);
+  }
+}
+
+function formLogin() {
+  const e = document.getElementById('login-email').value.trim();
+  const m = document.getElementById('login-mobile').value.trim();
+  const n = document.getElementById('login-name').value.trim();
+  if (!e) { alert('Please enter your registered email'); return; }
+  if (!m) { alert('Please enter your registered mobile number'); return; }
+  if (!n) { alert('Please enter your full name'); return; }
+  user = { email:e, mobile:m, name:n };
+  localStorage.setItem('cm_user', JSON.stringify(user));
+  track('login');
+  showModule();
+}
+
+window.onload = function() {
+  const s = localStorage.getItem('cm_user');
+  if (s) { user = JSON.parse(s); showModule(); }
+  else { renderStepper(); }
+  updateProgress();
+};
+
+function showModule() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('module').classList.add('active');
+  document.getElementById('user-info').innerHTML =
+    `<span class="user-avatar">${user.name.charAt(0).toUpperCase()}</span>${user.name}`;
+  injectKeyPoints();
+  SECTIONS.forEach(id => { if (acked[id]) markDone(id); });
+  if (introAcked) {
+    const btn = document.getElementById('intro-ack-btn');
+    if (btn) { btn.className = 'ack-btn acked'; btn.textContent = 'Acknowledged ✓'; btn.onclick = null; }
+  }
+  renderStepper();
+  updateSectionStates();
+  if (done || quizPassed) { showDone(); }
+  else {
+    const cur = currentIdx();
+    if (cur >= 0 && cur < SECTIONS.length) openOnly(SECTIONS[cur]);
+  }
+  updateProgress();
+}
+
+function currentIdx() {
+  if (!introAcked) return -1;
+  for (let i = 0; i < SECTIONS.length; i++) if (!acked[SECTIONS[i]]) return i;
+  return SECTIONS.length;
+}
+
+function injectKeyPoints() {
+  SECTION_META.forEach(s => {
+    const body = document.getElementById('b-' + s.id);
+    if (!body || body.querySelector('.key-point')) return;
+    const kp = document.createElement('div');
+    kp.className = 'key-point';
+    kp.innerHTML = `<div class="key-point-icon">${s.short}</div><div class="key-point-text">${s.tl}</div>`;
+    body.insertBefore(kp, body.firstChild);
+  });
+}
+
+function renderStepper() {
+  const el = document.getElementById('stepper');
+  if (!el) return;
+  const cur = currentIdx();
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  let lastPart = null;
+  el.innerHTML = SECTION_META.map((s, i) => {
+    let groupHead = '';
+    if (!isMobile && s.part !== lastPart) {
+      groupHead = `<div class="step-group-label">${PART_LABELS[s.part]}</div>`;
+    }
+    lastPart = s.part;
+    const isDone = !!acked[s.id];
+    const isCurrent = i === cur;
+    const isLocked = !isDone && i > cur;
+    const cls = isDone ? 'done' : isCurrent ? 'current' : isLocked ? 'locked' : '';
+    const dot = isDone ? '✓' : s.short;
+    const label = isMobile ? s.short : `${s.short} · ${s.nav}`;
+    return `${groupHead}<div class="step-chip ${cls}" onclick="gotoSection('${s.id}')" data-locked="${isLocked}"><div class="step-dot">${dot}</div><div class="step-label">${label}</div></div>`;
+  }).join('');
+}
+
+window.addEventListener('resize', () => { renderStepper(); });
+
+function updateSectionStates() {
+  const cur = currentIdx();
+  SECTIONS.forEach((id, i) => {
+    const sec = document.querySelector(`.sec[data-id="${id}"]`);
+    if (!sec) return;
+    sec.classList.remove('locked', 'current');
+    if (acked[id]) return;
+    if (i === cur) sec.classList.add('current');
+    else if (i > cur) sec.classList.add('locked');
+  });
+}
+
+function openOnly(id) {
+  SECTIONS.forEach(s => {
+    document.getElementById('b-' + s)?.classList.remove('open');
+    document.getElementById('c-' + s)?.classList.remove('open');
+  });
+  document.getElementById('b-' + id)?.classList.add('open');
+  document.getElementById('c-' + id)?.classList.add('open');
+  sectionOpenTime[id] = Date.now();
+}
+
+function gotoSection(id) {
+  if (!introAcked) { showToast('Click "I understand" on the intro first'); return; }
+  const chip = document.querySelector(`.step-chip[onclick*="'${id}'"]`);
+  if (chip?.dataset.locked === 'true') { showToast('Finish the current section first'); return; }
+  openOnly(id);
+  const el = document.querySelector(`.sec[data-id="${id}"]`);
+  if (el) {
+    setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  }
+  track('goto_section', id);
+}
+
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) { t = document.createElement('div'); t.id = 'toast'; t.className = 'toast'; document.body.appendChild(t); }
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._hideTimer);
+  t._hideTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function toggle(id) {
+  if (!introAcked) { showToast('Click "I understand" on the intro first'); return; }
+  const sec = document.querySelector(`.sec[data-id="${id}"]`);
+  if (sec?.classList.contains('locked')) { showToast('Finish the current section first'); return; }
+  const body = document.getElementById('b-' + id);
+  const chev = document.getElementById('c-' + id);
+  const isOpen = body.classList.contains('open');
+  if (isOpen && sectionOpenTime[id]) {
+    const elapsed = Math.round((Date.now() - sectionOpenTime[id]) / 1000);
+    track('section_time', id + ':' + elapsed + 's');
+    delete sectionOpenTime[id];
+  }
+  if (isOpen) {
+    body.classList.remove('open');
+    chev.classList.remove('open');
+  } else {
+    openOnly(id);
+  }
+}
+
+function ack(id) {
+  if (acked[id]) return;
+  if (!introAcked) { showToast('Click "I understand" on the intro first'); return; }
+  const idx = SECTIONS.indexOf(id);
+  if (idx !== currentIdx()) { showToast('Please finish sections in order'); return; }
+  acked[id] = new Date().toISOString();
+  localStorage.setItem('cm_ack', JSON.stringify(acked));
+  markDone(id);
+  track('acknowledge', id);
+  document.getElementById('b-' + id)?.classList.remove('open');
+  document.getElementById('c-' + id)?.classList.remove('open');
+  renderStepper();
+  updateSectionStates();
+  updateProgress();
+  const nextId = SECTIONS[idx + 1];
+  if (nextId) {
+    setTimeout(() => gotoSection(nextId), 350);
+  } else {
+    setTimeout(() => document.getElementById('final')?.scrollIntoView({ behavior: 'smooth' }), 350);
+  }
+}
+
+function markDone(id) {
+  const n = document.getElementById('n-' + id);
+  if (n) { n.className = 'sec-num n-done'; n.textContent = '✓'; }
+  const card = n?.closest('.sec');
+  if (card) card.classList.add('done');
+  const btn = card?.querySelector('.ack-btn');
+  if (btn) { btn.className = 'ack-btn acked'; btn.textContent = 'Completed ✓'; }
+}
+
+function updateProgress() {
+  const d = SECTIONS.filter(s => acked[s]).length;
+  const pct = Math.round((d / TOTAL) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = pct + '%';
+  const pill = document.getElementById('progress-pill');
+  pill.textContent = d + ' / ' + TOTAL;
+  if (d === TOTAL && !quizPassed && !done) {
+    pill.className = 'pill pill-green';
+    document.getElementById('final-btn').className = 'final-btn ready';
+    document.getElementById('final-text').textContent = 'All sections acknowledged. Take the assessment to complete.';
+  }
+}
+
+// ── Quiz ──
+function startQuiz() {
+  if (SECTIONS.filter(s => acked[s]).length < TOTAL) return;
+  document.getElementById('quiz-gate').style.display = '';
+  const container = document.getElementById('quiz-container');
+  container.style.display = '';
+  container.innerHTML = '';
+  QUIZ.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.style.cssText = 'background:var(--bg-secondary);border:1px solid var(--border-tertiary);padding:var(--space-24);margin-bottom:var(--space-8)';
+    div.innerHTML = `
+      <div style="font-family:var(--font-label);font-size:11px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:var(--space-8)">Question ${i+1} of 6</div>
+      <div style="font-family:var(--font-body);font-size:14px;color:var(--text-primary);margin-bottom:var(--space-16);line-height:1.6">${q.q}</div>
+      ${q.opts.map((o, j) => `
+        <label style="display:flex;align-items:flex-start;gap:var(--space-8);padding:var(--space-8) var(--space-12);margin-bottom:var(--space-4);cursor:pointer;border:1px solid var(--border-tertiary);font-family:var(--font-body);font-size:13px;color:var(--text-secondary);line-height:1.5" onmouseover="this.style.background='var(--bg-primary)'" onmouseout="this.style.background=''">
+          <input type="radio" name="q${i}" value="${j}" style="margin-top:3px;flex-shrink:0"> ${o}
+        </label>
+      `).join('')}
+    `;
+    container.appendChild(div);
+  });
+  // Submit button
+  const submitDiv = document.createElement('div');
+  submitDiv.style.cssText = 'text-align:center;margin-top:var(--space-24)';
+  submitDiv.innerHTML = `<button onclick="submitQuiz()" style="background:var(--gold-500);color:var(--neutral-1000);border:none;padding:var(--space-12) var(--space-32);font-family:var(--font-label);font-size:14px;font-weight:500;cursor:pointer">Submit Assessment</button>
+    <div id="quiz-result" style="margin-top:var(--space-16);font-family:var(--font-body);font-size:14px"></div>`;
+  container.appendChild(submitDiv);
+  document.getElementById('quiz-gate').scrollIntoView({ behavior: 'smooth' });
+  document.getElementById('final').style.display = 'none';
+  track('quiz_started');
+}
+
+function submitQuiz() {
+  let score = 0;
+  QUIZ.forEach((q, i) => {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    if (selected && parseInt(selected.value) === q.ans) score++;
+    // Color feedback
+    document.querySelectorAll(`input[name="q${i}"]`).forEach((radio) => {
+      const label = radio.parentElement;
+      const val = parseInt(radio.value);
+      if (val === q.ans) { label.style.background = 'var(--success-100)'; label.style.borderColor = 'var(--success-300)'; label.style.color = 'var(--success-700)'; }
+      else if (radio.checked && val !== q.ans) { label.style.background = 'var(--error-100)'; label.style.borderColor = 'var(--error-300)'; label.style.color = 'var(--error-700)'; }
+      radio.disabled = true;
+    });
+  });
+  const result = document.getElementById('quiz-result');
+  track('quiz_score', score + '/' + QUIZ.length);
+  if (score >= 5) {
+    result.innerHTML = `<span style="color:var(--success-700);font-weight:500">You scored ${score}/6. Assessment passed!</span>`;
+    quizPassed = true;
+    localStorage.setItem('cm_quiz', 'true');
+    done = true;
+    localStorage.setItem('cm_done', 'true');
+    track('completed');
+    setTimeout(() => {
+      document.getElementById('final').style.display = '';
+      showDone();
+      document.getElementById('final').scrollIntoView({ behavior: 'smooth' });
+    }, 1500);
+  } else {
+    result.innerHTML = `<span style="color:var(--error-700);font-weight:500">You scored ${score}/6. You need 5/6 to pass.</span><br><button onclick="startQuiz()" style="margin-top:var(--space-12);background:var(--bg-secondary);border:1px solid var(--border-secondary);padding:var(--space-8) var(--space-20);font-family:var(--font-label);font-size:13px;cursor:pointer">Retry Assessment</button>`;
+  }
+}
+
+function showDone() {
+  document.getElementById('final').style.display = '';
+  document.getElementById('final-heading').textContent = 'Module Complete';
+  document.getElementById('final-btn').style.display = 'none';
+  document.getElementById('final-ok').style.display = 'block';
+  document.getElementById('final-text').textContent = 'All sections acknowledged and assessment passed.';
+  document.getElementById('cheatsheet').style.display = '';
+  document.getElementById('progress-pill').className = 'pill pill-green';
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('progress-label').textContent = '100%';
+}
+
+function reveal(btn) {
+  const answer = btn.nextElementSibling;
+  answer.classList.toggle('show');
+  btn.textContent = answer.classList.contains('show') ? 'Hide' : 'Show recommended approach';
+  if (answer.classList.contains('show')) track('scenario_reveal', btn.closest('.sec')?.dataset.id || '');
+}
+
+function logout() {
+  user = null; acked = {}; done = false; quizPassed = false; introAcked = false;
+  localStorage.removeItem('cm_user');
+  localStorage.removeItem('cm_ack');
+  localStorage.removeItem('cm_done');
+  localStorage.removeItem('cm_quiz');
+  localStorage.removeItem('cm_intro');
+  const introBtn = document.getElementById('intro-ack-btn');
+  if (introBtn) { introBtn.className = 'ack-btn pending'; introBtn.textContent = 'I understand'; introBtn.onclick = ackIntro; }
+  document.getElementById('module').classList.remove('active');
+  document.getElementById('login-screen').style.display = '';
+  SECTIONS.forEach(id => {
+    const n = document.getElementById('n-' + id);
+    if (n) { n.className = 'sec-num ' + SEC_COLORS[id.charAt(0)]; n.textContent = id.toUpperCase(); }
+    const card = n?.closest('.sec');
+    if (card) card.classList.remove('done');
+    const btn = card?.querySelector('.ack-btn');
+    if (btn) { btn.className = 'ack-btn pending'; btn.textContent = "I've read this"; }
+    document.getElementById('b-' + id)?.classList.remove('open');
+    document.getElementById('c-' + id)?.classList.remove('open');
+  });
+  document.getElementById('final-heading').textContent = 'Almost There';
+  document.getElementById('final-btn').className = 'final-btn off';
+  document.getElementById('final-btn').style.display = '';
+  document.getElementById('final-ok').style.display = 'none';
+  document.getElementById('final-text').textContent = 'Acknowledge all ' + TOTAL + ' sections, then pass the quick assessment to complete.';
+  document.getElementById('progress-pill').className = 'pill pill-gold';
+  document.getElementById('quiz-gate').style.display = 'none';
+  document.getElementById('quiz-container').style.display = 'none';
+  document.getElementById('quiz-container').innerHTML = '';
+  document.getElementById('cheatsheet').style.display = 'none';
+  renderStepper();
+  updateSectionStates();
+  updateProgress();
+}
+
+function track(action, detail) {
+  if (!TRACKING_URL || !user) return;
+  fetch(TRACKING_URL, {
+    method: 'POST', mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ timestamp: new Date().toISOString(), email: user.email, mobile: user.mobile || '', name: user.name, action, section: detail || '' }),
+  }).catch(() => {});
+}
+</script>
+</body>
+</html>
