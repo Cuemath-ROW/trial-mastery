@@ -5,17 +5,17 @@
  * 1. Create a new Google Sheet (this becomes your tracking dashboard)
  * 2. Go to Extensions → Apps Script
  * 3. Paste this entire file, save
- * 4. Click Deploy → New Deployment → Web App
- *      - Execute as: Me
- *      - Who has access: Anyone
- * 5. Copy the web app URL → paste into index.html as TRACKING_URL
+ * 4. Click Deploy → Manage Deployments → pencil → New version → Deploy
+ * 5. The web app URL stays the same.
  *
- * If redeploying over an older version: delete the old "Teachers" tab first —
- * this version uses a new "Progress" tab with richer columns.
+ * Schema auto-migration: on first event after an update, any old Progress/Events
+ * sheet with a mismatched schema is renamed to Progress_archive_<ts> / Events_archive_<ts>
+ * and a fresh sheet is created. Your historical data stays in the archive tabs.
  *
  * Tabs created automatically:
- *   "Events"   — raw log of every user action (login, intro ack, section ack, quiz, etc.)
- *   "Progress" — one row per teacher with live status + section-by-section completion
+ *   "Events"   — raw log of every user action with session_id
+ *   "Progress" — one row per (teacher email × session_id). Each fresh attempt = new row.
+ *                Previous attempts auto-flip to "Aborted" status when the user starts fresh.
  */
 
 const SECTIONS = ['a1','a2','b1','b2','b3','b4','b5','b6','c1','c2','c3','d1','d2'];
@@ -26,6 +26,7 @@ const STATUS = {
   IN_PROGRESS: 'In Progress',
   ASSESSMENT_PENDING: 'Assessment Pending',
   COMPLETED: 'Completed',
+  ABORTED: 'Aborted',
 };
 
 const STATUS_STYLE = {
@@ -33,6 +34,7 @@ const STATUS_STYLE = {
   'In Progress':        { bg: '#FFF3CD', fg: '#856404' },
   'Assessment Pending': { bg: '#FFE0B2', fg: '#8A4A00' },
   'Completed':          { bg: '#D4EDDA', fg: '#155724' },
+  'Aborted':            { bg: '#E9C7C2', fg: '#6D2222' },
 };
 
 const PROGRESS_HEADERS = [
@@ -42,7 +44,10 @@ const PROGRESS_HEADERS = [
   'A1','A2','B1','B2','B3','B4','B5','B6','C1','C2','C3','D1','D2',
   'Quiz Score', 'Quiz Attempts',
   'First Login', 'Started At', 'Last Activity', 'Completed At',
+  'Session ID',
 ];
+
+const EVENTS_HEADERS = ['Timestamp', 'Email', 'Name', 'Mobile', 'Action', 'Detail', 'Session ID'];
 
 // Column indices (1-based for Apps Script ranges)
 const COL = {};
@@ -78,9 +83,19 @@ function doGet() {
 
 function logEvent(ss, ts, data) {
   let sheet = ss.getSheetByName('Events');
+  // Migration: if existing sheet has old schema (6 cols, no Session ID), archive it.
+  if (sheet) {
+    const lastCol = sheet.getLastColumn();
+    const headers = lastCol > 0 ? sheet.getRange(1, 1, 1, lastCol).getValues()[0].map(String) : [];
+    const matches = EVENTS_HEADERS.every(function(h, i) { return headers[i] === h; });
+    if (!matches) {
+      sheet.setName('Events_archive_' + new Date().getTime());
+      sheet = null;
+    }
+  }
   if (!sheet) {
     sheet = ss.insertSheet('Events');
-    sheet.appendRow(['Timestamp', 'Email', 'Name', 'Mobile', 'Action', 'Detail']);
+    sheet.appendRow(EVENTS_HEADERS);
     sheet.getRange('1:1').setFontWeight('bold').setBackground('#2A2A2A').setFontColor('#FFFFFF');
     sheet.setFrozenRows(1);
     sheet.setColumnWidth(1, 170);
@@ -89,10 +104,11 @@ function logEvent(ss, ts, data) {
     sheet.setColumnWidth(4, 130);
     sheet.setColumnWidth(5, 140);
     sheet.setColumnWidth(6, 180);
+    sheet.setColumnWidth(7, 180);
   }
   // Force Detail column to plain text so "5/6" etc. are not auto-converted to dates
   sheet.getRange(1, 6, sheet.getMaxRows(), 1).setNumberFormat('@');
-  sheet.appendRow([ts, data.email || '', data.name || '', data.mobile || '', data.action || '', data.section || '']);
+  sheet.appendRow([ts, data.email || '', data.name || '', data.mobile || '', data.action || '', data.section || '', data.session_id || '']);
 }
 
 // ───────────────────────── Progress (per-user dashboard) ─────────────────────────
@@ -101,8 +117,9 @@ function updateProgress(ss, ts, data) {
   const sheet = getOrCreateProgressSheet(ss);
   const email = String(data.email || '').toLowerCase().trim();
   if (!email) return;
+  const session = String(data.session_id || '');
 
-  const row = findOrCreateUserRow(sheet, email, data, ts);
+  const row = findOrCreateUserRow(sheet, email, session, data, ts);
 
   // Last activity always updates
   sheet.getRange(row, COL['Last Activity']).setValue(ts);
@@ -111,6 +128,15 @@ function updateProgress(ss, ts, data) {
 
   const action = String(data.action || '');
   const section = String(data.section || '').toLowerCase();
+
+  if (action === 'reset') {
+    // Mark this row Aborted, unless it's already Completed (preserve achievement).
+    const current = String(sheet.getRange(row, COL['Status']).getValue() || '');
+    if (current !== STATUS.COMPLETED) {
+      setStatus(sheet, row, STATUS.ABORTED);
+    }
+    return; // Don't recompute status
+  }
 
   if (action === 'acknowledge') {
     if (section === 'intro') {
@@ -150,6 +176,16 @@ function updateProgress(ss, ts, data) {
 
 function getOrCreateProgressSheet(ss) {
   let sheet = ss.getSheetByName('Progress');
+  // Migration: if headers don't match, archive the old sheet.
+  if (sheet) {
+    const lastCol = sheet.getLastColumn();
+    const headers = lastCol > 0 ? sheet.getRange(1, 1, 1, lastCol).getValues()[0].map(String) : [];
+    const matches = PROGRESS_HEADERS.every(function(h, i) { return headers[i] === h; });
+    if (!matches) {
+      sheet.setName('Progress_archive_' + new Date().getTime());
+      sheet = null;
+    }
+  }
   if (!sheet) {
     sheet = ss.insertSheet('Progress');
     sheet.appendRow(PROGRESS_HEADERS);
@@ -169,26 +205,28 @@ function getOrCreateProgressSheet(ss) {
     sheet.setColumnWidth(COL['Started At'], 170);
     sheet.setColumnWidth(COL['Last Activity'], 170);
     sheet.setColumnWidth(COL['Completed At'], 170);
-    // Center-align section cells
+    sheet.setColumnWidth(COL['Session ID'], 180);
     sheet.getRange(2, COL['Intro'], sheet.getMaxRows() - 1, (COL['D2'] - COL['Intro'] + 1))
       .setHorizontalAlignment('center');
-    // Force Quiz Score column to plain text so "5/6" is not auto-converted to a date
     sheet.getRange(1, COL['Quiz Score'], sheet.getMaxRows(), 1).setNumberFormat('@');
   }
   return sheet;
 }
 
-function findOrCreateUserRow(sheet, email, data, ts) {
+function findOrCreateUserRow(sheet, email, session, data, ts) {
   const last = sheet.getLastRow();
   if (last >= 2) {
-    const emails = sheet.getRange(2, COL['Email'], last - 1, 1).getValues().flat().map(s => String(s).toLowerCase().trim());
-    const idx = emails.indexOf(email);
-    if (idx !== -1) return idx + 2;
+    const emails = sheet.getRange(2, COL['Email'], last - 1, 1).getValues().flat().map(function(s) { return String(s).toLowerCase().trim(); });
+    const sessions = sheet.getRange(2, COL['Session ID'], last - 1, 1).getValues().flat().map(String);
+    for (let i = 0; i < emails.length; i++) {
+      if (emails[i] === email && sessions[i] === session) return i + 2;
+    }
   }
   const row = last + 1;
   sheet.getRange(row, COL['Email']).setValue(email);
   sheet.getRange(row, COL['Name']).setValue(data.name || '');
   sheet.getRange(row, COL['Mobile']).setValue(data.mobile || '');
+  sheet.getRange(row, COL['Session ID']).setValue(session);
   sheet.getRange(row, COL['First Login']).setValue(ts);
   sheet.getRange(row, COL['Last Activity']).setValue(ts);
   sheet.getRange(row, COL['Progress']).setValue('0/' + TOTAL_SECTIONS);
@@ -197,13 +235,15 @@ function findOrCreateUserRow(sheet, email, data, ts) {
 }
 
 function recomputeStatus(sheet, row) {
+  // Don't overwrite Aborted — that's a terminal state set by user action.
+  const current = String(sheet.getRange(row, COL['Status']).getValue() || '');
+  if (current === STATUS.ABORTED) return;
+
   const values = sheet.getRange(row, COL['Intro'], 1, COL['D2'] - COL['Intro'] + 1).getValues()[0];
   const introDone = String(values[0]).trim() === '✓';
   let sectionsDone = 0;
   for (let i = 1; i < values.length; i++) if (String(values[i]).trim() === '✓') sectionsDone++;
 
-  // Primary signal: Completed At timestamp is set only when frontend fires 'completed' (quiz passed).
-  // Secondary: parse quiz score if present (using DisplayValue so date-auto-conversion doesn't break it).
   const completedAt = sheet.getRange(row, COL['Completed At']).getValue();
   const quizDisplay = String(sheet.getRange(row, COL['Quiz Score']).getDisplayValue() || '');
   const quizScore = quizDisplay.split('/');
@@ -230,8 +270,9 @@ function setStatus(sheet, row, status) {
 // ───────────────────────── One-time helpers ─────────────────────────
 
 /**
- * Run this once from the Apps Script editor (Run → rebuildProgress) if you ever
- * need to rebuild the Progress sheet from the Events log — e.g. after editing columns.
+ * Run from the Apps Script editor if you need to rebuild the Progress sheet
+ * from the Events log (e.g. after manual edits). Reads as display values so
+ * date-auto-conversion doesn't break string fields like "5/6".
  */
 function rebuildProgress() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -239,16 +280,16 @@ function rebuildProgress() {
   if (old) ss.deleteSheet(old);
   const events = ss.getSheetByName('Events');
   if (!events) return;
-  // Use display values so dates/numbers come back as strings — matches how the webhook sees them
   const data = events.getDataRange().getDisplayValues();
   for (let i = 1; i < data.length; i++) {
-    const [ts, email, name, mobile, action, detail] = data[i];
-    updateProgress(ss, ts || new Date().toISOString(), {
-      email: String(email || ''),
-      name: String(name || ''),
-      mobile: String(mobile || ''),
-      action: String(action || ''),
-      section: String(detail || ''),
+    const r = data[i];
+    updateProgress(ss, r[0] || new Date().toISOString(), {
+      email: String(r[1] || ''),
+      name: String(r[2] || ''),
+      mobile: String(r[3] || ''),
+      action: String(r[4] || ''),
+      section: String(r[5] || ''),
+      session_id: String(r[6] || ''),
     });
   }
 }

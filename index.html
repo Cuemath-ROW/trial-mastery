@@ -109,6 +109,20 @@
     .toast { position: fixed; bottom: var(--space-24); left: 50%; transform: translateX(-50%); background: var(--neutral-900); color: var(--neutral-100); padding: var(--space-12) var(--space-20); font-family: var(--font-body); font-size: 13px; z-index: 1000; box-shadow: var(--shadow-lg); opacity: 0; pointer-events: none; transition: opacity var(--duration-fast) var(--ease-default); }
     .toast.show { opacity: 1; }
 
+    /* Resume-or-reset modal */
+    .resume-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1100; display: none; align-items: center; justify-content: center; padding: var(--space-24); }
+    .resume-overlay.show { display: flex; }
+    .resume-card { background: var(--bg-secondary); padding: var(--space-32) var(--space-40); max-width: 480px; width: 100%; box-shadow: var(--shadow-lg); }
+    .resume-title { font-family: var(--font-heading); font-size: 22px; font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-8); }
+    .resume-progress-pill { display: inline-block; background: var(--gold-100); color: var(--gold-800); padding: 4px 10px; font-family: var(--font-label); font-size: 11px; font-weight: 500; margin-bottom: var(--space-12); }
+    .resume-body { font-family: var(--font-body); font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: var(--space-24); }
+    .resume-buttons { display: flex; flex-direction: column; gap: var(--space-8); }
+    .resume-btn { padding: var(--space-12) var(--space-20); font-family: var(--font-label); font-size: 14px; font-weight: 500; cursor: pointer; border: none; text-align: center; }
+    .resume-btn.primary { background: var(--bg-brand); color: var(--neutral-1000); }
+    .resume-btn.primary:hover { background: var(--gold-600); }
+    .resume-btn.secondary { background: var(--bg-primary); color: var(--text-secondary); border: 1px solid var(--border-secondary); }
+    .resume-btn.secondary:hover { border-color: var(--border-interactive); color: var(--text-primary); }
+
     /* ── Content ── */
     .content { max-width: 780px; margin: 0; padding: var(--space-32) var(--space-40) var(--space-80); min-width: 0; }
 
@@ -272,6 +286,19 @@
   </style>
 </head>
 <body>
+
+<!-- ════════ RESUME MODAL ════════ -->
+<div id="resume-overlay" class="resume-overlay">
+  <div class="resume-card">
+    <div class="resume-progress-pill" id="resume-pill">In progress</div>
+    <div class="resume-title" id="resume-title">Welcome back</div>
+    <div class="resume-body" id="resume-body"></div>
+    <div class="resume-buttons">
+      <button class="resume-btn primary" onclick="continueSession()">Continue where I left off</button>
+      <button class="resume-btn secondary" onclick="startFreshSession()">Start fresh</button>
+    </div>
+  </div>
+</div>
 
 <!-- ════════ LOGIN ════════ -->
 <div id="login-screen" class="login-screen">
@@ -1029,6 +1056,7 @@ let acked = {};
 let introAcked = false;
 let quizPassed = false;
 let done = false;
+let sessionId = '';
 let sectionOpenTime = {};
 
 // Per-user state keys — so a logout/login cycle resumes progress instead of wiping it.
@@ -1037,11 +1065,19 @@ function keyFor(suffix) {
   return e ? suffix + '_' + e : suffix;
 }
 
+function newSessionId() {
+  const id = 's_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
+  if (user && user.email) localStorage.setItem(keyFor('cm_session'), id);
+  sessionId = id;
+  return id;
+}
+
 function loadUserState() {
   acked = JSON.parse(localStorage.getItem(keyFor('cm_ack')) || '{}');
   introAcked = localStorage.getItem(keyFor('cm_intro')) === 'true';
   quizPassed = localStorage.getItem(keyFor('cm_quiz')) === 'true';
   done = localStorage.getItem(keyFor('cm_done')) === 'true';
+  sessionId = localStorage.getItem(keyFor('cm_session')) || '';
 }
 
 // ── Quiz Questions ──
@@ -1092,14 +1128,76 @@ function formLogin() {
   user = { email:e, mobile:m, name:n };
   localStorage.setItem('cm_user', JSON.stringify(user));
   loadUserState();
+
+  const hasProgress = introAcked || Object.keys(acked).length > 0 || quizPassed || done;
+  if (hasProgress) {
+    showResumePrompt();
+  } else {
+    if (!sessionId) newSessionId();
+    track('login');
+    showModule();
+  }
+}
+
+function showResumePrompt() {
+  const pill = document.getElementById('resume-pill');
+  const title = document.getElementById('resume-title');
+  const body = document.getElementById('resume-body');
+  const doneCount = Object.keys(acked).length;
+  const firstName = (user.name || '').split(' ')[0] || 'teacher';
+  title.textContent = 'Welcome back, ' + firstName;
+  let bodyText;
+  if (done) {
+    pill.textContent = 'Completed';
+    pill.style.background = 'var(--success-100)'; pill.style.color = 'var(--success-700)';
+    bodyText = 'You have already <strong>completed</strong> this module. You can review your cheat sheet, or start fresh to go through the training again.';
+  } else if (doneCount > 0) {
+    pill.textContent = 'In progress — ' + doneCount + ' / 13 sections done';
+    pill.style.background = 'var(--gold-100)'; pill.style.color = 'var(--gold-800)';
+    bodyText = 'You have an in-progress session. Would you like to <strong>continue where you left off</strong>, or <strong>start fresh</strong>?';
+  } else {
+    pill.textContent = 'Started — not yet complete';
+    pill.style.background = 'var(--gold-100)'; pill.style.color = 'var(--gold-800)';
+    bodyText = 'You started this module but haven\'t completed any sections yet. Continue from where you left off, or start fresh.';
+  }
+  body.innerHTML = bodyText + '<br><br>Starting fresh will reset your progress for a new attempt. Your previous attempt will be marked <em>Aborted</em> in the tracker.';
+  document.getElementById('resume-overlay').classList.add('show');
+}
+
+function hideResumePrompt() {
+  document.getElementById('resume-overlay').classList.remove('show');
+}
+
+function continueSession() {
+  hideResumePrompt();
+  if (!sessionId) newSessionId();
+  track('login');
+  showModule();
+}
+
+function startFreshSession() {
+  // Notify server to mark current (email, session_id) row as Aborted (unless already Completed)
+  if (sessionId) track('reset');
+  // Clear per-user state on this browser
+  ['cm_ack','cm_intro','cm_done','cm_quiz','cm_session'].forEach(k => localStorage.removeItem(keyFor(k)));
+  acked = {}; introAcked = false; done = false; quizPassed = false;
+  // Start a new session
+  newSessionId();
+  hideResumePrompt();
   track('login');
   showModule();
 }
 
 window.onload = function() {
   const s = localStorage.getItem('cm_user');
-  if (s) { user = JSON.parse(s); loadUserState(); showModule(); }
-  else { renderStepper(); }
+  if (s) {
+    user = JSON.parse(s);
+    loadUserState();
+    if (!sessionId) newSessionId();
+    showModule();
+  } else {
+    renderStepper();
+  }
   updateProgress();
 };
 
@@ -1397,7 +1495,15 @@ function track(action, detail) {
   fetch(TRACKING_URL, {
     method: 'POST', mode: 'no-cors',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ timestamp: new Date().toISOString(), email: user.email, mobile: user.mobile || '', name: user.name, action, section: detail || '' }),
+    body: JSON.stringify({
+      timestamp: new Date().toISOString(),
+      email: user.email,
+      mobile: user.mobile || '',
+      name: user.name,
+      session_id: sessionId || '',
+      action,
+      section: detail || ''
+    }),
   }).catch(() => {});
 }
 </script>
