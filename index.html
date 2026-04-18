@@ -1201,11 +1201,17 @@ window.onload = function() {
   updateProgress();
 };
 
+function escHtml(s) {
+  return String(s).replace(/[&<>"']/g, function(c) {
+    return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];
+  });
+}
+
 function showModule() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('module').classList.add('active');
   document.getElementById('user-info').innerHTML =
-    `<span class="user-avatar">${user.name.charAt(0).toUpperCase()}</span>${user.name}`;
+    '<span class="user-avatar">' + escHtml(user.name.charAt(0).toUpperCase()) + '</span>' + escHtml(user.name);
   injectKeyPoints();
   SECTIONS.forEach(id => { if (acked[id]) markDone(id); });
   if (introAcked) {
