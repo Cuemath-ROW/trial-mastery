@@ -1025,11 +1025,24 @@ const SECTIONS = SECTION_META.map(s => s.id);
 const TOTAL = SECTIONS.length;
 const SEC_COLORS = {a:'n-gold',b:'n-red',c:'n-blue',d:'n-green'};
 let user = null;
-let acked = JSON.parse(localStorage.getItem('cm_ack') || '{}');
-let introAcked = localStorage.getItem('cm_intro') === 'true';
-let quizPassed = localStorage.getItem('cm_quiz') === 'true';
-let done = localStorage.getItem('cm_done') === 'true';
+let acked = {};
+let introAcked = false;
+let quizPassed = false;
+let done = false;
 let sectionOpenTime = {};
+
+// Per-user state keys — so a logout/login cycle resumes progress instead of wiping it.
+function keyFor(suffix) {
+  const e = (user && user.email || '').toLowerCase().trim();
+  return e ? suffix + '_' + e : suffix;
+}
+
+function loadUserState() {
+  acked = JSON.parse(localStorage.getItem(keyFor('cm_ack')) || '{}');
+  introAcked = localStorage.getItem(keyFor('cm_intro')) === 'true';
+  quizPassed = localStorage.getItem(keyFor('cm_quiz')) === 'true';
+  done = localStorage.getItem(keyFor('cm_done')) === 'true';
+}
 
 // ── Quiz Questions ──
 const QUIZ = [
@@ -1055,7 +1068,7 @@ const QUIZ = [
 
 function ackIntro() {
   introAcked = true;
-  localStorage.setItem('cm_intro', 'true');
+  localStorage.setItem(keyFor('cm_intro'), 'true');
   const btn = document.getElementById('intro-ack-btn');
   btn.className = 'ack-btn acked';
   btn.textContent = 'Acknowledged ✓';
@@ -1078,13 +1091,14 @@ function formLogin() {
   if (!n) { alert('Please enter your full name'); return; }
   user = { email:e, mobile:m, name:n };
   localStorage.setItem('cm_user', JSON.stringify(user));
+  loadUserState();
   track('login');
   showModule();
 }
 
 window.onload = function() {
   const s = localStorage.getItem('cm_user');
-  if (s) { user = JSON.parse(s); showModule(); }
+  if (s) { user = JSON.parse(s); loadUserState(); showModule(); }
   else { renderStepper(); }
   updateProgress();
 };
@@ -1220,7 +1234,7 @@ function ack(id) {
   const idx = SECTIONS.indexOf(id);
   if (idx !== currentIdx()) { showToast('Please finish sections in order'); return; }
   acked[id] = new Date().toISOString();
-  localStorage.setItem('cm_ack', JSON.stringify(acked));
+  localStorage.setItem(keyFor('cm_ack'), JSON.stringify(acked));
   markDone(id);
   track('acknowledge', id);
   document.getElementById('b-' + id)?.classList.remove('open');
@@ -1310,9 +1324,9 @@ function submitQuiz() {
   if (score >= 5) {
     result.innerHTML = `<span style="color:var(--success-700);font-weight:500">You scored ${score}/6. Assessment passed!</span>`;
     quizPassed = true;
-    localStorage.setItem('cm_quiz', 'true');
+    localStorage.setItem(keyFor('cm_quiz'), 'true');
     done = true;
-    localStorage.setItem('cm_done', 'true');
+    localStorage.setItem(keyFor('cm_done'), 'true');
     track('completed');
     setTimeout(() => {
       document.getElementById('final').style.display = '';
@@ -1344,12 +1358,11 @@ function reveal(btn) {
 }
 
 function logout() {
+  // Sign out only clears "who is currently logged in" — per-user progress
+  // (cm_ack_<email>, cm_intro_<email>, cm_quiz_<email>, cm_done_<email>) stays in
+  // localStorage so the same teacher can log back in and resume where they left off.
   user = null; acked = {}; done = false; quizPassed = false; introAcked = false;
   localStorage.removeItem('cm_user');
-  localStorage.removeItem('cm_ack');
-  localStorage.removeItem('cm_done');
-  localStorage.removeItem('cm_quiz');
-  localStorage.removeItem('cm_intro');
   const introBtn = document.getElementById('intro-ack-btn');
   if (introBtn) { introBtn.className = 'ack-btn pending'; introBtn.textContent = 'I understand'; introBtn.onclick = ackIntro; }
   document.getElementById('module').classList.remove('active');

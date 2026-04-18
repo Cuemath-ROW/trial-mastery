@@ -1,6 +1,8 @@
 # Cuemath · Trial Mastery — Teacher Refresher Module
 
-Live site deployed via GitHub Pages from this repo.
+Live site: **https://cuemath-row.github.io/trial-mastery/**
+
+Deployed via GitHub Pages from this repo.
 
 ## Files
 - `index.html` — the module (login, 13 sections, quiz, cheat sheet)
