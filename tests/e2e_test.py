@@ -14,10 +14,11 @@ TEST_EMAIL = 'qa-test-bot@cuemath-test.local'
 TEST_MOBILE = '0000000000'
 TEST_NAME = 'QA Test Bot'
 
-# Correct answer indices for the 6 quiz questions (from index.html QUIZ array)
-CORRECT_ANSWERS = [1, 2, 2, 2, 1, 1]
+# Correct answer indices for the 20 quiz questions (from index.html QUIZ array)
+CORRECT_ANSWERS = [1, 2, 2, 1, 0, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1]
 
-SECTIONS = ['a1','a2','b1','b2','b3','b4','b5','b6','c1','c2','c3','d1','d2']
+SECTIONS = ['a1','a2','a3','a4','a5','u1','u2','u3','b1','b2','b3','b4','b5','b6','b7','c1','c2','c3','d1','d2']
+TOTAL = len(SECTIONS)
 
 RESULTS = []
 
@@ -88,7 +89,7 @@ def main():
 
         print('\n══════════ C. INTRO GATING ══════════', flush=True)
         locked_count = page.locator('.step-chip.locked').count()
-        log('C1 All 13 chips locked before intro ack', locked_count == 13, f'{locked_count} locked')
+        log(f'C1 All {TOTAL} chips locked before intro ack', locked_count == TOTAL, f'{locked_count} locked')
 
         # Try clicking a section header
         page.locator('[data-id="a1"] .sec-head').click()
@@ -147,7 +148,7 @@ def main():
             log(f'E{i+1:02d} {sec_id.upper()} acked → marked done', done)
 
         done_chips = page.locator('.step-chip.done').count()
-        log('E14 All 13 stepper chips show done', done_chips == 13, f'{done_chips}/13')
+        log(f'E14 All {TOTAL} stepper chips show done', done_chips == TOTAL, f'{done_chips}/{TOTAL}')
         progress_txt = page.locator('#progress-label').text_content() or ''
         log('E15 Progress reaches 100%', progress_txt.strip() == '100%', progress_txt)
         btn_classes = page.locator('#final-btn').get_attribute('class') or ''
@@ -157,7 +158,7 @@ def main():
         page.locator('#final-btn').click()
         page.wait_for_timeout(1000)
         log('F1 Quiz container visible', page.locator('#quiz-container').is_visible())
-        log('F2 Quiz shows 6 questions', page.locator('input[type="radio"][name^="q"]').count() == 24,
+        log('F2 Quiz shows 20 questions (80 radios)', page.locator('input[type="radio"][name^="q"]').count() == len(CORRECT_ANSWERS) * 4,
             f'{page.locator("input[type=radio][name^=q]").count()} radios')
 
         # Submit empty

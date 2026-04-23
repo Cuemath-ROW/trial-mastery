@@ -23,8 +23,10 @@ URL = 'https://cuemath-row.github.io/trial-mastery/'
 RUN_ID = int(time.time())
 def mk_email(tag): return f'qa-{tag}-{RUN_ID}@cuemath-test.local'
 
-SECTIONS = ['a1','a2','b1','b2','b3','b4','b5','b6','c1','c2','c3','d1','d2']
-CORRECT = [1, 2, 2, 2, 1, 1]
+SECTIONS = ['a1','a2','a3','a4','a5','u1','u2','u3','b1','b2','b3','b4','b5','b6','b7','c1','c2','c3','d1','d2']
+TOTAL = len(SECTIONS)
+# Correct answers aligned with updated QUIZ in index.html (20 questions)
+CORRECT = [1, 2, 2, 1, 0, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1]
 
 RESULTS = []
 def log(name, passed, detail=''):
@@ -91,7 +93,7 @@ def test_functional_regression(browser):
         log('Intro acked', 'cknowledged' in (page.locator('#intro-ack-btn').text_content() or ''))
         for s in SECTIONS:
             ack_section(page, s)
-        log('All 13 sections acked', page.locator('.step-chip.done').count() == 13)
+        log(f'All {TOTAL} sections acked', page.locator('.step-chip.done').count() == TOTAL)
 
         # Quiz — pass path
         page.locator('#final-btn').click()
@@ -167,7 +169,7 @@ def test_modal_in_progress(browser):
         do_login(page, email, name='Modal Ip')
         log('Re-login → resume modal shown', page.locator('#resume-overlay.show').is_visible())
         pill = page.locator('#resume-pill').text_content() or ''
-        log('Modal pill reads "2 / 13"', '2 / 13' in pill, pill)
+        log(f'Modal pill reads "2 / {TOTAL}"', f'2 / {TOTAL}' in pill, pill)
 
         # Click Continue
         page.click('button:has-text("Continue where I left off")')
@@ -212,7 +214,7 @@ def test_modal_start_fresh(browser):
         log('Start Fresh → modal hidden', not page.locator('#resume-overlay.show').is_visible())
 
         # Verify progress wiped
-        log('Start Fresh → stepper is 0/13',
+        log(f'Start Fresh → stepper is 0/{TOTAL}',
             page.locator('.step-chip.done').count() == 0, f'{page.locator(".step-chip.done").count()} done')
         log('Start Fresh → intro back to pending',
             'cknowledged' not in (page.locator('#intro-ack-btn').text_content() or ''))
@@ -547,7 +549,7 @@ def test_multi_user_same_browser(browser):
         ack_section(page, 'a1')
         ack_section(page, 'a2')
         a_sections = page.locator('.step-chip.done').count()
-        log('User A: 2 sections done', a_sections == 2, f'{a_sections}/13')
+        log('User A: 2 sections done', a_sections == 2, f'{a_sections}/{TOTAL}')
 
         # User A logs out, User B logs in
         page.click('.signout-btn')
@@ -557,7 +559,7 @@ def test_multi_user_same_browser(browser):
         log('User B: no resume modal (fresh for this email)',
             not page.locator('#resume-overlay.show').is_visible())
         b_sections = page.locator('.step-chip.done').count()
-        log('User B: sees 0 sections done', b_sections == 0, f'{b_sections}/13')
+        log('User B: sees 0 sections done', b_sections == 0, f'{b_sections}/{TOTAL}')
 
         # User B does 3 sections
         ack_intro(page)
@@ -576,7 +578,7 @@ def test_multi_user_same_browser(browser):
         page.click('button:has-text("Continue where I left off")')
         page.wait_for_timeout(500)
         a_back = page.locator('.step-chip.done').count()
-        log('User A: their 2 sections preserved (not B\'s 3)', a_back == 2, f'{a_back}/13')
+        log('User A: their 2 sections preserved (not B\'s 3)', a_back == 2, f'{a_back}/{TOTAL}')
     finally:
         ctx.close()
 

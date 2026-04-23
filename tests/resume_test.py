@@ -48,7 +48,7 @@ def main():
         progress_before = (page.locator('#progress-label').text_content() or '').strip()
         done_before = page.locator('.step-chip.done').count()
         log('Progress after 2 sections', done_before == 2 and progress_before != '0%',
-            f'progress={progress_before}, done={done_before}/13')
+            f'progress={progress_before}, done={done_before}/23')
 
         # ── Step 3: Sign out ──
         print('\n── STEP 3: Sign out ──', flush=True)
@@ -78,12 +78,12 @@ def main():
 
         progress_after = (page.locator('#progress-label').text_content() or '').strip()
         done_after = page.locator('.step-chip.done').count()
-        log('Stepper ticks preserved', done_after == 2, f'{done_after}/13 (expected 2)')
+        log('Stepper ticks preserved', done_after == 2, f'{done_after}/23 (expected 2)')
         log('Progress label preserved', progress_after != '0%', f'progress={progress_after}')
 
-        # Current section should be B1 (the next one, not A1)
+        # Current section should be A3 (the 3rd one now, since A1 and A2 are acked)
         current_sec = page.locator('.sec.current[data-id]').get_attribute('data-id') if page.locator('.sec.current').count() else None
-        log('Current section is B1 (resumed)', current_sec == 'b1', f'current={current_sec}')
+        log('Current section is A3 (resumed)', current_sec == 'a3', f'current={current_sec}')
 
         browser.close()
 
