@@ -5634,7 +5634,7 @@ function showCurrentSlide() {
   window._viewingIdx = idx;
   const slideId = order[idx];
   let el = null;
-  if (slideId === 'intro') el = document.querySelector('.intro');
+  if (slideId === 'intro') el = document.querySelector('.intro:not(.region-hidden)') || document.querySelector('.intro');
   else if (slideId === 'final') el = document.getElementById('final');
   else if (slideId.startsWith('pq-')) el = document.getElementById(slideId);
   else el = document.querySelector(`.sec[data-id="${slideId}"]`);
