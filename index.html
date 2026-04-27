@@ -6334,14 +6334,279 @@ function downloadReferencePDF() {
 }
 
 function downloadUKReferencePDF() {
-  // Uses browser print-to-PDF — works on all devices without extra libraries.
-  // The print stylesheet hides everything except the cheatsheet.
-  const btn = document.querySelector('#cheatsheet-uk .cheat-print-btn[onclick*="downloadUKReferencePDF"]');
-  if (btn) { btn.disabled = true; btn.textContent = 'Opening print dialog…'; }
-  setTimeout(function() {
-    window.print();
-    if (btn) { btn.disabled = false; btn.textContent = '⬇ Download as PDF'; }
-  }, 150);
+  const btn = document.querySelector('.cheat-print-btn[onclick*="downloadUKReferencePDF"]');
+  if (btn && !btn.dataset.origLabel) btn.dataset.origLabel = btn.textContent;
+  if (btn) { btn.disabled = true; btn.textContent = 'Preparing PDF…'; }
+  const run = () => { try { renderUKReferencePDF(btn); } catch (e) { console.error(e); finishBtnUK(btn); alert('Could not generate the PDF: ' + e.message); } };
+  if (window.jspdf && window.jspdf.jsPDF && typeof window.jspdf.jsPDF.API.autoTable === 'function') { run(); return; }
+  if (_pdfLibsLoading) return;
+  _pdfLibsLoading = true;
+  loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', () => {
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js', () => {
+      _pdfLibsLoading = false; run();
+    }, () => { _pdfLibsLoading = false; finishBtnUK(btn); alert('Could not load the PDF table library.'); });
+  }, () => { _pdfLibsLoading = false; finishBtnUK(btn); alert('Could not load the PDF library. Please try again or use Print.'); });
+}
+function finishBtnUK(btn) {
+  if (btn) { btn.disabled = false; btn.textContent = btn.dataset.origLabel || '⬇ Download as PDF'; }
+}
+
+function renderUKReferencePDF(btn) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+
+  const C_GOLD = [201, 162, 39];
+  const C_GOLD_DARK = [138, 106, 11];
+  const C_GOLD_LIGHT = [255, 248, 230];
+  const C_TEXT = [15, 15, 15];
+  const C_TEXT_SEC = [82, 82, 82];
+  const C_TEXT_TRI = [138, 138, 138];
+  const C_BORDER = [229, 229, 229];
+  const C_SUCCESS = [56, 142, 60];
+  const C_ERROR = [183, 28, 28];
+  const W = 210, H = 297, M = 15;
+  const CW = W - 2 * M;
+  const ARR = '  —  ';
+
+  function drawHeaderFooter() {
+    const pageNum = doc.internal.getCurrentPageInfo().pageNumber;
+    doc.setFillColor(...C_GOLD); doc.rect(0, 0, W, 6, 'F');
+    doc.setFont('helvetica', 'bold').setFontSize(10).setTextColor(...C_TEXT);
+    doc.text('CUEMATH  ·  TRIAL MASTERY', M, 15);
+    doc.setFont('helvetica', 'normal').setFontSize(9).setTextColor(...C_TEXT_SEC);
+    doc.text('Reference Guide · UK Edition', W - M, 15, { align: 'right' });
+    doc.setDrawColor(...C_BORDER); doc.line(M, 19, W - M, 19);
+    doc.setFont('helvetica', 'normal').setFontSize(8).setTextColor(...C_TEXT_TRI);
+    doc.text('Page ' + pageNum, W / 2, H - 8, { align: 'center' });
+    doc.text('Trial Mastery V3  ·  Cuemath EUK', M, H - 8);
+    const issued = new Date().toISOString().slice(0, 10);
+    doc.text('Issued ' + issued, W - M, H - 8, { align: 'right' });
+  }
+  function newPage() { doc.addPage(); drawHeaderFooter(); }
+  function h1(str, y) { doc.setFont('helvetica', 'bold').setFontSize(18).setTextColor(...C_TEXT); doc.text(str, M, y); }
+  function h2(str, y) { doc.setFont('helvetica', 'bold').setFontSize(12).setTextColor(...C_TEXT); doc.text(str, M, y); }
+  function p(str, y, opts) {
+    opts = opts || {};
+    doc.setFont('helvetica', 'normal').setFontSize(opts.size || 9.5);
+    doc.setTextColor(...(opts.color || C_TEXT_SEC));
+    const lines = doc.splitTextToSize(str, opts.width || CW);
+    doc.text(lines, opts.x || M, y);
+    return lines.length * (opts.lh || 4.5);
+  }
+  function calloutBox(yStart, title, body) {
+    const bodyLines = doc.splitTextToSize(body, CW - 8);
+    const boxH = 8 + bodyLines.length * 4.4 + 3;
+    doc.setFillColor(...C_GOLD_LIGHT); doc.rect(M, yStart, CW, boxH, 'F');
+    doc.setDrawColor(...C_GOLD); doc.setLineWidth(0.8);
+    doc.line(M, yStart, M, yStart + boxH);
+    doc.setLineWidth(0.2);
+    doc.setFont('helvetica', 'bold').setFontSize(10).setTextColor(...C_GOLD_DARK);
+    doc.text(title, M + 4, yStart + 5);
+    doc.setFont('helvetica', 'normal').setFontSize(9).setTextColor(...C_TEXT);
+    doc.text(bodyLines, M + 4, yStart + 10);
+    return yStart + boxH + 3;
+  }
+  function table(doc, startY, head, body, opts) {
+    doc.autoTable({
+      startY: startY,
+      head: head ? [head] : undefined,
+      body: body,
+      margin: { top: 25, bottom: 15, left: M, right: M },
+      styles: { font: 'helvetica', fontSize: 8.5, cellPadding: { top: 2, right: 2.5, bottom: 2, left: 2.5 }, textColor: C_TEXT, lineColor: C_BORDER, lineWidth: 0.15, overflow: 'linebreak', valign: 'top' },
+      headStyles: { fillColor: C_GOLD, textColor: C_TEXT, fontStyle: 'bold', fontSize: 8.5 },
+      alternateRowStyles: { fillColor: [250, 250, 250] },
+      columnStyles: (opts && opts.columnStyles) || {},
+      theme: 'grid',
+      didDrawPage: () => drawHeaderFooter(),
+    });
+    return doc.lastAutoTable.finalY;
+  }
+
+  // ══════════════════ PAGE 1 — Cover + 30-second reference ══════════════════
+  drawHeaderFooter();
+  doc.setFillColor(...C_GOLD_LIGHT); doc.rect(M, 28, CW, 34, 'F');
+  doc.setDrawColor(...C_GOLD); doc.setLineWidth(1.2);
+  doc.line(M, 28, M, 62); doc.setLineWidth(0.2);
+  doc.setFont('helvetica', 'bold').setFontSize(26).setTextColor(...C_TEXT);
+  doc.text('Trial Mastery', M + 6, 42);
+  doc.setFont('helvetica', 'normal').setFontSize(13).setTextColor(...C_TEXT_SEC);
+  doc.text('Teacher Reference Guide · UK Edition', M + 6, 50);
+  doc.setFont('helvetica', 'italic').setFontSize(10).setTextColor(...C_TEXT_TRI);
+  doc.text('Keep on your desk or save to your phone for live trials', M + 6, 57);
+
+  h2('What you need to know in 30 seconds', 75);
+  let y = table(doc, 80, null, [
+    ['Say "Year" not "Grade" or "Class"', 'The UK system uses Year 1–Year 13, not Grade or Class.'],
+    ['UK school year', 'September to July. 3 terms (Autumn, Spring, Summer) with half-terms in Oct, Feb, May.'],
+    ['4 home nations', 'England, Scotland, Wales, Northern Ireland — all in one time zone (GMT/BST).'],
+    ['On-screen curriculum selection', 'UK National Curriculum — one consolidated selection for all UK nations, IGCSE, and IB.'],
+    ['Key Stages at a glance', 'EYFS (R, 4-5) · KS1 (Y1-2) · KS2 (Y3-6) · KS3 (Y7-9) · KS4/GCSE (Y10-11) · KS5 (Y12-13).'],
+    ['The 4 tests parents care about', 'KS2 SATs (Y6, May) · 11+ (Y5/6, Sep-Oct) · GCSE (Y11, June) · A-Level (Y13, June).'],
+    ['The 5 parent archetypes', '11+ Mum · KS2 SATs Mum · GCSE Crisis Parent · Indie Scholarship Chaser · NRI Returner.'],
+    ['The word you use for cost', 'Fee — not price. Parents pay fees for education, not prices.'],
+    ['Time zone to IST', 'GMT (Oct-Mar) = IST -5:30 · BST (Mar-Oct) = IST -4:30.'],
+    ['The golden rule for objections', 'Acknowledge' + ARR + 'Reframe' + ARR + 'Anchor to the child\'s goal. Never bash a competitor.'],
+  ], { columnStyles: { 0: { fontStyle: 'bold', cellWidth: 60 } } });
+
+  y = Math.max(y + 6, 200);
+  calloutBox(y, 'Why this guide exists',
+    'Trials that do not convert are rarely about teaching quality. They are about a parent whose question, worry or concern went unaddressed in the moment. This guide gives you the UK context, parent insight, and the exact responses you need so none of those slip past again.');
+
+  // ══════════════════ PAGE 2 — UK at a glance ══════════════════
+  newPage();
+  h1('Page 2 · UK at a glance', 28);
+  p('The UK has four home nations with their own curricula and inspection bodies — but Cuemath uses one consolidated on-screen selection: UK National Curriculum. Know the vocabulary so you sound local.', 34, { size: 9.5, width: CW });
+
+  h2('Terminology — the words that build credibility', 48);
+  y = table(doc, 51, ['Don\'t say', 'Say instead', 'Why'], [
+    ['Grade 8 / Class 8', 'Year 8', 'The only correct UK term.'],
+    ['Math', 'Maths', 'British-Commonwealth spelling. Non-negotiable.'],
+    ['Elementary school / High school', 'Primary school · Secondary school', 'UK terms. Primary = Y1-6, Secondary = Y7-11+.'],
+    ['Semester', 'Term', 'UK schools have 3 terms, not 2 semesters.'],
+    ['Junior college', 'Sixth Form / College', 'Post-16 education (Y12-13).'],
+    ['Price', 'Fee', 'Parents pay fees for education, not prices.'],
+  ], { columnStyles: { 0: { cellWidth: 50, textColor: C_ERROR }, 1: { cellWidth: 60, fontStyle: 'bold', textColor: C_SUCCESS }, 2: {} } });
+
+  h2('Key Stages — the backbone of the UK school system', y + 6);
+  y = table(doc, y + 9, ['Stage', 'Full name', 'Years', 'Age', 'What matters for the trial'], [
+    ['EYFS', 'Early Years Foundation Stage', 'Reception', '4-5', 'Play-based, no formal tests. Foundation habits only.'],
+    ['KS1', 'Key Stage 1', 'Y1-2', '5-7', 'SATs in Y2 (teacher-assessed, not high-stakes).'],
+    ['KS2 *', 'Key Stage 2', 'Y3-6', '7-11', 'KS2 SATs in Y6 (May). 11+ in Y5/6. Your busiest zone.'],
+    ['KS3', 'Key Stage 3', 'Y7-9', '11-14', 'GCSE content begins quietly in Y9 at many schools.'],
+    ['KS4 (GCSE)', 'Key Stage 4', 'Y10-11', '14-16', 'GCSE exams June Y11. Crisis parents arrive here.'],
+    ['KS5', 'Key Stage 5 / Sixth Form', 'Y12-13', '16-18', 'A-Levels. Rare for us but IB DP students may appear.'],
+  ], { columnStyles: { 0: { fontStyle: 'bold', cellWidth: 22 }, 1: { cellWidth: 50 }, 2: { cellWidth: 14 }, 3: { cellWidth: 12 }, 4: {} } });
+
+  y = calloutBox(y + 6, '* KS2 is your highest-volume target zone',
+    'Year 5 and Year 6 parents are your most motivated enquiries. KS2 SATs in May (Y6), the 11+ in September-October (Y5/6), and grammar school preparation all converge here. Name the test and the timeline back to the parent within the first 3 minutes.');
+
+  // ══════════════════ PAGE 3 — Curriculum + Key Tests ══════════════════
+  newPage();
+  h1('Page 3 · Curriculum & key tests', 30);
+
+  h2('Curriculum on-screen: always select UK National Curriculum', 42);
+  y = table(doc, 46, ['Nation', 'Their curriculum', 'Inspectorate', 'What you select on screen'], [
+    ['England', 'National Curriculum', 'OFSTED', 'UK National Curriculum'],
+    ['Scotland', 'Curriculum for Excellence (CfE)', 'HM Inspectorate', 'UK National Curriculum'],
+    ['Wales', 'Curriculum for Wales (2022)', 'Estyn', 'UK National Curriculum'],
+    ['Northern Ireland', 'Northern Ireland Curriculum', 'ETI', 'UK National Curriculum'],
+    ['IGCSE schools', 'Cambridge / Pearson Edexcel', '(international)', 'IGCSE'],
+    ['IB schools', 'PYP / MYP / Diploma Programme', '(international)', 'IB'],
+  ], { columnStyles: { 0: { fontStyle: 'bold', cellWidth: 34 }, 1: { cellWidth: 54 }, 2: { cellWidth: 34 }, 3: { fontStyle: 'bold', textColor: C_SUCCESS } } });
+
+  h2('The 4 tests UK parents are anxious about', y + 8);
+  y = table(doc, y + 12, ['Test', 'When', 'Who sits it', 'What it tests', 'Cuemath angle'], [
+    ['KS2 SATs', 'May annually', 'Year 6 (all students)', 'Maths Reasoning · Arithmetic · English Reading · GPS', 'Number sense + problem-solving. Reference NAPLAN-equivalent depth.'],
+    ['11+ / Grammar entry', 'Sep-Oct (Y5/6 sit)', 'Y5/6 for grammar school entry', 'Verbal Reasoning · Non-Verbal Reasoning · Maths · English', '11+ Prep module. Mathematical reasoning is exactly what grammar schools test.'],
+    ['7+ / 8+ / 13+', 'Jan-Feb (indie entry)', 'Y2/3 or Y8 for independent schools', 'Maths · English · reasoning (ISEB / school-written)', 'Reasoning-first depth. Same conceptual approach.'],
+    ['GCSE Maths', 'June (Y11)', 'Year 10-11', 'Three papers: non-calculator + two calculator (Foundation or Higher)', 'GCSE Foundations module. Close gap before exam window.'],
+  ], { columnStyles: { 0: { fontStyle: 'bold', cellWidth: 24 }, 1: { cellWidth: 22 }, 2: { cellWidth: 28 }, 3: { cellWidth: 42 }, 4: {} } });
+
+  calloutBox(y + 8, 'The phrase that closes curriculum doubt',
+    '"Yes — you\'ll see me select UK National Curriculum on screen right now. [Do it.] Cuemath aligns with and goes deeper than the curriculum. We build the mathematical thinking that makes every topic feel obvious, not just memorised."');
+
+  // ══════════════════ PAGE 4 — Parent archetypes ══════════════════
+  newPage();
+  h1('Page 4 · 5 parent archetypes you will meet', 30);
+  p('Spotting the archetype in the first 5 minutes is the single highest-leverage move you can make. It tunes your tone, what you demonstrate, and which goals you name back. UK parents rarely volunteer their anxiety — probe for it.', 36, { size: 10, width: CW });
+
+  y = table(doc, 56, ['Archetype', 'What they sound like', 'Hot signal', 'Your play'], [
+    ['11+ Mum',
+      '"Does this help with the 11+?" — Y4/5, grammar school goal, often named a specific school.',
+      '"We want [school name]"',
+      'Name the 11+ module early. Speak the test language — VR, NVR, Maths Reasoning. Reference the timeline: "With the 11+ in September, you have [X months]." Connect every observation to grammar school readiness.'],
+    ['KS2 SATs Mum',
+      '"Can you help with SATs?" — Y5/6, May anchor. May use "Year 6 tests" not "SATs".',
+      '"SATs is in May"',
+      'Name the test date back. Show a reasoning problem naturally. Reference the 3 paper types: Arithmetic, Reasoning Paper 1, Reasoning Paper 2. Connect every 10-minute observation to SATs readiness.'],
+    ['GCSE Crisis Parent',
+      '"He\'s struggling. GCSEs are next year." — Y10/11. Triggered by a recent report or mock result.',
+      '"Mock results were bad"',
+      'Reassure first. Diagnose the gap visibly in the trial. Give a realistic timeline. Mention GCSE Foundations module. "Today I found exactly where the gap is — with [X months] before exams, this is very fixable."'],
+    ['Indie Scholarship Chaser',
+      '"We\'re applying to [private school]." — 7+/8+/13+. Often knows the specific paper style.',
+      'School name + entry year',
+      'Speak the assessment language — ISEB, school-written papers, VR, NVR. Position reasoning depth above rote practice. Mathematical Reasoning is what independent schools differentiate on.'],
+    ['NRI Returner / Recent UK NRI',
+      '"Back in India she was top of class." or "She finds this too easy." — recent NRI calibration mode.',
+      '"Back in India" or "CBSE"',
+      'Acknowledge the Indian maths strength. Explain the UK curriculum has different emphasis — reasoning over procedures. Reassure the child is not behind; they may be ahead. Reframe to: "now we apply that strength to UK exam formats."'],
+  ], { columnStyles: { 0: { fontStyle: 'bold', cellWidth: 32 }, 1: { cellWidth: 44 }, 2: { cellWidth: 28 }, 3: {} } });
+
+  calloutBox(y + 6, 'The probe ladder — surface a hidden goal in 3 questions',
+    '1. Wish: "If maths was going really well in 6 months, what would that look like?" 2. Worry: "What made you book this trial today?" 3. Deadline: "Anything coming up — a test, a new school year, a move?" A parent who says "no specific goal" at minute 1 almost always names a test by minute 10.');
+
+  // ══════════════════ PAGE 5 — Objection playbook ══════════════════
+  newPage();
+  h1('Page 5 · Objection playbook', 30);
+
+  y = calloutBox(36, 'The 3-step framework for every objection',
+    '1. Acknowledge — make the parent feel heard, never dismiss. 2. Reframe — shift from doubt to clarity using facts, not pressure. 3. Anchor — tie back to the child\'s goal they named at the start.');
+
+  y = table(doc, y + 3, ['If the parent says...', 'Your response approach', 'Do not...'], [
+    ['"Do you follow the UK curriculum?"',
+      'Select UK National Curriculum on screen right now. "We align with and go deeper than the curriculum — we build the mathematical thinking that makes every topic feel obvious, not memorised."',
+      'Say "yes" without showing the selection. Explain the 4-nation difference unprompted.'],
+    ['"Can this help with the 11+?"',
+      '"Absolutely — we have an 11+ Prep module covering VR, NVR, and the maths grammar tests use. More importantly, we build the mathematical reasoning grammar schools are actually testing: thinking under pressure, not memorised answers."',
+      'Guarantee a grammar school place. Claim Cuemath is the only preparation needed.'],
+    ['"What is the fee?"',
+      'Stay calm. Reassure: fee + three tenure options (3/6/12 months) appear on screen at session end. "Longer tenure, higher discount." Admissions Manager walks through specifics.',
+      'Freeze. Say "it is expensive." Quote percentages yourself. Offer a plan on your own.'],
+    ['"We\'re looking at Atom Learning"',
+      'Atom is self-serve software — no live teacher, no adaptation mid-session. Cuemath is a dedicated teacher who responds to [child] in real time, every session.',
+      'Bash Atom. Say it does not work. Claim Cuemath covers everything Atom does.'],
+    ['"We\'re looking at MyTutor"',
+      'MyTutor is a marketplace — different tutor each time. Cuemath: same teacher, same method, session after session. Continuity is what builds a child\'s confidence.',
+      'Criticise MyTutor\'s quality. Make it an argument about platforms.'],
+    ['"We\'re looking at Kumon / Explore Learning"',
+      'Kumon is worksheets + group setting + a centre to travel to. Explore Learning is a centre too. Cuemath: 1:1 at home, dedicated specialist, no commute.',
+      'Bash either. Say worksheets never work. Claim Cuemath is categorically better.'],
+    ['"Let me think / discuss with my husband"',
+      'Respect it. Give a concrete 3-line summary of [child] they can share. Still select tentative timings — "just so a slot is held." Warm handoff to the Admissions Manager.',
+      'End the call abruptly. Push for an answer today. Skip the tentative timings.'],
+    ['"My child didn\'t seem interested"',
+      'Normalise it: "First sessions are always a little cautious — new teacher, new screen, parent watching." Share one specific positive moment. Reframe gaps: "We found exactly where to help."',
+      'Agree the child seemed bored. Give a generic response without a specific example.'],
+    ['"We prefer face-to-face"',
+      'Acknowledge. Ask what face-to-face gives them — usually attention + relationship. Show 1:1 online delivers exactly that: same teacher every session, at home, flexible schedule.',
+      'Argue that online is categorically better. Dismiss the preference.'],
+  ], { columnStyles: { 0: { fontStyle: 'bold', cellWidth: 44 }, 1: { cellWidth: 94 }, 2: { textColor: C_ERROR, fontStyle: 'italic' } } });
+
+  // ══════════════════ PAGE 6 — Year groups + Closing ══════════════════
+  newPage();
+  h1('Page 6 · Year groups & the closing flow', 30);
+
+  h2('Year-group profiles — adapt your energy, depth and pacing', 42);
+  y = table(doc, 46, ['Year group', 'Attention', 'Parent focus', 'Trial approach'], [
+    ['Reception-Y2 (4-7)', 'Short · 5 min switches', 'Enjoyment + foundation habits', 'Keep under 55 min. Switch activity every 5 min. Celebrate wins loudly. Common concern: "seemed distracted."'],
+    ['Y3-Y5 (8-10) — sweet spot', 'Good · 10 min activities', 'SATs, 11+, reasoning depth', 'Ask early: "what is [child] working on at school?" Connect every screen to their test goal. Show the gap clearly.'],
+    ['Y6 (10-11) — peak urgency', 'Strong', 'SATs May + 11+ Sep/Oct', 'Name both tests and the exact window. Urgency is real — validate it, then give a plan.'],
+    ['Y7-Y9 (11-14)', 'Strong · 15+ min focus', 'GCSE foundation begins', 'Challenge-seeking age. Start harder — easy content disengages. Involve the student directly.'],
+    ['Y10-Y11 (14-16) — GCSE', 'High if motivated', 'GCSE grade target', 'Crisis or goal-driven. Diagnose gap live. Give a realistic timeline and name the GCSE Foundations module.'],
+  ], { columnStyles: { 0: { fontStyle: 'bold', cellWidth: 38 }, 1: { cellWidth: 24 }, 2: { cellWidth: 36 }, 3: {} } });
+
+  h2('The closing sequence — the last 10 minutes', y + 8);
+  y = table(doc, y + 12, ['Step', 'Screen', 'Your job'], [
+    ['1', 'Student Insights', 'Name what you specifically observed. Tie each insight back to the goal the parent named at the start (SATs, 11+, GCSE, general confidence).'],
+    ['2', 'Learning Plan', 'Walk through chapters. Connect chapters to the goal. Show it is personalised — reference the test module where relevant.'],
+    ['3', 'Class Timings', 'Guide to select tentative days and times. If they hesitate, still fill tentative slots — Admissions Manager will confirm.'],
+    ['4', 'Way Forward', 'Three pillars: personalised sessions · daily practice app · parent-tutor conference after 8 sessions.'],
+    ['5', 'Thank You', 'End warm. Thank the parent by name. Thank the child by name. Express genuine enthusiasm.'],
+  ], { columnStyles: { 0: { cellWidth: 10, halign: 'center', fontStyle: 'bold' }, 1: { cellWidth: 40, fontStyle: 'bold' }, 2: {} } });
+
+  const grY = y + 12;
+  doc.setFillColor(...C_GOLD); doc.rect(M, grY, CW, 28, 'F');
+  doc.setFont('helvetica', 'bold').setFontSize(11).setTextColor(...C_TEXT);
+  doc.text('THE GOLDEN RULE', W / 2, grY + 9, { align: 'center' });
+  doc.setFont('helvetica', 'bold').setFontSize(16).setTextColor(...C_TEXT);
+  doc.text('Acknowledge' + ARR + 'Reframe' + ARR + 'Anchor', W / 2, grY + 18, { align: 'center' });
+  doc.setFont('helvetica', 'italic').setFontSize(9).setTextColor(...C_TEXT);
+  doc.text('Never dismiss. Never bash a competitor. Never oversell.', W / 2, grY + 24, { align: 'center' });
+
+  doc.save('Trial_Mastery_Reference_Guide_UK.pdf');
+  finishBtnUK(btn);
+  if (typeof track === 'function') track('download_pdf', 'reference_guide_uk');
 }
 
 function finishBtn(btn) {
