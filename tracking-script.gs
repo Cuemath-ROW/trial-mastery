@@ -1,25 +1,46 @@
 /**
- * Cuemath Trial Mastery — Teacher Tracking Backend
+ * Cuemath Trial Mastery — Teacher Tracking Backend (V2)
  *
  * Deploy as a Google Apps Script Web App:
- * 1. Create a new Google Sheet (this becomes your tracking dashboard)
- * 2. Go to Extensions → Apps Script
- * 3. Paste this entire file, save
- * 4. Click Deploy → Manage Deployments → pencil → New version → Deploy
- * 5. The web app URL stays the same.
+ * 1. Open the existing tracking Google Sheet (or create a new one)
+ * 2. Extensions → Apps Script
+ * 3. Replace the entire Code.gs with this file, save
+ * 4. Deploy → Manage Deployments → pencil → New version → Deploy
+ *    (the web app URL stays the same)
  *
- * Schema auto-migration: on first event after an update, any old Progress/Events
- * sheet with a mismatched schema is renamed to Progress_archive_<ts> / Events_archive_<ts>
- * and a fresh sheet is created. Your historical data stays in the archive tabs.
+ * V2 schema:
+ *   - 20 sections (a1..a5, u1..u3, b1..b7, c1..c3, d1..d2)
+ *   - Internal IDs are mapped to display labels on the sheet so managers
+ *     see A1..A5, B1..B3, C1..C7, D1..D3, E1..E2 (matches what teachers
+ *     see in the module).
  *
- * Tabs created automatically:
- *   "Events"   — raw log of every user action with session_id
- *   "Progress" — one row per (teacher email × session_id). Each fresh attempt = new row.
- *                Previous attempts auto-flip to "Aborted" status when the user starts fresh.
+ * Schema auto-migration: on first event after this update, the old
+ * Progress/Events sheets (V1, 13 sections) will be renamed to
+ * Progress_archive_<ts> / Events_archive_<ts> and fresh sheets are
+ * created. Historical V1 data stays in the archive tabs.
  */
 
-const SECTIONS = ['a1','a2','b1','b2','b3','b4','b5','b6','c1','c2','c3','d1','d2'];
+// Internal section IDs as sent by the V2 module. Order = teacher progression.
+const SECTIONS = [
+  'a1','a2','a3','a4','a5',
+  'u1','u2','u3',
+  'b1','b2','b3','b4','b5','b6','b7',
+  'c1','c2','c3',
+  'd1','d2',
+];
 const TOTAL_SECTIONS = SECTIONS.length;
+
+// Internal ID → display label shown as the column header.
+// (V2 HTML displays a1..a5 as A1..A5, u1..u3 as B1..B3, b1..b7 as C1..C7,
+//  c1..c3 as D1..D3, d1..d2 as E1..E2.)
+const ID_TO_LABEL = {
+  a1:'A1', a2:'A2', a3:'A3', a4:'A4', a5:'A5',
+  u1:'B1', u2:'B2', u3:'B3',
+  b1:'C1', b2:'C2', b3:'C3', b4:'C4', b5:'C5', b6:'C6', b7:'C7',
+  c1:'D1', c2:'D2', c3:'D3',
+  d1:'E1', d2:'E2',
+};
+const SECTION_LABELS = SECTIONS.map(function(id) { return ID_TO_LABEL[id]; });
 
 const STATUS = {
   NOT_STARTED: 'Not Started',
@@ -41,17 +62,21 @@ const PROGRESS_HEADERS = [
   'Email', 'Name', 'Mobile',
   'Status', 'Progress',
   'Intro',
-  'A1','A2','B1','B2','B3','B4','B5','B6','C1','C2','C3','D1','D2',
+].concat(SECTION_LABELS).concat([
   'Quiz Score', 'Quiz Attempts',
   'First Login', 'Started At', 'Last Activity', 'Completed At',
   'Session ID',
-];
+]);
 
 const EVENTS_HEADERS = ['Timestamp', 'Email', 'Name', 'Mobile', 'Action', 'Detail', 'Session ID'];
 
 // Column indices (1-based for Apps Script ranges)
 const COL = {};
-PROGRESS_HEADERS.forEach((h, i) => { COL[h] = i + 1; });
+PROGRESS_HEADERS.forEach(function(h, i) { COL[h] = i + 1; });
+
+// First and last section column (used for ranges + status recompute)
+const FIRST_SECTION_COL = COL[SECTION_LABELS[0]];
+const LAST_SECTION_COL = COL[SECTION_LABELS[SECTION_LABELS.length - 1]];
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
@@ -75,7 +100,7 @@ function doPost(e) {
 }
 
 function doGet() {
-  return ContentService.createTextOutput('Trial Mastery Tracking API is running.')
+  return ContentService.createTextOutput('Trial Mastery Tracking API is running (V2 schema, ' + TOTAL_SECTIONS + ' sections).')
     .setMimeType(ContentService.MimeType.TEXT);
 }
 
@@ -83,7 +108,7 @@ function doGet() {
 
 function logEvent(ss, ts, data) {
   let sheet = ss.getSheetByName('Events');
-  // Migration: if existing sheet has old schema (6 cols, no Session ID), archive it.
+  // Migration: if existing sheet has old schema, archive it.
   if (sheet) {
     const lastCol = sheet.getLastColumn();
     const headers = lastCol > 0 ? sheet.getRange(1, 1, 1, lastCol).getValues()[0].map(String) : [];
@@ -144,8 +169,8 @@ function updateProgress(ss, ts, data) {
         sheet.getRange(row, COL['Started At']).setValue(ts);
       }
       sheet.getRange(row, COL['Intro']).setValue('✓');
-    } else if (SECTIONS.indexOf(section) !== -1) {
-      sheet.getRange(row, COL[section.toUpperCase()]).setValue('✓');
+    } else if (ID_TO_LABEL[section]) {
+      sheet.getRange(row, COL[ID_TO_LABEL[section]]).setValue('✓');
     }
   }
 
@@ -153,7 +178,7 @@ function updateProgress(ss, ts, data) {
     const parts = (data.section || '').split('/');
     const newScore = parseInt(parts[0], 10);
     if (!isNaN(newScore)) {
-      const total = parts[1] || '6';
+      const total = parts[1] || '20';
       const scoreCell = sheet.getRange(row, COL['Quiz Score']);
       scoreCell.setNumberFormat('@');
       const prevDisplay = String(scoreCell.getDisplayValue() || '').split('/');
@@ -180,7 +205,8 @@ function getOrCreateProgressSheet(ss) {
   if (sheet) {
     const lastCol = sheet.getLastColumn();
     const headers = lastCol > 0 ? sheet.getRange(1, 1, 1, lastCol).getValues()[0].map(String) : [];
-    const matches = PROGRESS_HEADERS.every(function(h, i) { return headers[i] === h; });
+    const matches = PROGRESS_HEADERS.length === headers.length &&
+      PROGRESS_HEADERS.every(function(h, i) { return headers[i] === h; });
     if (!matches) {
       sheet.setName('Progress_archive_' + new Date().getTime());
       sheet = null;
@@ -198,7 +224,8 @@ function getOrCreateProgressSheet(ss) {
     sheet.setColumnWidth(COL['Mobile'], 130);
     sheet.setColumnWidth(COL['Status'], 170);
     sheet.setColumnWidth(COL['Progress'], 80);
-    for (let i = COL['Intro']; i <= COL['D2']; i++) sheet.setColumnWidth(i, 46);
+    sheet.setColumnWidth(COL['Intro'], 46);
+    for (let i = FIRST_SECTION_COL; i <= LAST_SECTION_COL; i++) sheet.setColumnWidth(i, 46);
     sheet.setColumnWidth(COL['Quiz Score'], 90);
     sheet.setColumnWidth(COL['Quiz Attempts'], 90);
     sheet.setColumnWidth(COL['First Login'], 170);
@@ -206,7 +233,7 @@ function getOrCreateProgressSheet(ss) {
     sheet.setColumnWidth(COL['Last Activity'], 170);
     sheet.setColumnWidth(COL['Completed At'], 170);
     sheet.setColumnWidth(COL['Session ID'], 180);
-    sheet.getRange(2, COL['Intro'], sheet.getMaxRows() - 1, (COL['D2'] - COL['Intro'] + 1))
+    sheet.getRange(2, COL['Intro'], sheet.getMaxRows() - 1, (LAST_SECTION_COL - COL['Intro'] + 1))
       .setHorizontalAlignment('center');
     sheet.getRange(1, COL['Quiz Score'], sheet.getMaxRows(), 1).setNumberFormat('@');
   }
@@ -239,16 +266,20 @@ function recomputeStatus(sheet, row) {
   const current = String(sheet.getRange(row, COL['Status']).getValue() || '');
   if (current === STATUS.ABORTED) return;
 
-  const values = sheet.getRange(row, COL['Intro'], 1, COL['D2'] - COL['Intro'] + 1).getValues()[0];
-  const introDone = String(values[0]).trim() === '✓';
+  const introVal = String(sheet.getRange(row, COL['Intro']).getValue()).trim();
+  const introDone = introVal === '✓';
+  const sectionVals = sheet.getRange(row, FIRST_SECTION_COL, 1, LAST_SECTION_COL - FIRST_SECTION_COL + 1).getValues()[0];
   let sectionsDone = 0;
-  for (let i = 1; i < values.length; i++) if (String(values[i]).trim() === '✓') sectionsDone++;
+  for (let i = 0; i < sectionVals.length; i++) if (String(sectionVals[i]).trim() === '✓') sectionsDone++;
 
   const completedAt = sheet.getRange(row, COL['Completed At']).getValue();
   const quizDisplay = String(sheet.getRange(row, COL['Quiz Score']).getDisplayValue() || '');
   const quizScore = quizDisplay.split('/');
   const scoreNum = parseInt(quizScore[0], 10);
-  const passed = !!completedAt || (!isNaN(scoreNum) && scoreNum >= 5);
+  const scoreTotal = parseInt(quizScore[1], 10);
+  // V2 quiz: 20 questions, pass at 90% (>=18). Stay generous for legacy scores too.
+  const passThreshold = !isNaN(scoreTotal) ? Math.ceil(scoreTotal * 0.9) : 18;
+  const passed = !!completedAt || (!isNaN(scoreNum) && scoreNum >= passThreshold);
 
   let status;
   if (passed) status = STATUS.COMPLETED;
@@ -272,7 +303,7 @@ function setStatus(sheet, row, status) {
 /**
  * Run from the Apps Script editor if you need to rebuild the Progress sheet
  * from the Events log (e.g. after manual edits). Reads as display values so
- * date-auto-conversion doesn't break string fields like "5/6".
+ * date-auto-conversion doesn't break string fields like "18/20".
  */
 function rebuildProgress() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();

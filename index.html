@@ -4370,11 +4370,6 @@ function showModule() {
     '<span class="user-avatar">' + escHtml(user.name.charAt(0).toUpperCase()) + '</span>' + escHtml(user.name);
   injectKeyPoints();
   SECTIONS.forEach(id => { if (acked[id]) markDone(id); });
-  // If A1 is already acked, hydrate the AU-map state-visit tracker so the UI
-  // reflects completion (8/8 ticks + green pointer) instead of resetting to 0/8 on reload.
-  if (acked['a1'] && typeof markAUStateVisited === 'function') {
-    ['WA','NT','QLD','SA','NSW','VIC','TAS','ACT'].forEach(code => markAUStateVisited(code));
-  }
   if (introAcked) {
     const btn = document.getElementById('intro-ack-btn');
     if (btn) { btn.className = 'ack-btn acked'; btn.textContent = 'Acknowledged ✓'; btn.onclick = null; }
