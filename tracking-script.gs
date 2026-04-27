@@ -31,7 +31,7 @@ const APAC_SECTIONS = [
 const EUK_SECTIONS = [
   'uk_a1','uk_a2','uk_a3','uk_a4','uk_a5',
   'uk_u1','uk_u2','uk_u3',
-  'uk_b1','uk_b2','uk_b3','uk_b4','uk_b5','uk_b6','uk_b7',
+  'uk_b1','uk_b3','uk_b4','uk_b5','uk_b6','uk_b7',
   'uk_c1','uk_c2','uk_c3',
   'uk_d1','uk_d2',
 ];
