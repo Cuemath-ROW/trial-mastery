@@ -4090,7 +4090,7 @@
       <p class="pq-desc">Answer at least <strong>2 of 3 correctly</strong> to unlock the next part. Retry allowed.</p>
       <div class="pq-q">
         <div class="pq-q-text">1. A parent in Cardiff mentions her child is in Year 8 and asks what curriculum you use. Which is correct?</div>
-        <label class="pq-opt"><input type="radio" name="pquk-A-0" value="0"> National Curriculum — all UK schools follow the same one</label>
+        <label class="pq-opt"><input type="radio" name="pquk-A-0" value="0"> UK National Curriculum — Cuemath uses one consolidated selection on screen for all UK nations</label>
         <label class="pq-opt"><input type="radio" name="pquk-A-0" value="1"> Curriculum for Wales — Cardiff is in Wales, which has its own system since 2022</label>
         <label class="pq-opt"><input type="radio" name="pquk-A-0" value="2"> Curriculum for Excellence — the UK's new national curriculum</label>
         <label class="pq-opt"><input type="radio" name="pquk-A-0" value="3"> Northern Ireland Curriculum — same for all 4 nations</label>
@@ -4109,7 +4109,7 @@
         <label class="pq-opt"><input type="radio" name="pquk-A-2" value="2"> "The 11+ is the same across all UK nations — we can definitely help"</label>
         <label class="pq-opt"><input type="radio" name="pquk-A-2" value="3"> "Grammar schools exist in Scotland but are rare — we'll check if one is near you"</label>
       </div>
-      <button class="pq-submit" onclick="submitPartQuiz('uk-A',[1,2,1])">Check my answers</button>
+      <button class="pq-submit" onclick="submitPartQuiz('uk-A',[0,2,1])">Check my answers</button>
       <div class="pq-result" id="pq-uk-A-result" style="display:none"></div>
     </div>
 
@@ -5386,7 +5386,7 @@ const EUK_QUIZ = [
     opts: [
       'Say "UK curriculum" vaguely and move to the next screen',
       'Tell them Cuemath uses the CBSE or Indian syllabus by default',
-      'Ask which nation they are in, then select the right curriculum on screen — for Wales it is the Curriculum for Wales, distinct from the English National Curriculum',
+      'Select UK National Curriculum on screen — Cuemath consolidates all UK nations to one selection, then explain we go deeper than the curriculum',
       'Pick any curriculum from the dropdown because they are all very similar'
     ],
     ans: 2 },
