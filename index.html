@@ -5000,6 +5000,7 @@
           <strong>Trial Mastery — UK Edition</strong> · Cuemath · cuemath.com · For internal teacher use only
         </div>
       </div>
+      <button class="cheat-print-btn" onclick="downloadUKReferencePDF()" style="margin-right:var(--space-8)">⬇ Download as PDF</button>
       <button class="cheat-print-btn" onclick="window.print()">🖨️ Print Reference Guide</button>
     </div>
 
@@ -6330,6 +6331,17 @@ function downloadReferencePDF() {
       _pdfLibsLoading = false; run();
     }, () => { _pdfLibsLoading = false; finishBtn(btn); alert('Could not load the PDF table library.'); });
   }, () => { _pdfLibsLoading = false; finishBtn(btn); alert('Could not load the PDF library. Please try again or use Print.'); });
+}
+
+function downloadUKReferencePDF() {
+  // Uses browser print-to-PDF — works on all devices without extra libraries.
+  // The print stylesheet hides everything except the cheatsheet.
+  const btn = document.querySelector('#cheatsheet-uk .cheat-print-btn[onclick*="downloadUKReferencePDF"]');
+  if (btn) { btn.disabled = true; btn.textContent = 'Opening print dialog…'; }
+  setTimeout(function() {
+    window.print();
+    if (btn) { btn.disabled = false; btn.textContent = '⬇ Download as PDF'; }
+  }, 150);
 }
 
 function finishBtn(btn) {
