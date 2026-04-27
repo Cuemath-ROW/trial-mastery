@@ -8,6 +8,9 @@
   <style>
     body { background: var(--bg-primary); color: var(--text-primary); }
 
+    /* ── Region scoping (APAC vs EUK content) ── */
+    .region-hidden { display: none !important; }
+
     /* ── Login ── */
     .login-screen { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; background: var(--neutral-1000); color: var(--text-on-inverse); padding: var(--space-64) var(--space-16) var(--space-48); }
     .login-hero { text-align: center; margin-bottom: var(--space-24); }
@@ -942,6 +945,7 @@
     <select id="login-region" style="width:100%;padding:var(--space-12) var(--space-16);border:1px solid var(--border-secondary);background:var(--bg-tertiary);font-size:14px;font-family:var(--font-body);margin-bottom:var(--space-16);color:var(--text-primary)">
       <option value="">Select your region</option>
       <option value="APAC">APAC</option>
+      <option value="EUK">EUK</option>
     </select>
     <label>Grade License</label>
     <select id="login-grade" style="width:100%;padding:var(--space-12) var(--space-16);border:1px solid var(--border-secondary);background:var(--bg-tertiary);font-size:14px;font-family:var(--font-body);margin-bottom:var(--space-16);color:var(--text-primary)">
@@ -977,7 +981,7 @@
     <nav class="stepper" id="stepper"></nav>
   </aside>
   <div class="content">
-    <div class="intro intro-v2">
+    <div class="intro intro-v2" data-region="APAC">
       <div class="intro-hero">
         <div class="intro-hero-title">Trial Mastery</div>
         <div class="intro-hero-sub">Master the Australian trial. Grow with every student you enrol.</div>
@@ -1028,14 +1032,14 @@
     </div>
 
     <!-- ═══════ PART A — AUSTRALIA CONTEXT ═══════ -->
-    <div class="part-divider">
+    <div class="part-divider" data-region="APAC">
       <div class="part-label label-gold">Part A</div>
       <div class="part-name">Context — The Australia Your Students Live In</div>
       <div class="part-desc">Context is 60–70% of trial confidence. When you know the country, the curriculum, the tests, and the community — everything else gets easier.</div>
     </div>
 
     <!-- A1 — Australia at a glance -->
-    <div class="sec" data-id="a1">
+    <div class="sec" data-region="APAC" data-id="a1">
       <div class="sec-head" onclick="toggle('a1')">
         <div class="sec-left">
           <span class="sec-num n-gold" id="n-a1">A1</span>
@@ -1315,7 +1319,7 @@
     </div>
 
     <!-- A2 — The Indian-Australian parent -->
-    <div class="sec" data-id="a2">
+    <div class="sec" data-region="APAC" data-id="a2">
       <div class="sec-head" onclick="toggle('a2')">
         <div class="sec-left">
           <span class="sec-num n-gold" id="n-a2">A2</span>
@@ -1377,7 +1381,7 @@
     </div>
 
     <!-- A3 — Terminology (was A1 in V1) -->
-    <div class="sec" data-id="a3">
+    <div class="sec" data-region="APAC" data-id="a3">
       <div class="sec-head" onclick="toggle('a3')">
         <div class="sec-left">
           <span class="sec-num n-gold" id="n-a3">A3</span>
@@ -1478,7 +1482,7 @@
     </div>
 
     <!-- A4 — Australian Curriculum (ACARA) + state variations -->
-    <div class="sec" data-id="a4">
+    <div class="sec" data-region="APAC" data-id="a4">
       <div class="sec-head" onclick="toggle('a4')">
         <div class="sec-left">
           <span class="sec-num n-gold" id="n-a4">A4</span>
@@ -1567,7 +1571,7 @@
     </div>
 
     <!-- A5 — Tests & Scholarships (was A2 in V1) -->
-    <div class="sec" data-id="a5">
+    <div class="sec" data-region="APAC" data-id="a5">
       <div class="sec-head" onclick="toggle('a5')">
         <div class="sec-left">
           <span class="sec-num n-gold" id="n-a5">A5</span>
@@ -1745,7 +1749,7 @@
     </div>
 
     <!-- ════════ PART A QUIZ — Context ════════ -->
-    <div class="part-quiz" id="pq-A">
+    <div class="part-quiz" data-region="APAC" id="pq-A">
       <h3>Part A Check — 3 scenarios</h3>
       <p class="pq-desc">Answer at least <strong>2 of 3 correctly</strong> to unlock the next part. Retry allowed.</p>
       <div class="pq-q">
@@ -1774,14 +1778,14 @@
     </div>
 
     <!-- ═══════ PART B — Understanding the Parent ═══════ -->
-    <div class="part-divider">
+    <div class="part-divider" data-region="APAC">
       <div class="part-label label-purple">Part B</div>
       <div class="part-name">Understanding the Parent</div>
       <div class="part-desc">Context teaches you Australia. Understanding teaches you the person on the other side of the screen.</div>
     </div>
 
     <!-- U1 — 5 archetypes -->
-    <div class="sec" data-id="u1">
+    <div class="sec" data-region="APAC" data-id="u1">
       <div class="sec-head" onclick="toggle('u1')">
         <div class="sec-left">
           <span class="sec-num n-purple" id="n-u1">B1</span>
@@ -1965,7 +1969,7 @@
     </div>
 
     <!-- U2 — Probing hidden goals -->
-    <div class="sec" data-id="u2">
+    <div class="sec" data-region="APAC" data-id="u2">
       <div class="sec-head" onclick="toggle('u2')">
         <div class="sec-left">
           <span class="sec-num n-purple" id="n-u2">B2</span>
@@ -2045,7 +2049,7 @@
     </div>
 
     <!-- U3 — Goal-driven vs exploratory -->
-    <div class="sec" data-id="u3">
+    <div class="sec" data-region="APAC" data-id="u3">
       <div class="sec-head" onclick="toggle('u3')">
         <div class="sec-left">
           <span class="sec-num n-purple" id="n-u3">B3</span>
@@ -2119,7 +2123,7 @@
     </div>
 
     <!-- ════════ PART B QUIZ — Understanding the Parent ════════ -->
-    <div class="part-quiz" id="pq-B">
+    <div class="part-quiz" data-region="APAC" id="pq-B">
       <h3>Part B Check — 3 scenarios</h3>
       <p class="pq-desc">Answer at least <strong>2 of 3 correctly</strong> to unlock the next part. Retry allowed.</p>
       <div class="pq-q">
@@ -2148,7 +2152,7 @@
     </div>
 
     <!-- ═══════ PART B — OBJECTION HANDLING ═══════ -->
-    <div class="part-divider">
+    <div class="part-divider" data-region="APAC">
       <div class="part-label label-red">Part C</div>
       <div class="part-name">Handling Parent Objections</div>
       <div class="part-desc">7 objection types we have seen repeatedly in Australian trials — with a calm, respectful approach for each.</div>
@@ -2178,7 +2182,7 @@
     </div>
 
     <!-- B1 -->
-    <div class="sec" data-id="b1">
+    <div class="sec" data-region="APAC" data-id="b1">
       <div class="sec-head" onclick="toggle('b1')">
         <div class="sec-left">
           <span class="sec-num n-red" id="n-b1">C1</span>
@@ -2351,7 +2355,7 @@
     </div>
 
     <!-- B2 -->
-    <div class="sec" data-id="b2">
+    <div class="sec" data-region="APAC" data-id="b2">
       <div class="sec-head" onclick="toggle('b2')">
         <div class="sec-left">
           <span class="sec-num n-red" id="n-b2">C2</span>
@@ -2502,7 +2506,7 @@
     </div>
 
     <!-- C3 — Fee question -->
-    <div class="sec" data-id="b3">
+    <div class="sec" data-region="APAC" data-id="b3">
       <div class="sec-head" onclick="toggle('b3')">
         <div class="sec-left">
           <span class="sec-num n-red" id="n-b3">C3</span>
@@ -2681,7 +2685,7 @@
     </div>
 
     <!-- B4 -->
-    <div class="sec" data-id="b4">
+    <div class="sec" data-region="APAC" data-id="b4">
       <div class="sec-head" onclick="toggle('b4')">
         <div class="sec-left">
           <span class="sec-num n-red" id="n-b4">C4</span>
@@ -2795,7 +2799,7 @@
     </div>
 
     <!-- B5 -->
-    <div class="sec" data-id="b5">
+    <div class="sec" data-region="APAC" data-id="b5">
       <div class="sec-head" onclick="toggle('b5')">
         <div class="sec-left">
           <span class="sec-num n-red" id="n-b5">C5</span>
@@ -2919,7 +2923,7 @@
     </div>
 
     <!-- B6 -->
-    <div class="sec" data-id="b6">
+    <div class="sec" data-region="APAC" data-id="b6">
       <div class="sec-head" onclick="toggle('b6')">
         <div class="sec-left">
           <span class="sec-num n-red" id="n-b6">C6</span>
@@ -3074,7 +3078,7 @@
     </div>
 
     <!-- B7 — "We prefer face-to-face" -->
-    <div class="sec" data-id="b7">
+    <div class="sec" data-region="APAC" data-id="b7">
       <div class="sec-head" onclick="toggle('b7')">
         <div class="sec-left">
           <span class="sec-num n-red" id="n-b7">C7</span>
@@ -3198,7 +3202,7 @@
 
 
     <!-- ════════ PART C QUIZ — Objections ════════ -->
-    <div class="part-quiz" id="pq-C">
+    <div class="part-quiz" data-region="APAC" id="pq-C">
       <h3>Part C Check — 3 scenarios</h3>
       <p class="pq-desc">Answer at least <strong>2 of 3 correctly</strong> to unlock the next part. Retry allowed.</p>
       <div class="pq-q">
@@ -3227,7 +3231,7 @@
     </div>
 
     <!-- ═══════ PART C — GRADE TIPS ═══════ -->
-    <div class="part-divider">
+    <div class="part-divider" data-region="APAC">
       <div class="part-label label-blue">Part D</div>
       <div class="part-name">By Year Group — K-2, 3-5, 6-8</div>
       <div class="part-desc">Different year groups behave differently. Adapt your energy, depth, and involvement level.</div>
@@ -3252,7 +3256,7 @@
     </div>
 
     <!-- C1 -->
-    <div class="sec" data-id="c1">
+    <div class="sec" data-region="APAC" data-id="c1">
       <div class="sec-head" onclick="toggle('c1')">
         <div class="sec-left">
           <span class="sec-num n-blue" id="n-c1">D1</span>
@@ -3324,7 +3328,7 @@
     </div>
 
     <!-- C2 -->
-    <div class="sec" data-id="c2">
+    <div class="sec" data-region="APAC" data-id="c2">
       <div class="sec-head" onclick="toggle('c2')">
         <div class="sec-left">
           <span class="sec-num n-blue" id="n-c2">D2</span>
@@ -3403,7 +3407,7 @@
     </div>
 
     <!-- C3 -->
-    <div class="sec" data-id="c3">
+    <div class="sec" data-region="APAC" data-id="c3">
       <div class="sec-head" onclick="toggle('c3')">
         <div class="sec-left">
           <span class="sec-num n-blue" id="n-c3">D3</span>
@@ -3474,7 +3478,7 @@
     </div>
 
     <!-- ════════ PART D QUIZ — Year Groups ════════ -->
-    <div class="part-quiz" id="pq-D">
+    <div class="part-quiz" data-region="APAC" id="pq-D">
       <h3>Part D Check — 3 scenarios</h3>
       <p class="pq-desc">Answer at least <strong>2 of 3 correctly</strong> to unlock the closing part. Retry allowed.</p>
       <div class="pq-q">
@@ -3503,7 +3507,7 @@
     </div>
 
     <!-- ═══════ PART D — CLOSURE ═══════ -->
-    <div class="part-divider">
+    <div class="part-divider" data-region="APAC">
       <div class="part-label label-green">Part E</div>
       <div class="part-name">Closing the Trial on a Strong Note</div>
       <div class="part-desc">The last 10 minutes decide whether the parent moves forward. Make them count.</div>
@@ -3518,7 +3522,7 @@
     </div>
 
     <!-- D1 -->
-    <div class="sec" data-id="d1">
+    <div class="sec" data-region="APAC" data-id="d1">
       <div class="sec-head" onclick="toggle('d1')">
         <div class="sec-left">
           <span class="sec-num n-green" id="n-d1">E1</span>
@@ -3611,7 +3615,7 @@
     </div>
 
     <!-- D2 -->
-    <div class="sec" data-id="d2">
+    <div class="sec" data-region="APAC" data-id="d2">
       <div class="sec-head" onclick="toggle('d2')">
         <div class="sec-left">
           <span class="sec-num n-green" id="n-d2">E2</span>
@@ -3694,6 +3698,1055 @@
       </div>
     </div>
 
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- ═══════ EUK (UK) REGION CONTENT ═══════════════ -->
+    <!-- ══════════════════════════════════════════════════ -->
+
+    <!-- EUK INTRO -->
+    <div class="intro intro-v2" data-region="EUK">
+      <div class="intro-hero">
+        <div class="intro-hero-title">Trial Mastery — UK Edition</div>
+        <div class="intro-hero-sub">Master the British trial. Grow with every student you enrol.</div>
+      </div>
+      <div class="intro-brief">
+        <span class="intro-brief-kicker">What this module covers</span>
+        This module equips you with the <strong>context, frameworks, and language</strong> to run a confident UK trial end-to-end — from the first minute with the parent to the final handoff to Admissions. Across 20 sections, you'll learn to navigate four national curricula, read the five UK parent archetypes quickly, handle the <strong>seven most common objections</strong> without friction, and close each trial on a specific, credible note. The UK market has its own rhythm — Year groups not Grades, 11+ not Selective, GCSE not HSC. Every pattern here is drawn from real trials in the British-Indian and NRI community.
+      </div>
+      <div class="intro-flow">
+        <div class="intro-flow-node">
+          <div class="intro-flow-icon">🇬🇧</div>
+          <div class="intro-flow-label">Context</div>
+          <div class="intro-flow-desc">4 nations, curricula, tests</div>
+        </div>
+        <div class="intro-flow-arrow">→</div>
+        <div class="intro-flow-node">
+          <div class="intro-flow-icon">👪</div>
+          <div class="intro-flow-label">Understanding</div>
+          <div class="intro-flow-desc">Who the UK parent really is</div>
+        </div>
+        <div class="intro-flow-arrow">→</div>
+        <div class="intro-flow-node">
+          <div class="intro-flow-icon">💬</div>
+          <div class="intro-flow-label">Objections</div>
+          <div class="intro-flow-desc">Handle with confidence</div>
+        </div>
+        <div class="intro-flow-arrow">→</div>
+        <div class="intro-flow-node intro-flow-node-end">
+          <div class="intro-flow-icon">✨</div>
+          <div class="intro-flow-label">Enrolment</div>
+          <div class="intro-flow-desc">Student stays. You grow.</div>
+        </div>
+      </div>
+      <div class="intro-meta">
+        <div class="intro-meta-stat"><span>20</span>sections</div>
+        <div class="intro-meta-stat"><span>2–3</span>hours</div>
+        <div class="intro-meta-stat"><span>∞</span>refresh anytime</div>
+      </div>
+      <p class="intro-oneline">Built from the UK market — 4 home nations, the NRI community, and the tests that really matter.</p>
+      <div style="margin-top:var(--space-20);padding-top:var(--space-16);border-top:1px solid var(--gold-300);text-align:center">
+        <button id="intro-ack-btn-uk" class="ack-btn pending" onclick="ackIntro()">I understand — let's begin</button>
+      </div>
+    </div>
+
+    <!-- ═══════ PART A — UK CONTEXT ═══════ -->
+    <div class="part-divider" data-region="EUK">
+      <div class="part-label label-gold">Part A</div>
+      <div class="part-name">Context — The UK Your Students Live In</div>
+      <div class="part-desc">Context is 60–70% of trial confidence. When you know the 4 nations, the curricula, the tests, and the community — everything else gets easier.</div>
+    </div>
+
+    <!-- uk_a1 -->
+    <div class="sec" data-region="EUK" data-id="uk_a1">
+      <div class="sec-head" onclick="toggle('uk_a1')">
+        <div class="sec-left">
+          <span class="sec-num n-gold" id="n-uk_a1">A1</span>
+          <div><div class="sec-title">The UK at a Glance — 4 home nations, 1 time zone</div><div class="sec-sub">England, Scotland, Wales, Northern Ireland — click each nation to know it</div></div>
+        </div>
+        <span class="chev" id="c-uk_a1">›</span>
+      </div>
+      <div class="sec-body" id="b-uk_a1">
+        <div class="tldr">
+          <span class="tldr-kicker">TL;DR</span>
+          <div class="tldr-text">When a parent says "we're in Manchester" or "we're in Edinburgh" — know immediately: <strong>which nation, which curriculum, which test</strong>. The UK has 1 time zone (GMT/BST = IST −5:30 in winter, IST −4:30 in summer). School year runs September to July in 3 terms. All 4 nations below — click each one.</div>
+        </div>
+        <h3>The 4 home nations — click each to know the curriculum and tests</h3>
+        <div id="uk-nation-counter" style="font-family:var(--font-label);font-size:12px;color:var(--text-secondary);margin-bottom:var(--space-12)">0 of 4 nations explored</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-12);margin-bottom:var(--space-20)">
+          <div class="uk-nation-card" id="ukn-England" onclick="markUKNationVisited('England')" style="border:2px solid var(--border-primary);border-radius:8px;padding:var(--space-16);cursor:pointer;transition:all 200ms">
+            <div style="font-size:22px;margin-bottom:4px">🏴󠁧󠁢󠁥󠁮󠁧󠁿</div>
+            <div style="font-weight:700;font-family:var(--font-heading);font-size:15px;color:var(--text-primary)">England</div>
+            <div style="font-size:12px;color:var(--text-secondary);margin-top:4px">Most of our UK parents</div>
+            <div class="ukn-details" style="display:none;margin-top:var(--space-12);font-size:13px;line-height:1.6">
+              <div style="margin-bottom:5px"><strong>Curriculum:</strong> National Curriculum (NC) — OFSTED inspects schools</div>
+              <div style="margin-bottom:5px"><strong>Key tests:</strong> KS2 SATs (Y6, May) · 11+ (grammar schools, Sep–Oct) · GCSE (Y10–11) · A-Level (Y12–13)</div>
+              <div style="margin-bottom:5px"><strong>Year groups:</strong> Reception → Y13 (ages 4–18)</div>
+              <div style="margin-bottom:5px"><strong>NRI cities:</strong> London, Birmingham, Manchester, Leicester, Bradford</div>
+              <div><strong>Say:</strong> "We follow the England National Curriculum — and go deeper in every topic."</div>
+            </div>
+          </div>
+          <div class="uk-nation-card" id="ukn-Scotland" onclick="markUKNationVisited('Scotland')" style="border:2px solid var(--border-primary);border-radius:8px;padding:var(--space-16);cursor:pointer;transition:all 200ms">
+            <div style="font-size:22px;margin-bottom:4px">🏴󠁧󠁢󠁳󠁣󠁴󠁿</div>
+            <div style="font-weight:700;font-family:var(--font-heading);font-size:15px;color:var(--text-primary)">Scotland</div>
+            <div style="font-size:12px;color:var(--text-secondary);margin-top:4px">Different system — know it</div>
+            <div class="ukn-details" style="display:none;margin-top:var(--space-12);font-size:13px;line-height:1.6">
+              <div style="margin-bottom:5px"><strong>Curriculum:</strong> Curriculum for Excellence (CfE) — HM Inspectorate, not OFSTED</div>
+              <div style="margin-bottom:5px"><strong>Key tests:</strong> No KS2 SATs · No 11+ (comprehensive) · National 4/5 (GCSE equiv.) · Higher (A-Level equiv.)</div>
+              <div style="margin-bottom:5px"><strong>Year groups:</strong> P1–P7 (Primary) → S1–S6 (Secondary)</div>
+              <div style="margin-bottom:5px"><strong>NRI cities:</strong> Glasgow, Edinburgh</div>
+              <div><strong>Say:</strong> "We align with the Curriculum for Excellence — we build the mathematical thinking Scotland's curriculum values."</div>
+            </div>
+          </div>
+          <div class="uk-nation-card" id="ukn-Wales" onclick="markUKNationVisited('Wales')" style="border:2px solid var(--border-primary);border-radius:8px;padding:var(--space-16);cursor:pointer;transition:all 200ms">
+            <div style="font-size:22px;margin-bottom:4px">🏴󠁧󠁢󠁷󠁬󠁳󠁿</div>
+            <div style="font-weight:700;font-family:var(--font-heading);font-size:15px;color:var(--text-primary)">Wales</div>
+            <div style="font-size:12px;color:var(--text-secondary);margin-top:4px">New curriculum since 2022</div>
+            <div class="ukn-details" style="display:none;margin-top:var(--space-12);font-size:13px;line-height:1.6">
+              <div style="margin-bottom:5px"><strong>Curriculum:</strong> Curriculum for Wales (2022) — cross-disciplinary, less testing</div>
+              <div style="margin-bottom:5px"><strong>Key tests:</strong> No KS2 SATs · No 11+ · GCSE (Y10–11) · A-Level (Y12–13)</div>
+              <div style="margin-bottom:5px"><strong>Year groups:</strong> Reception → Y13 (same labels as England)</div>
+              <div style="margin-bottom:5px"><strong>NRI cities:</strong> Cardiff</div>
+              <div><strong>Say:</strong> "We align with the Curriculum for Wales — our conceptual approach fits exactly what it values."</div>
+            </div>
+          </div>
+          <div class="uk-nation-card" id="ukn-NI" onclick="markUKNationVisited('NI')" style="border:2px solid var(--border-primary);border-radius:8px;padding:var(--space-16);cursor:pointer;transition:all 200ms">
+            <div style="font-size:22px;margin-bottom:4px">🇬🇧</div>
+            <div style="font-weight:700;font-family:var(--font-heading);font-size:15px;color:var(--text-primary)">Northern Ireland</div>
+            <div style="font-size:12px;color:var(--text-secondary);margin-top:4px">Transfer Test instead of 11+</div>
+            <div class="ukn-details" style="display:none;margin-top:var(--space-12);font-size:13px;line-height:1.6">
+              <div style="margin-bottom:5px"><strong>Curriculum:</strong> Northern Ireland Curriculum — closest to England's NC</div>
+              <div style="margin-bottom:5px"><strong>Key tests:</strong> Transfer Test (P7, grammar entry — like 11+) · GCSE (Y11–12) · A-Level (Y13–14)</div>
+              <div style="margin-bottom:5px"><strong>Year groups:</strong> P1–P7 (Primary) → Y8–Y14 (Secondary, offset by 1 from England)</div>
+              <div style="margin-bottom:5px"><strong>NRI cities:</strong> Belfast</div>
+              <div><strong>Say:</strong> "We follow the NI Curriculum — we can also help with Transfer Test preparation."</div>
+            </div>
+          </div>
+        </div>
+        <div class="tldr" style="background:linear-gradient(90deg,var(--info-100) 0%,var(--bg-secondary) 100%);border-left-color:var(--info-500)">
+          <span class="tldr-kicker" style="color:var(--info-700)">Time zone</span>
+          <div class="tldr-text">UK = GMT (Oct–Mar) / BST (Mar–Oct). For your India call: <strong>Winter = IST −5:30</strong> (9am UK = 2:30pm IST). <strong>Summer = IST −4:30</strong> (5pm UK = 9:30pm IST). Unlike Australia, the UK never has 3-timezone complexity.</div>
+        </div>
+        <div class="ack" style="margin-top:var(--space-20)"><button class="ack-btn pending" onclick="ack('uk_a1')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- uk_a2 -->
+    <div class="sec" data-region="EUK" data-id="uk_a2">
+      <div class="sec-head" onclick="toggle('uk_a2')">
+        <div class="sec-left">
+          <span class="sec-num n-gold" id="n-uk_a2">A2</span>
+          <div><div class="sec-title">The British-Indian and UK NRI Parent</div><div class="sec-sub">Two distinct parents — same Indian rigour, different reference points</div></div>
+        </div>
+        <span class="chev" id="c-uk_a2">›</span>
+      </div>
+      <div class="sec-body" id="b-uk_a2">
+        <div class="tldr">
+          <span class="tldr-kicker">TL;DR</span>
+          <div class="tldr-text">Most UK trial parents fall into two types: the <strong>settled British-Indian</strong> (2nd–3rd generation, UK-fluent, exam-driven) or the <strong>recent UK NRI</strong> (moved in last 5 years, CBSE/ICSE-anchored, still calibrating). They may sound similar — their goals are not.</div>
+        </div>
+        <div class="dd-pair">
+          <div class="dd-side do" style="background:var(--info-50);border-color:var(--info-300)">
+            <div class="dd-side-head" style="color:var(--info-700)"><span class="dd-side-icon">🏡</span>Settled British-Indian</div>
+            <ul class="dd-list">
+              <li>2nd or 3rd generation — born or raised in the UK</li>
+              <li>Knows the system: Year groups, Key Stages, 11+, GCSEs</li>
+              <li>Goal is often competitive — grammar school, scholarship, top GCSE grades</li>
+              <li>Values track record and peer proof: "My friend's daughter uses Cuemath"</li>
+              <li>May be skeptical of Indian-origin companies — earn trust with substance</li>
+              <li><strong>Listen for:</strong> specific school names, specific test names, precise targets</li>
+            </ul>
+          </div>
+          <div class="dd-side dont" style="background:var(--gold-50);border-color:var(--gold-300)">
+            <div class="dd-side-head" style="color:var(--gold-700)"><span class="dd-side-icon">✈️</span>Recent UK NRI</div>
+            <ul class="dd-list">
+              <li>Moved from India in last 5 years — job or spousal visa</li>
+              <li>May still think in CBSE/ICSE language ("Standard 6", "SSC Board")</li>
+              <li>Genuinely unsure how UK education compares — needs calibration</li>
+              <li>Indian maths standard may be higher — child may be ahead but not recognised</li>
+              <li>Goal: reassurance + keeping the "Indian edge" they worry about losing</li>
+              <li><strong>Listen for:</strong> "back in India", "CBSE", "she was always top of class"</li>
+            </ul>
+          </div>
+        </div>
+        <div class="pat-label">2 signals in the first 90 seconds — calibrate quickly</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-12);margin-bottom:var(--space-16)">
+          <div style="background:var(--bg-secondary);border-radius:6px;padding:var(--space-12)">
+            <div style="font-weight:700;font-size:13px;margin-bottom:4px">Signal 1: Year group language</div>
+            <div style="font-size:13px">"He's in Year 5" → likely settled British-Indian<br>"She's in Class 5 / Standard 5" → likely recent NRI</div>
+          </div>
+          <div style="background:var(--bg-secondary);border-radius:6px;padding:var(--space-12)">
+            <div style="font-weight:700;font-size:13px;margin-bottom:4px">Signal 2: First question</div>
+            <div style="font-size:13px">"How does this help with the 11+?" → competitive, exam-driven<br>"Is this similar to what they study in India?" → NRI calibration mode</div>
+          </div>
+        </div>
+        <div class="tldr" style="background:linear-gradient(90deg,var(--gold-50) 0%,var(--bg-secondary) 100%);border-left-color:var(--gold-400)">
+          <span class="tldr-kicker" style="color:var(--gold-700)">What never changes</span>
+          <div class="tldr-text">Both types share the same value: <strong>education is a priority, not a luxury</strong>. The Indian parent in the UK — regardless of generation — expects substance, specificity, and a teacher who takes their child seriously. That's your baseline.</div>
+        </div>
+        <div class="ack"><button class="ack-btn pending" onclick="ack('uk_a2')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- uk_a3 -->
+    <div class="sec" data-region="EUK" data-id="uk_a3">
+      <div class="sec-head" onclick="toggle('uk_a3')">
+        <div class="sec-left">
+          <span class="sec-num n-gold" id="n-uk_a3">A3</span>
+          <div><div class="sec-title">UK Terminology — say "Year", not "Grade"</div><div class="sec-sub">Reception → Y13 · Key Stages · Primary vs Secondary vs Sixth Form</div></div>
+        </div>
+        <span class="chev" id="c-uk_a3">›</span>
+      </div>
+      <div class="sec-body" id="b-uk_a3">
+        <div class="tldr">
+          <span class="tldr-kicker">TL;DR</span>
+          <div class="tldr-text">Say <strong>Year</strong>, not Grade. Know your Key Stages. The system goes: Reception → Y1–Y13. Primary ends at Y6, Secondary at Y11, Sixth Form (optional) at Y13. Every test and transition is tied to a specific year.</div>
+        </div>
+        <table class="cheat-table" style="margin-bottom:var(--space-20)">
+          <thead><tr><th>Stage</th><th>Years</th><th>Age</th><th>What it means for the trial</th></tr></thead>
+          <tbody>
+            <tr><td><strong>EYFS</strong></td><td>Reception (R)</td><td>4–5</td><td>Foundation stage — play-based, no formal tests</td></tr>
+            <tr><td><strong>KS1</strong></td><td>Year 1–2</td><td>5–7</td><td>KS1 SATs (Y2, teacher assessment) — keep trial light and fun</td></tr>
+            <tr><td><strong>KS2</strong></td><td>Year 3–6</td><td>7–11</td><td>KS2 SATs (Y6, May) · 11+ in Y5/6 — busiest target zone</td></tr>
+            <tr><td><strong>KS3</strong></td><td>Year 7–9</td><td>11–14</td><td>Secondary transition — GCSE foundation begins here</td></tr>
+            <tr><td><strong>KS4 (GCSE)</strong></td><td>Year 10–11</td><td>14–16</td><td>GCSEs sat in Y11 (Jun). Crisis parents often arrive here.</td></tr>
+            <tr><td><strong>KS5 (Sixth Form)</strong></td><td>Year 12–13</td><td>16–18</td><td>A-Levels — high-stakes, rare for us</td></tr>
+          </tbody>
+        </table>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-8);margin-bottom:var(--space-16)">
+          <div style="background:var(--success-50);border-radius:6px;padding:var(--space-12);border:1px solid var(--success-200)">
+            <div style="font-weight:700;color:var(--success-700);margin-bottom:6px;font-size:12px">✓ SAY THIS</div>
+            <div style="font-size:13px;line-height:1.8">Year 5 · Year 6 · Year 10<br>Key Stage 2 · GCSE · A-Level<br>Term · Maths · Primary school<br>Secondary school · Sixth form</div>
+          </div>
+          <div style="background:var(--error-50);border-radius:6px;padding:var(--space-12);border:1px solid var(--error-200)">
+            <div style="font-weight:700;color:var(--error-700);margin-bottom:6px;font-size:12px">✗ NOT THIS</div>
+            <div style="font-size:13px;line-height:1.8">Grade 5 · 5th grade · 10th grade<br>Standard · Class (Indian usage)<br>Semester · Math · Elementary<br>High school · Junior college</div>
+          </div>
+        </div>
+        <div class="ack"><button class="ack-btn pending" onclick="ack('uk_a3')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- uk_a4 -->
+    <div class="sec" data-region="EUK" data-id="uk_a4">
+      <div class="sec-head" onclick="toggle('uk_a4')">
+        <div class="sec-left">
+          <span class="sec-num n-gold" id="n-uk_a4">A4</span>
+          <div><div class="sec-title">Curriculum by Nation — pick the right one on screen</div><div class="sec-sub">England · Scotland · Wales · Northern Ireland — 4 different systems</div></div>
+        </div>
+        <span class="chev" id="c-uk_a4">›</span>
+      </div>
+      <div class="sec-body" id="b-uk_a4">
+        <div class="tldr">
+          <span class="tldr-kicker">TL;DR</span>
+          <div class="tldr-text">The UK is <strong>not one curriculum</strong>. When you select the curriculum in the Cuemath app during the trial, pick the right national framework. Know which city maps to which nation — and select correctly every time.</div>
+        </div>
+        <table class="cheat-table" style="margin-bottom:var(--space-20)">
+          <thead><tr><th>Nation</th><th>Curriculum</th><th>Inspectorate</th><th>On-screen selection</th></tr></thead>
+          <tbody>
+            <tr><td><strong>England</strong></td><td>National Curriculum (NC)</td><td>OFSTED</td><td>England / National Curriculum</td></tr>
+            <tr><td><strong>Scotland</strong></td><td>Curriculum for Excellence (CfE)</td><td>HM Inspectorate (HMIe)</td><td>Scotland / CfE</td></tr>
+            <tr><td><strong>Wales</strong></td><td>Curriculum for Wales (2022)</td><td>Estyn</td><td>Wales</td></tr>
+            <tr><td><strong>Northern Ireland</strong></td><td>Northern Ireland Curriculum</td><td>ETI</td><td>Northern Ireland</td></tr>
+          </tbody>
+        </table>
+        <div class="sc-reveal" data-id="uk-a4-currpos">
+          <span class="sc-reveal-label">If a parent asks: "Do you follow the UK curriculum?"</span>
+          <button class="sc-reveal-btn" onclick="scReveal(this)" aria-expanded="false">Show the right response ↓</button>
+          <div class="sc-reveal-answer">
+            <div class="sc-reveal-response">
+              <span class="sc-label">Strongest response</span>
+              "Yes — you'll see me select [their nation's curriculum] right now on screen. Cuemath aligns with and goes deeper than the curriculum. We don't teach the minimum — we build the mathematical thinking that makes every topic feel obvious, not just memorised."
+            </div>
+            <div class="sc-reveal-why">
+              <span class="sc-label">Why it works</span>
+              Selecting the curriculum live removes doubt. "Goes deeper, not sideways" reassures parents this isn't just homework help — it's genuine depth.
+            </div>
+          </div>
+        </div>
+        <div class="ack" style="margin-top:var(--space-20)"><button class="ack-btn pending" onclick="ack('uk_a4')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- uk_a5 -->
+    <div class="sec" data-region="EUK" data-id="uk_a5">
+      <div class="sec-head" onclick="toggle('uk_a5')">
+        <div class="sec-left">
+          <span class="sec-num n-gold" id="n-uk_a5">A5</span>
+          <div><div class="sec-title">Tests &amp; Exams — what UK parents are actually anxious about</div><div class="sec-sub">KS2 SATs · 11+ · 7+/8+/13+ · GCSE · A-Level</div></div>
+        </div>
+        <span class="chev" id="c-uk_a5">›</span>
+      </div>
+      <div class="sec-body" id="b-uk_a5">
+        <div class="tldr">
+          <span class="tldr-kicker">TL;DR</span>
+          <div class="tldr-text">Five tests drive most UK parent anxiety: <strong>KS2 SATs (Y6, May)</strong>, <strong>11+ (Y5/6, Sep–Oct)</strong>, <strong>7+/8+/13+ (independent school entry)</strong>, <strong>GCSE (Y10–11, Jun)</strong>, and <strong>A-Level (Y12–13, Jun)</strong>. Know which test the parent is preparing for — it tells you urgency, timeline, and what language to use in your close.</div>
+        </div>
+        <table class="cheat-table" style="margin-bottom:var(--space-20)">
+          <thead><tr><th>Test</th><th>Year</th><th>When</th><th>Who cares most</th><th>What to say</th></tr></thead>
+          <tbody>
+            <tr><td><strong>KS2 SATs</strong></td><td>Y6</td><td>May (11–14 May 2026)</td><td>All Y6 parents — school ranking pressure</td><td>"We cover all KS2 maths topics — the confidence and speed for SATs."</td></tr>
+            <tr><td><strong>11+ / Grammar</strong></td><td>Y5–6</td><td>Sep–Oct (results Jan)</td><td>Grammar aspirants in London, Kent, Birmingham, Bucks</td><td>"Our 11+ Prep module covers VR and the maths grammar tests actually use."</td></tr>
+            <tr><td><strong>7+ / 8+ / 13+</strong></td><td>Y2/3/8</td><td>Nov–Jan (varies by school)</td><td>Independent school families — high aspiration</td><td>"Our depth goes beyond the curriculum — exactly what indie assessments test."</td></tr>
+            <tr><td><strong>GCSE</strong></td><td>Y10–11</td><td>May–Jun (results Aug)</td><td>Struggling or aspiring Y10/11 students</td><td>"We'll build the conceptual foundation for GCSE — the topics that trip students up most."</td></tr>
+            <tr><td><strong>A-Level</strong></td><td>Y12–13</td><td>May–Jun (results Aug)</td><td>Pre-university, high stakes</td><td>"We support A-Level maths depth — understanding, not just exam technique."</td></tr>
+          </tbody>
+        </table>
+        <div class="dd-pair">
+          <div class="dd-side do">
+            <div class="dd-side-head"><span class="dd-side-icon">✓</span>Reference the test by name</div>
+            <ul class="dd-list">
+              <li>Use the exact name: "KS2 SATs", "11+", "GCSE" — it signals you know their world</li>
+              <li>Mention the prep module: "11+ Prep", "SATs Prep", "GCSE Foundations"</li>
+              <li>Reference the timeline: "With SATs in May, we have the right window"</li>
+            </ul>
+          </div>
+          <div class="dd-side dont">
+            <div class="dd-side-head"><span class="dd-side-icon">✗</span>Don't confuse the systems</div>
+            <ul class="dd-list">
+              <li>Don't say "Board exams" — that's India; in the UK it's GCSE/A-Level</li>
+              <li>Don't say "Selective test" for the 11+ — say "11+" or "grammar school entry"</li>
+              <li>Don't confuse Scotland (National 5) with England (GCSE) — equivalent, not the same</li>
+            </ul>
+          </div>
+        </div>
+        <div class="ack"><button class="ack-btn pending" onclick="ack('uk_a5')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- pq-uk-A -->
+    <div class="part-quiz" data-region="EUK" id="pq-uk-A">
+      <h3>Part A Check — 3 scenarios</h3>
+      <p class="pq-desc">Answer at least <strong>2 of 3 correctly</strong> to unlock the next part. Retry allowed.</p>
+      <div class="pq-q">
+        <div class="pq-q-text">1. A parent in Cardiff mentions her child is in Year 8 and asks what curriculum you use. Which is correct?</div>
+        <label class="pq-opt"><input type="radio" name="pquk-A-0" value="0"> National Curriculum — all UK schools follow the same one</label>
+        <label class="pq-opt"><input type="radio" name="pquk-A-0" value="1"> Curriculum for Wales — Cardiff is in Wales, which has its own system since 2022</label>
+        <label class="pq-opt"><input type="radio" name="pquk-A-0" value="2"> Curriculum for Excellence — the UK's new national curriculum</label>
+        <label class="pq-opt"><input type="radio" name="pquk-A-0" value="3"> Northern Ireland Curriculum — same for all 4 nations</label>
+      </div>
+      <div class="pq-q">
+        <div class="pq-q-text">2. A parent says her son is in Year 6 and KS2 SATs are coming up. Which Key Stage does Year 6 belong to?</div>
+        <label class="pq-opt"><input type="radio" name="pquk-A-1" value="0"> KS1 (Years 1–2)</label>
+        <label class="pq-opt"><input type="radio" name="pquk-A-1" value="1"> KS3 (Years 7–9)</label>
+        <label class="pq-opt"><input type="radio" name="pquk-A-1" value="2"> KS2 (Years 3–6)</label>
+        <label class="pq-opt"><input type="radio" name="pquk-A-1" value="3"> KS4 (Years 10–11)</label>
+      </div>
+      <div class="pq-q">
+        <div class="pq-q-text">3. A parent in Glasgow asks if Cuemath can help with grammar school entry via the 11+. The best response is:</div>
+        <label class="pq-opt"><input type="radio" name="pquk-A-2" value="0"> "Yes — our 11+ Prep module is designed exactly for grammar school entry"</label>
+        <label class="pq-opt"><input type="radio" name="pquk-A-2" value="1"> "Scotland doesn't have grammar schools or the 11+ — schools are comprehensive; we align with Curriculum for Excellence and can support her maths strongly"</label>
+        <label class="pq-opt"><input type="radio" name="pquk-A-2" value="2"> "The 11+ is the same across all UK nations — we can definitely help"</label>
+        <label class="pq-opt"><input type="radio" name="pquk-A-2" value="3"> "Grammar schools exist in Scotland but are rare — we'll check if one is near you"</label>
+      </div>
+      <button class="pq-submit" onclick="submitPartQuiz('uk-A',[1,2,1])">Check my answers</button>
+      <div class="pq-result" id="pq-uk-A-result" style="display:none"></div>
+    </div>
+
+    <!-- ═══════ PART B — Understanding the UK Parent ═══════ -->
+    <div class="part-divider" data-region="EUK">
+      <div class="part-label label-purple">Part B</div>
+      <div class="part-name">Understanding the UK Parent</div>
+      <div class="part-desc">Context teaches you the UK. Understanding teaches you the person on the other side of the screen.</div>
+    </div>
+
+    <!-- uk_u1 -->
+    <div class="sec" data-region="EUK" data-id="uk_u1">
+      <div class="sec-head" onclick="toggle('uk_u1')">
+        <div class="sec-left">
+          <span class="sec-num n-purple" id="n-uk_u1">B1</span>
+          <div><div class="sec-title">5 UK Parent Archetypes</div><div class="sec-sub">Spot which one you're talking to in 60 seconds — tailor from there</div></div>
+        </div>
+        <span class="chev" id="c-uk_u1">›</span>
+      </div>
+      <div class="sec-body" id="b-uk_u1">
+        <div class="tldr">
+          <span class="tldr-kicker">TL;DR</span>
+          <div class="tldr-text">Five archetypes cover ~90% of UK trial parents. Each has a different urgency, different language, and a different version of "yes." Spot the type in the first 60 seconds — your close changes completely.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-12);margin-bottom:var(--space-20)">
+          <div style="background:var(--bg-secondary);border-radius:8px;padding:var(--space-16);border-left:4px solid var(--gold-400)">
+            <div style="font-weight:700;font-family:var(--font-heading);font-size:14px;margin-bottom:6px">1 · The 11+ Mum</div>
+            <div style="font-size:13px;margin-bottom:4px"><strong>Who:</strong> Child in Y4 or Y5. Grammar school is the goal. Often in London, Kent, Birmingham, or Bucks. Research-heavy.</div>
+            <div style="font-size:13px;margin-bottom:4px"><strong>Signal:</strong> "Does this help with the 11+?" or "Do you have an 11+ Prep module?"</div>
+            <div style="font-size:13px"><strong>Close language:</strong> "Our 11+ Prep module covers verbal reasoning, non-verbal reasoning, and the maths grammar entry tests actually use. We build the speed and accuracy that make the difference on the day."</div>
+          </div>
+          <div style="background:var(--bg-secondary);border-radius:8px;padding:var(--space-16);border-left:4px solid var(--info-400)">
+            <div style="font-weight:700;font-family:var(--font-heading);font-size:14px;margin-bottom:6px">2 · The KS2 SATs Mum</div>
+            <div style="font-size:13px;margin-bottom:4px"><strong>Who:</strong> Child in Y5 or Y6. SATs in May are the anchor. Wants speed and confidence — not necessarily competitive.</div>
+            <div style="font-size:13px;margin-bottom:4px"><strong>Signal:</strong> "Can you help with SATs preparation?" or "He's not confident with maths."</div>
+            <div style="font-size:13px"><strong>Close language:</strong> "With SATs in May, we have exactly the right window. We'll build the number sense and problem-solving that KS2 maths tests most."</div>
+          </div>
+          <div style="background:var(--bg-secondary);border-radius:8px;padding:var(--space-16);border-left:4px solid var(--error-400)">
+            <div style="font-weight:700;font-family:var(--font-heading);font-size:14px;margin-bottom:6px">3 · The GCSE Crisis Parent</div>
+            <div style="font-size:13px;margin-bottom:4px"><strong>Who:</strong> Child in Y10 or Y11. Exams next summer. Often already tried something that didn't work.</div>
+            <div style="font-size:13px;margin-bottom:4px"><strong>Signal:</strong> "He's really struggling. The GCSEs are next year." [Often a statement, not a question.]</div>
+            <div style="font-size:13px"><strong>Close language:</strong> "Today I saw exactly where the gap is — [specific topic]. We'll build that foundation systematically. With [X months] before the exams, this is very fixable."</div>
+          </div>
+          <div style="background:var(--bg-secondary);border-radius:8px;padding:var(--space-16);border-left:4px solid #9C27B0">
+            <div style="font-weight:700;font-family:var(--font-heading);font-size:14px;margin-bottom:6px">4 · The Indie Scholarship Chaser</div>
+            <div style="font-size:13px;margin-bottom:4px"><strong>Who:</strong> Child targeting private/independent school entry (7+, 8+, 11+ indie, 13+ Common Entrance). Often settled British-Indian, high-income.</div>
+            <div style="font-size:13px;margin-bottom:4px"><strong>Signal:</strong> "We're applying to [specific private school]. Can you help with entrance?"</div>
+            <div style="font-size:13px"><strong>Close language:</strong> "Independent school assessments test exactly what we teach — mathematical reasoning and depth beyond the curriculum."</div>
+          </div>
+          <div style="background:var(--bg-secondary);border-radius:8px;padding:var(--space-16);border-left:4px solid var(--success-400)">
+            <div style="font-weight:700;font-family:var(--font-heading);font-size:14px;margin-bottom:6px">5 · The NRI Returner</div>
+            <div style="font-size:13px;margin-bottom:4px"><strong>Who:</strong> Moved from India recently. Still compares to CBSE/ICSE. Worried child is "losing the Indian edge." May use "Class", "Standard", "Board exam."</div>
+            <div style="font-size:13px;margin-bottom:4px"><strong>Signal:</strong> "Back in India she was top of class — is the UK system less rigorous?"</div>
+            <div style="font-size:13px"><strong>Close language:</strong> "Cuemath teaches the same depth of maths thinking that serves Indian students so well — applied to the UK curriculum. Your daughter won't lose that edge; she'll build on it."</div>
+          </div>
+        </div>
+        <div class="ack"><button class="ack-btn pending" onclick="ack('uk_u1')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- uk_u2 -->
+    <div class="sec" data-region="EUK" data-id="uk_u2">
+      <div class="sec-head" onclick="toggle('uk_u2')">
+        <div class="sec-left">
+          <span class="sec-num n-purple" id="n-uk_u2">B2</span>
+          <div><div class="sec-title">Probing the Hidden Goal</div><div class="sec-sub">When a UK parent says "just overall improvement" — probe, don't pitch</div></div>
+        </div>
+        <span class="chev" id="c-uk_u2">›</span>
+      </div>
+      <div class="sec-body" id="b-uk_u2">
+        <div class="tldr">
+          <span class="tldr-kicker">TL;DR</span>
+          <div class="tldr-text">~25% of UK parents arrive with a vague goal. "Just overall improvement" converts at near-zero if you run a generic trial. Surface the real goal with <strong>3 questions, one at a time</strong> — wish, worry, deadline. The UK deadline question often surfaces 11+, SATs, or GCSE.</div>
+        </div>
+        <div class="pat-label">The 3-question ladder — one question, listen, then next</div>
+        <div class="probe-ladder probe-ladder-v3" id="probe-ladder-uk">
+          <div class="probe-step">
+            <div class="probe-n">Question 1 · The wish</div>
+            <div class="probe-q">"If maths was going really well for [child] in 6 months, what would that look like — in your mind?"</div>
+            <div class="probe-why">Opens space. Listen for: a specific test (SATs, 11+, GCSE), a specific grade, "more confident", "ahead of class", "better than last year's report."</div>
+          </div>
+          <div class="probe-step">
+            <div class="probe-n">Question 2 · The worry</div>
+            <div class="probe-q">"What's the biggest thing that made you book this trial today?"</div>
+            <div class="probe-why">Surfaces the trigger — a school report, a SATs score, another parent mentioning 11+ prep, a teacher comment. This tells you urgency and emotional weight.</div>
+          </div>
+          <div class="probe-step">
+            <div class="probe-n">Question 3 · The deadline</div>
+            <div class="probe-q">"Is there anything specific coming up for [child] — a SATs, the 11+, GCSEs, anything on the horizon?"</div>
+            <div class="probe-why">Even if they said "no goal," this surfaces: "Actually, the 11+ is in September..." or "His GCSEs start next year..." — now you have the anchor. UK parents with a test on the horizon convert 3× more than vague-goal parents.</div>
+          </div>
+        </div>
+        <div class="dd-pair">
+          <div class="dd-side do">
+            <div class="dd-side-head"><span class="dd-side-icon">✓</span>Do</div>
+            <ul class="dd-list">
+              <li>One question at a time — let silence sit</li>
+              <li>Echo back exactly what they said: "So you're hoping she's ready for the 11+ by September"</li>
+              <li>Write down their trigger word — use it in your close</li>
+              <li>Connect every observation in the session to the goal they named</li>
+            </ul>
+          </div>
+          <div class="dd-side dont">
+            <div class="dd-side-head"><span class="dd-side-icon">✗</span>Don't</div>
+            <ul class="dd-list">
+              <li>Rattle off all three questions in 30 seconds</li>
+              <li>Assume the goal from age alone (Y6 ≠ always 11+)</li>
+              <li>Dismiss "no goal" as a lost cause — there's almost always something below the surface</li>
+              <li>Sell before you've heard the worry</li>
+            </ul>
+          </div>
+        </div>
+        <div class="sc-reveal" data-id="uk-u2-scenario">
+          <span class="sc-reveal-label">Scenario — UK version</span>
+          <p class="sc-reveal-q">A parent of a Y6 student says: "We just want extra maths practice. Nothing specific — the teacher said he could do with a bit more focus."</p>
+          <button class="sc-reveal-btn" onclick="scReveal(this)" aria-expanded="false">Show a strong response ↓</button>
+          <div class="sc-reveal-answer">
+            <div class="sc-reveal-response">
+              <span class="sc-label">Strong response</span>
+              "Of course — that's a great start. I want today to really count for him. If everything went well over the next 6 months, what would you love to see?" [Pause.] "Is there anything specific coming up — SATs, moving to secondary, anything on the horizon?"
+            </div>
+            <div class="sc-reveal-why">
+              <span class="sc-label">Why it works</span>
+              Y6 parents almost always have SATs on their radar even when they don't lead with it. Once you surface it, you have the anchor and the timeline.
+            </div>
+          </div>
+        </div>
+        <div class="ack" style="margin-top:var(--space-20)"><button class="ack-btn pending" onclick="ack('uk_u2')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- uk_u3 -->
+    <div class="sec" data-region="EUK" data-id="uk_u3">
+      <div class="sec-head" onclick="toggle('uk_u3')">
+        <div class="sec-left">
+          <span class="sec-num n-purple" id="n-uk_u3">B3</span>
+          <div><div class="sec-title">Goal-Driven vs Exploratory — two different trials</div><div class="sec-sub">Adapt your trial depth based on parent readiness</div></div>
+        </div>
+        <span class="chev" id="c-uk_u3">›</span>
+      </div>
+      <div class="sec-body" id="b-uk_u3">
+        <div class="tldr">
+          <span class="tldr-kicker">TL;DR</span>
+          <div class="tldr-text"><strong>Goal-driven:</strong> parent has a specific test in mind. Mirror that goal — connect every observation back to it. <strong>Exploratory:</strong> parent is browsing. Show them what good maths learning looks like, then surface a concrete goal by the 15-minute mark.</div>
+        </div>
+        <div class="dd-pair">
+          <div class="dd-side do">
+            <div class="dd-side-head"><span class="dd-side-icon">🎯</span>Goal-driven trial</div>
+            <ul class="dd-list">
+              <li>Use the test name naturally: "This reasoning is exactly what the 11+ tests"</li>
+              <li>Reference the timeline in your close: "With the 11+ in September, you have 5 months"</li>
+              <li>Connect the gap to the goal: "The area I noticed today is one of the biggest differentiators in SATs"</li>
+              <li>Every 10-minute checkpoint anchors to the goal: "With GCSE in mind — what stood out?"</li>
+            </ul>
+          </div>
+          <div class="dd-side dont">
+            <div class="dd-side-head"><span class="dd-side-icon">🔍</span>Exploratory trial</div>
+            <ul class="dd-list">
+              <li>Show depth: go one layer harder than the student expects on a concept</li>
+              <li>Name the moment: "Did you see how he reasoned through that? That's mathematical confidence."</li>
+              <li>Surface a goal by 15 minutes using the probe ladder</li>
+              <li>Still close with tentative timings — "Even for general strength, consistency is everything"</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tldr" style="background:linear-gradient(90deg,var(--gold-50) 0%,var(--bg-secondary) 100%);border-left-color:var(--gold-400)">
+          <span class="tldr-kicker" style="color:var(--gold-700)">The UK truth</span>
+          <div class="tldr-text">UK parents — even exploratory ones — often have 11+, SATs, or GCSE anxiety sitting just below the surface. A parent who says "no specific goal" in minute 1 often says "actually, SATs is in May" in minute 10.</div>
+        </div>
+        <div class="ack"><button class="ack-btn pending" onclick="ack('uk_u3')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- pq-uk-B -->
+    <div class="part-quiz" data-region="EUK" id="pq-uk-B">
+      <h3>Part B Check — 3 scenarios</h3>
+      <p class="pq-desc">Answer at least <strong>2 of 3 correctly</strong> to unlock the next part. Retry allowed.</p>
+      <div class="pq-q">
+        <div class="pq-q-text">1. A parent of a Y5 child immediately asks "Does this help with the 11+?" Which archetype is this most likely?</div>
+        <label class="pq-opt"><input type="radio" name="pquk-B-0" value="0"> The GCSE Crisis Parent</label>
+        <label class="pq-opt"><input type="radio" name="pquk-B-0" value="1"> The NRI Returner</label>
+        <label class="pq-opt"><input type="radio" name="pquk-B-0" value="2"> The 11+ Mum</label>
+        <label class="pq-opt"><input type="radio" name="pquk-B-0" value="3"> The KS2 SATs Mum</label>
+      </div>
+      <div class="pq-q">
+        <div class="pq-q-text">2. A Y6 parent says "We just want general improvement — nothing specific." What's your next move?</div>
+        <label class="pq-opt"><input type="radio" name="pquk-B-1" value="0"> Accept the goal and run a generic trial</label>
+        <label class="pq-opt"><input type="radio" name="pquk-B-1" value="1"> Ask the three probe questions — wish, worry, deadline — one at a time</label>
+        <label class="pq-opt"><input type="radio" name="pquk-B-1" value="2"> Tell the parent to think of a goal and call back</label>
+        <label class="pq-opt"><input type="radio" name="pquk-B-1" value="3"> Move straight to teaching without a goal discussion</label>
+      </div>
+      <div class="pq-q">
+        <div class="pq-q-text">3. A Y6 parent has a clear goal — KS2 SATs in May, 3 months away. How should you run the trial?</div>
+        <label class="pq-opt"><input type="radio" name="pquk-B-2" value="0"> Run a generic trial and mention SATs once at the end</label>
+        <label class="pq-opt"><input type="radio" name="pquk-B-2" value="1"> Mirror the SATs goal through the standard trial flow, connecting every observation back to SATs readiness</label>
+        <label class="pq-opt"><input type="radio" name="pquk-B-2" value="2"> Skip the standard flow and run a SATs practice test instead</label>
+        <label class="pq-opt"><input type="radio" name="pquk-B-2" value="3"> Ask the parent to reschedule for a SATs-specific session</label>
+      </div>
+      <button class="pq-submit" onclick="submitPartQuiz('uk-B',[2,1,1])">Check my answers</button>
+      <div class="pq-result" id="pq-uk-B-result" style="display:none"></div>
+    </div>
+
+    <!-- ═══════ PART C — Handling Objections (UK) ═══════ -->
+    <div class="part-divider" data-region="EUK">
+      <div class="part-label label-red">Part C</div>
+      <div class="part-name">Handling Objections — UK</div>
+      <div class="part-desc">The seven objections every UK teacher hears. Know the response cold before they ask it.</div>
+    </div>
+
+    <!-- uk_b1 -->
+    <div class="sec" data-region="EUK" data-id="uk_b1">
+      <div class="sec-head" onclick="toggle('uk_b1')">
+        <div class="sec-left">
+          <span class="sec-num n-red" id="n-uk_b1">C1</span>
+          <div><div class="sec-title">Curriculum Alignment — "Do you follow the UK curriculum?"</div><div class="sec-sub">Yes — and you select it live on screen</div></div>
+        </div>
+        <span class="chev" id="c-uk_b1">›</span>
+      </div>
+      <div class="sec-body" id="b-uk_b1">
+        <div class="tldr">
+          <span class="tldr-kicker">TL;DR</span>
+          <div class="tldr-text">Yes — Cuemath aligns with all four UK national curricula. You <strong>select the parent's nation live on screen</strong>. Then: "We go deeper, not sideways — the curriculum is the floor, not the ceiling."</div>
+        </div>
+        <div class="sc-reveal" data-id="uk-b1-obj">
+          <span class="sc-reveal-label">Objection: "Do you follow the UK curriculum?"</span>
+          <button class="sc-reveal-btn" onclick="scReveal(this)" aria-expanded="false">Show the response ↓</button>
+          <div class="sc-reveal-answer">
+            <div class="sc-reveal-response">
+              <span class="sc-label">Strongest response</span>
+              "Yes — you'll see me select [England / Scotland / Wales / NI] on screen right now. [Do it.] Cuemath aligns with and goes deeper than the curriculum. We don't just teach the minimum — we build the mathematical thinking that makes every topic feel obvious, not memorised."
+            </div>
+            <div class="sc-reveal-why">
+              <span class="sc-label">Why it works</span>
+              Selecting live removes all doubt. "Goes deeper, not sideways" frames Cuemath as additive — UK parents often worry a tutor might confuse their child; this response removes that concern.
+            </div>
+          </div>
+        </div>
+        <div class="ack" style="margin-top:var(--space-20)"><button class="ack-btn pending" onclick="ack('uk_b1')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- uk_b2 -->
+    <div class="sec" data-region="EUK" data-id="uk_b2">
+      <div class="sec-head" onclick="toggle('uk_b2')">
+        <div class="sec-left">
+          <span class="sec-num n-red" id="n-uk_b2">C2</span>
+          <div><div class="sec-title">Specific Goals — "Can this actually help with the 11+?"</div><div class="sec-sub">Acknowledge the goal. Connect every screen back to it.</div></div>
+        </div>
+        <span class="chev" id="c-uk_b2">›</span>
+      </div>
+      <div class="sec-body" id="b-uk_b2">
+        <div class="tldr">
+          <span class="tldr-kicker">TL;DR</span>
+          <div class="tldr-text">Acknowledge the specific test by name. Reference the prep module on screen. Connect every 10-minute observation to the goal. Names that land: "11+ Prep", "SATs Prep", "GCSE Foundations".</div>
+        </div>
+        <div class="sc-reveal" data-id="uk-b2-obj">
+          <span class="sc-reveal-label">Objection: "Can this actually help with the 11+?"</span>
+          <button class="sc-reveal-btn" onclick="scReveal(this)" aria-expanded="false">Show the response ↓</button>
+          <div class="sc-reveal-answer">
+            <div class="sc-reveal-response">
+              <span class="sc-label">Strongest response</span>
+              "Absolutely — we have an 11+ Prep module that covers verbal reasoning, non-verbal reasoning, and the maths that appears most in grammar school entry tests. But more importantly — what we do every session is build the <em>mathematical reasoning</em> behind those questions. That's what grammar schools are actually testing: thinking under pressure, not memorised answers."
+            </div>
+            <div class="sc-reveal-why">
+              <span class="sc-label">Why it works</span>
+              Name the module first (removes doubt). Then reframe: "thinking, not drilling." This positions Cuemath above pure test-prep tools like Atom — the most likely competitor in this conversation.
+            </div>
+          </div>
+        </div>
+        <div class="ack" style="margin-top:var(--space-20)"><button class="ack-btn pending" onclick="ack('uk_b2')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- uk_b3 -->
+    <div class="sec" data-region="EUK" data-id="uk_b3">
+      <div class="sec-head" onclick="toggle('uk_b3')">
+        <div class="sec-left">
+          <span class="sec-num n-red" id="n-uk_b3">C3</span>
+          <div><div class="sec-title">The Fee Question — "How much does this cost?"</div><div class="sec-sub">Say "fee" not "price". Acknowledge, reassure, hand off gracefully.</div></div>
+        </div>
+        <span class="chev" id="c-uk_b3">›</span>
+      </div>
+      <div class="sec-body" id="b-uk_b3">
+        <div class="tldr">
+          <span class="tldr-kicker">TL;DR</span>
+          <div class="tldr-text">Never quote a number mid-session. Acknowledge the question, reassure that the fee and three tenure options appear at session end, and hand specifics to the Admissions Manager. The word is <strong>"fee"</strong> — not "price", not "cost".</div>
+        </div>
+        <div class="sc-reveal" data-id="uk-b3-obj">
+          <span class="sc-reveal-label">Objection: "How much does this cost?"</span>
+          <button class="sc-reveal-btn" onclick="scReveal(this)" aria-expanded="false">Show the response ↓</button>
+          <div class="sc-reveal-answer">
+            <div class="sc-reveal-response">
+              <span class="sc-label">Strongest response</span>
+              "Great question — the fee details, along with three tenure options, will come up on screen at the end of today's session. My colleague from Admissions will walk you through everything then. What I'd love to do right now is make today's session as useful as it can be for [child's name]."
+            </div>
+            <div class="sc-reveal-why">
+              <span class="sc-label">Why it works</span>
+              Acknowledges the question (doesn't dodge). Reassures there's full transparency at session end. Redirects focus to the child. UK parents respect directness — be clear the right person will handle fees.
+            </div>
+          </div>
+        </div>
+        <div class="ack" style="margin-top:var(--space-20)"><button class="ack-btn pending" onclick="ack('uk_b3')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- uk_b4 -->
+    <div class="sec" data-region="EUK" data-id="uk_b4">
+      <div class="sec-head" onclick="toggle('uk_b4')">
+        <div class="sec-left">
+          <span class="sec-num n-red" id="n-uk_b4">C4</span>
+          <div><div class="sec-title">Competitors — "We've been looking at Atom / MyTutor / Explore Learning"</div><div class="sec-sub">Never bash. Know each one. Relate to the parent's goal.</div></div>
+        </div>
+        <span class="chev" id="c-uk_b4">›</span>
+      </div>
+      <div class="sec-body" id="b-uk_b4">
+        <div class="tldr">
+          <span class="tldr-kicker">TL;DR</span>
+          <div class="tldr-text">Five UK competitors come up most often. Know what each one is and how Cuemath is genuinely different. Never dismiss or attack — acknowledge, then pivot to what Cuemath uniquely offers for <em>that parent's specific goal</em>.</div>
+        </div>
+        <table class="cheat-table" style="margin-bottom:var(--space-20)">
+          <thead><tr><th>Competitor</th><th>What it is</th><th>How Cuemath is different</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Atom Learning</strong></td><td>Self-serve 11+ software — adaptive practice papers, no live teacher</td><td>"Atom is self-serve — great for drilling. Cuemath gives [child] a dedicated teacher who adapts live and builds the reasoning that makes every paper easier."</td></tr>
+            <tr><td><strong>MyTutor</strong></td><td>1:1 online tutor marketplace — different tutors each time, GCSE-focused</td><td>"MyTutor matches students with tutors on demand — a different person each session. Cuemath is the same dedicated teacher every session, with a curriculum and method."</td></tr>
+            <tr><td><strong>Third Space Learning</strong></td><td>School-facing 1:1 tuition — sold to schools, not parents</td><td>"Third Space works through schools — it's a school-procurement product. Cuemath gives you direct visibility: you're in the session, you see progress, you own the outcome."</td></tr>
+            <tr><td><strong>Kumon UK</strong></td><td>In-centre worksheet method — high volume, low interaction</td><td>"Kumon builds fluency through repetition — it's worksheets in a centre. Cuemath is 1:1 online — same teacher, full conceptual teaching, on your schedule."</td></tr>
+            <tr><td><strong>Explore Learning</strong></td><td>Learning centre franchise — group sessions</td><td>"Explore Learning is group tuition in a centre. Cuemath is 1:1 — [child] has a specialist teacher's full attention for every minute."</td></tr>
+          </tbody>
+        </table>
+        <div class="ack"><button class="ack-btn pending" onclick="ack('uk_b4')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- uk_b5 -->
+    <div class="sec" data-region="EUK" data-id="uk_b5">
+      <div class="sec-head" onclick="toggle('uk_b5')">
+        <div class="sec-left">
+          <span class="sec-num n-red" id="n-uk_b5">C5</span>
+          <div><div class="sec-title">"Let me think about it" — the respectful pause</div><div class="sec-sub">Offer a summary. Still pick tentative timings.</div></div>
+        </div>
+        <span class="chev" id="c-uk_b5">›</span>
+      </div>
+      <div class="sec-body" id="b-uk_b5">
+        <div class="tldr">
+          <span class="tldr-kicker">TL;DR</span>
+          <div class="tldr-text">Respect the pause — don't push. Offer a clear summary they can share with their partner. Ask for tentative preferred timings: "If you do decide to go ahead, what days work for you?" This gives the Admissions Manager something concrete for the follow-up call.</div>
+        </div>
+        <div class="sc-reveal" data-id="uk-b5-obj">
+          <span class="sc-reveal-label">Objection: "Let me discuss it with my husband and get back to you."</span>
+          <button class="sc-reveal-btn" onclick="scReveal(this)" aria-expanded="false">Show the response ↓</button>
+          <div class="sc-reveal-answer">
+            <div class="sc-reveal-response">
+              <span class="sc-label">Strongest response</span>
+              "Of course — completely makes sense. Let me give you a quick summary you can share with him: [Child] showed real strength in [topic], and I noticed a gap in [specific area] that we'd work on first. The goal is [named goal]. If you do go ahead, what days tend to work for [child]? I can share that with my colleague so you have options ready."
+            </div>
+            <div class="sc-reveal-why">
+              <span class="sc-label">Why it works</span>
+              You've given them something concrete to share (not just "it was good"). Asking for timings is a soft yes signal. The Admissions Manager now has a hook: "The teacher mentioned Monday evenings might work."
+            </div>
+          </div>
+        </div>
+        <div class="ack" style="margin-top:var(--space-20)"><button class="ack-btn pending" onclick="ack('uk_b5')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- uk_b6 -->
+    <div class="sec" data-region="EUK" data-id="uk_b6">
+      <div class="sec-head" onclick="toggle('uk_b6')">
+        <div class="sec-left">
+          <span class="sec-num n-red" id="n-uk_b6">C6</span>
+          <div><div class="sec-title">Child Not Engaged — "He didn't seem that interested"</div><div class="sec-sub">Reframe the first session. Name one specific moment.</div></div>
+        </div>
+        <span class="chev" id="c-uk_b6">›</span>
+      </div>
+      <div class="sec-body" id="b-uk_b6">
+        <div class="tldr">
+          <span class="tldr-kicker">TL;DR</span>
+          <div class="tldr-text">First sessions can feel flat — the child is calibrating a new teacher and format. Find <strong>one specific positive moment</strong> and name it clearly. Reframe any gap as "we found exactly what we need to work on." Engage the parent every 10 minutes so they stay invested.</div>
+        </div>
+        <div class="sc-reveal" data-id="uk-b6-obj">
+          <span class="sc-reveal-label">Scenario: Parent says "He didn't seem that interested today."</span>
+          <button class="sc-reveal-btn" onclick="scReveal(this)" aria-expanded="false">Show the response ↓</button>
+          <div class="sc-reveal-answer">
+            <div class="sc-reveal-response">
+              <span class="sc-label">Strongest response</span>
+              "That's completely normal for a first session — he was getting used to me and the format. What I did notice: when we got to [specific activity], he [specific observation — 'tried the harder version', 'asked a good question', 'got it right after one hint']. The curiosity is there. First sessions are always diagnostic — the real engagement builds from session two."
+            </div>
+            <div class="sc-reveal-why">
+              <span class="sc-label">Why it works</span>
+              You've named a specific moment (not a generic "he was great"). You've normalised first-session nerves. "Session two" subtly moves them forward without pressure.
+            </div>
+          </div>
+        </div>
+        <div class="ack" style="margin-top:var(--space-20)"><button class="ack-btn pending" onclick="ack('uk_b6')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- uk_b7 -->
+    <div class="sec" data-region="EUK" data-id="uk_b7">
+      <div class="sec-head" onclick="toggle('uk_b7')">
+        <div class="sec-left">
+          <span class="sec-num n-red" id="n-uk_b7">C7</span>
+          <div><div class="sec-title">"We Prefer Face-to-Face" — the online objection</div><div class="sec-sub">Don't debate format. Show what online 1:1 uniquely delivers.</div></div>
+        </div>
+        <span class="chev" id="c-uk_b7">›</span>
+      </div>
+      <div class="sec-body" id="b-uk_b7">
+        <div class="tldr">
+          <span class="tldr-kicker">TL;DR</span>
+          <div class="tldr-text">Don't argue about face-to-face vs online. Acknowledge the preference, then pivot to what online 1:1 uniquely delivers: same dedicated teacher every session, at home in a familiar environment, flexible around the UK school schedule, no travel.</div>
+        </div>
+        <div class="sc-reveal" data-id="uk-b7-obj">
+          <span class="sc-reveal-label">Objection: "We prefer in-person tutoring — is there a centre nearby?"</span>
+          <button class="sc-reveal-btn" onclick="scReveal(this)" aria-expanded="false">Show the response ↓</button>
+          <div class="sc-reveal-answer">
+            <div class="sc-reveal-response">
+              <span class="sc-label">Strongest response</span>
+              "I completely understand — and I've had parents who felt the same way and then told me online worked better than they expected. Online 1:1 has real advantages: [child] gets the same teacher every single session — that relationship is critical. They're at home in their own environment. And sessions fit your schedule — no driving, no centre hours to work around. Today's trial — did it feel like [child] was engaged with me on screen?"
+            </div>
+            <div class="sc-reveal-why">
+              <span class="sc-label">Why it works</span>
+              You acknowledge the preference. Name three real advantages. Flip to a question about today — if they answer "yes," you've closed the objection with their own words.
+            </div>
+          </div>
+        </div>
+        <div class="ack" style="margin-top:var(--space-20)"><button class="ack-btn pending" onclick="ack('uk_b7')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- pq-uk-C -->
+    <div class="part-quiz" data-region="EUK" id="pq-uk-C">
+      <h3>Part C Check — 3 scenarios</h3>
+      <p class="pq-desc">Answer at least <strong>2 of 3 correctly</strong> to unlock the next part. Retry allowed.</p>
+      <div class="pq-q">
+        <div class="pq-q-text">1. A parent asks about the fee mid-trial. The correct response is:</div>
+        <label class="pq-opt"><input type="radio" name="pquk-C-0" value="0"> Quote the monthly fee immediately so there are no surprises</label>
+        <label class="pq-opt"><input type="radio" name="pquk-C-0" value="1"> Refuse to discuss fees and redirect to the session content</label>
+        <label class="pq-opt"><input type="radio" name="pquk-C-0" value="2"> Acknowledge, say the fee with three tenure options appears at session end, and hand specifics to the Admissions Manager</label>
+        <label class="pq-opt"><input type="radio" name="pquk-C-0" value="3"> Tell the parent to check the website</label>
+      </div>
+      <div class="pq-q">
+        <div class="pq-q-text">2. A parent says "We've been using Atom for 11+ prep." Your best response is:</div>
+        <label class="pq-opt"><input type="radio" name="pquk-C-1" value="0"> "Atom is not very good — Cuemath is far better"</label>
+        <label class="pq-opt"><input type="radio" name="pquk-C-1" value="1"> "Atom is self-serve software — great for drilling. Cuemath gives your child a dedicated teacher who adapts live and builds the reasoning behind every question"</label>
+        <label class="pq-opt"><input type="radio" name="pquk-C-1" value="2"> "I'm not familiar with Atom — let me continue the session"</label>
+        <label class="pq-opt"><input type="radio" name="pquk-C-1" value="3"> "They are similar — the difference is mainly price"</label>
+      </div>
+      <div class="pq-q">
+        <div class="pq-q-text">3. At session end the parent says "Let me talk to my husband — I'll get back to you." Your best move is:</div>
+        <label class="pq-opt"><input type="radio" name="pquk-C-2" value="0"> Press for an immediate decision before the call ends</label>
+        <label class="pq-opt"><input type="radio" name="pquk-C-2" value="1"> Respect the pause, give a concrete summary to share, and ask for tentative session timings</label>
+        <label class="pq-opt"><input type="radio" name="pquk-C-2" value="2"> End the session and wait for them to contact you</label>
+        <label class="pq-opt"><input type="radio" name="pquk-C-2" value="3"> Offer a discount to close before the call ends</label>
+      </div>
+      <button class="pq-submit" onclick="submitPartQuiz('uk-C',[2,1,1])">Check my answers</button>
+      <div class="pq-result" id="pq-uk-C-result" style="display:none"></div>
+    </div>
+
+    <!-- ═══════ PART D — By Year Group (UK) ═══════ -->
+    <div class="part-divider" data-region="EUK">
+      <div class="part-label label-blue">Part D</div>
+      <div class="part-name">By Year Group — UK</div>
+      <div class="part-desc">Reception to KS3. The parent changes. The student changes. Your approach needs to too.</div>
+    </div>
+
+    <!-- uk_c1 -->
+    <div class="sec" data-region="EUK" data-id="uk_c1">
+      <div class="sec-head" onclick="toggle('uk_c1')">
+        <div class="sec-left">
+          <span class="sec-num n-blue" id="n-uk_c1">D1</span>
+          <div><div class="sec-title">Reception – Year 2 (KS1) — short, fun, parent-involved</div><div class="sec-sub">If the child enjoys it, the parent says yes</div></div>
+        </div>
+        <span class="chev" id="c-uk_c1">›</span>
+      </div>
+      <div class="sec-body" id="b-uk_c1">
+        <div class="tldr">
+          <span class="tldr-kicker">TL;DR</span>
+          <div class="tldr-text"><strong>Age 4–7.</strong> KS1 SATs are now teacher-assessed — low-stakes for the child. The parent wants the child to enjoy learning. If the child laughs, asks a question, or "gets it" — you've won the session. Keep it short, game-like, and name the joy moment in your close.</div>
+        </div>
+        <div class="dd-pair">
+          <div class="dd-side do">
+            <div class="dd-side-head"><span class="dd-side-icon">✓</span>What works — KS1</div>
+            <ul class="dd-list">
+              <li>Activities under 8 minutes — attention spans are short</li>
+              <li>Visual puzzles and patterns — Cuemath's manipulatives are perfect here</li>
+              <li>Involve the parent every 5–7 minutes: "Did you see that? She counted backwards from 20!"</li>
+              <li>Name one specific moment in your close: "When she built the number bond, she did it without any help — that's a Y2 skill"</li>
+              <li>Keep energy warm and encouraging — KS1 parents choose based on vibe</li>
+            </ul>
+          </div>
+          <div class="dd-side dont">
+            <div class="dd-side-head"><span class="dd-side-icon">✗</span>What to avoid — KS1</div>
+            <ul class="dd-list">
+              <li>Don't talk about SATs pressure — KS1 SATs are low-stakes, don't amplify anxiety</li>
+              <li>Don't run past 40 minutes — the child will lose focus</li>
+              <li>Don't use abstract explanations — show, don't tell</li>
+              <li>Don't ignore the child's mood — if they're tired or reluctant, name it and adapt</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tldr" style="background:linear-gradient(90deg,var(--gold-50) 0%,var(--bg-secondary) 100%);border-left-color:var(--gold-400)">
+          <span class="tldr-kicker" style="color:var(--gold-700)">The close for KS1</span>
+          <div class="tldr-text">"[Child's name] enjoyed the session — I could tell from the moment she [specific observation]. At this age, consistency is what builds the foundation. It only takes 45 minutes, twice a week — and the difference shows up in the school report by next term."</div>
+        </div>
+        <div class="ack"><button class="ack-btn pending" onclick="ack('uk_c1')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- uk_c2 -->
+    <div class="sec" data-region="EUK" data-id="uk_c2">
+      <div class="sec-head" onclick="toggle('uk_c2')">
+        <div class="sec-left">
+          <span class="sec-num n-blue" id="n-uk_c2">D2</span>
+          <div><div class="sec-title">Year 3 – Year 6 (KS2) — the sweet spot</div><div class="sec-sub">KS2 SATs in Y6 · 11+ in Y5–6 · Goal-driven parents</div></div>
+        </div>
+        <span class="chev" id="c-uk_c2">›</span>
+      </div>
+      <div class="sec-body" id="b-uk_c2">
+        <div class="tldr">
+          <span class="tldr-kicker">TL;DR</span>
+          <div class="tldr-text"><strong>Age 7–11.</strong> This is where most UK trials happen. Y5–Y6 parents are goal-driven — SATs in May, 11+ in Sep. Show depth and diagnostic accuracy. Name the gap precisely. Connect the session to the specific test on the horizon. The timeline is your ally.</div>
+        </div>
+        <table class="cheat-table" style="margin-bottom:var(--space-20)">
+          <thead><tr><th>Year</th><th>Parent's mindset</th><th>How to run the trial</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Y3–Y4</strong></td><td>Building foundation — not yet urgent. Likes getting ahead early.</td><td>Show depth: "This is Y5 maths — we'll build to it." Use the timeline: "Starting now gives us 2 years before SATs."</td></tr>
+            <tr><td><strong>Y5</strong></td><td>11+ on the radar (Sep of Y6). SATs starting to feel real.</td><td>Probe: "Is the 11+ something you're exploring?" If yes, name the 11+ Prep module. If no, anchor to SATs.</td></tr>
+            <tr><td><strong>Y6</strong></td><td>SATs in May, 11+ results in Jan (if they sat). Urgency is high.</td><td>"SATs are in [X weeks] — exactly the right window." Name the diagnostic gap clearly.</td></tr>
+          </tbody>
+        </table>
+        <div class="ack"><button class="ack-btn pending" onclick="ack('uk_c2')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- uk_c3 -->
+    <div class="sec" data-region="EUK" data-id="uk_c3">
+      <div class="sec-head" onclick="toggle('uk_c3')">
+        <div class="sec-left">
+          <span class="sec-num n-blue" id="n-uk_c3">D3</span>
+          <div><div class="sec-title">Year 7 – Year 9 (KS3) — the GCSE bridge</div><div class="sec-sub">Involve the student. Name the GCSE shift.</div></div>
+        </div>
+        <span class="chev" id="c-uk_c3">›</span>
+      </div>
+      <div class="sec-body" id="b-uk_c3">
+        <div class="tldr">
+          <span class="tldr-kicker">TL;DR</span>
+          <div class="tldr-text"><strong>Age 11–14.</strong> Secondary has started. The student is more independent — involve them directly. Name the GCSE bridge: "What we do now builds the foundation for Year 10." KS3 is where the foundation either holds or cracks.</div>
+        </div>
+        <div class="dd-pair">
+          <div class="dd-side do">
+            <div class="dd-side-head"><span class="dd-side-icon">✓</span>What works — KS3</div>
+            <ul class="dd-list">
+              <li>Ask the student directly: "What topic at school feels most confusing right now?"</li>
+              <li>Challenge them: go one step harder than they expect — older students respect teachers who push</li>
+              <li>Name the GCSE connection: "Algebra at this level is the foundation for GCSE Unit 2"</li>
+              <li>Involve the parent at the end: "Here's what I saw today — and why it matters for Year 10"</li>
+            </ul>
+          </div>
+          <div class="dd-side dont">
+            <div class="dd-side-head"><span class="dd-side-icon">✗</span>What to avoid — KS3</div>
+            <ul class="dd-list">
+              <li>Don't talk only to the parent — the KS3 student disengages if they feel invisible</li>
+              <li>Don't start with easy content — it signals you're underestimating them</li>
+              <li>Don't skip the GCSE mention — parents of Y8/Y9 are already thinking about it</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tldr" style="background:linear-gradient(90deg,var(--info-100) 0%,var(--bg-secondary) 100%);border-left-color:var(--info-500)">
+          <span class="tldr-kicker" style="color:var(--info-700)">The Y9 parent specifically</span>
+          <div class="tldr-text">Close with: "The students who start building in Year 9 are the ones who feel confident — not panicked — when GCSE content begins in September."</div>
+        </div>
+        <div class="ack"><button class="ack-btn pending" onclick="ack('uk_c3')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- pq-uk-D -->
+    <div class="part-quiz" data-region="EUK" id="pq-uk-D">
+      <h3>Part D Check — 3 scenarios</h3>
+      <p class="pq-desc">Answer at least <strong>2 of 3 correctly</strong> to unlock the next part. Retry allowed.</p>
+      <div class="pq-q">
+        <div class="pq-q-text">1. A Y2 child is hesitant at the start but successfully builds a number bond independently. Your best close moment is:</div>
+        <label class="pq-opt"><input type="radio" name="pquk-D-0" value="0"> Tell the parent the child struggled at first but improved</label>
+        <label class="pq-opt"><input type="radio" name="pquk-D-0" value="1"> Name the specific moment: "When she built the number bond without any help — that's a strong Y2 skill"</label>
+        <label class="pq-opt"><input type="radio" name="pquk-D-0" value="2"> Mention the KS1 SATs are approaching and this is urgent</label>
+        <label class="pq-opt"><input type="radio" name="pquk-D-0" value="3"> Ask the parent if the child seemed happy to them</label>
+      </div>
+      <div class="pq-q">
+        <div class="pq-q-text">2. A Y9 parent says "He's doing okay, but I don't want him to fall behind when Year 10 starts." The strongest close is:</div>
+        <label class="pq-opt"><input type="radio" name="pquk-D-1" value="0"> "He's fine — Year 10 is still a year away, no need to worry yet"</label>
+        <label class="pq-opt"><input type="radio" name="pquk-D-1" value="1"> "The students who start building in Year 9 are the ones who feel confident — not panicked — when GCSE content begins in September. Today I saw [specific gap] — that's exactly what we'd address first."</label>
+        <label class="pq-opt"><input type="radio" name="pquk-D-1" value="2"> "Let's wait until Year 10 starts and then see what the teacher says"</label>
+        <label class="pq-opt"><input type="radio" name="pquk-D-1" value="3"> "GCSE is very hard — the sooner you start the better" [without any specific observation]</label>
+      </div>
+      <div class="pq-q">
+        <div class="pq-q-text">3. When you pick tentative timings at the end of a UK trial, the main benefit is:</div>
+        <label class="pq-opt"><input type="radio" name="pquk-D-2" value="0"> It locks the parent into a payment commitment before they leave</label>
+        <label class="pq-opt"><input type="radio" name="pquk-D-2" value="1"> It gives the Admissions Manager a concrete hook for the follow-up call, making conversion more likely</label>
+        <label class="pq-opt"><input type="radio" name="pquk-D-2" value="2"> It allows you to send a calendar invite immediately</label>
+        <label class="pq-opt"><input type="radio" name="pquk-D-2" value="3"> UK parents always need to see a timetable before deciding</label>
+      </div>
+      <button class="pq-submit" onclick="submitPartQuiz('uk-D',[1,1,1])">Check my answers</button>
+      <div class="pq-result" id="pq-uk-D-result" style="display:none"></div>
+    </div>
+
+    <!-- ═══════ PART E — Closing the UK Trial ═══════ -->
+    <div class="part-divider" data-region="EUK">
+      <div class="part-label label-green">Part E</div>
+      <div class="part-name">Closing the Trial — UK</div>
+      <div class="part-desc">The last 5 minutes are where the trial is won or lost. Leave the parent with a specific observation, a clear next step, and genuine warmth.</div>
+    </div>
+
+    <!-- uk_d1 -->
+    <div class="sec" data-region="EUK" data-id="uk_d1">
+      <div class="sec-head" onclick="toggle('uk_d1')">
+        <div class="sec-left">
+          <span class="sec-num n-green" id="n-uk_d1">E1</span>
+          <div><div class="sec-title">Student Insights &amp; Goal Recap</div><div class="sec-sub">Specific beats generic. Reference the parent's UK goal by name.</div></div>
+        </div>
+        <span class="chev" id="c-uk_d1">›</span>
+      </div>
+      <div class="sec-body" id="b-uk_d1">
+        <div class="tldr">
+          <span class="tldr-kicker">TL;DR</span>
+          <div class="tldr-text">Your closing insight must be <strong>specific, not generic</strong>. "He did well" means nothing. "He reasoned through the algebra correctly but made a sign error — that's a common GCSE trap, exactly what we'd address first" means everything. Reference the parent's named goal (11+, SATs, GCSE) in the same breath.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--space-8);margin-bottom:var(--space-20)">
+          <div style="background:var(--bg-secondary);border-radius:6px;padding:var(--space-12);display:flex;gap:var(--space-12);align-items:flex-start">
+            <span style="font-size:18px;min-width:28px">1</span>
+            <div><div style="font-weight:700;font-size:13px;margin-bottom:4px">The strength — one specific observation</div><div style="font-size:13px;color:var(--text-secondary)">"[Child] showed really strong number sense — when we got to the fraction problem, he set it up correctly without prompting."</div></div>
+          </div>
+          <div style="background:var(--bg-secondary);border-radius:6px;padding:var(--space-12);display:flex;gap:var(--space-12);align-items:flex-start">
+            <span style="font-size:18px;min-width:28px">2</span>
+            <div><div style="font-weight:700;font-size:13px;margin-bottom:4px">The gap — named precisely, connected to the goal</div><div style="font-size:13px;color:var(--text-secondary)">"The area to work on is word problems — he hesitates before reading the question fully. Very fixable, and it's a key area in KS2 SATs."</div></div>
+          </div>
+          <div style="background:var(--bg-secondary);border-radius:6px;padding:var(--space-12);display:flex;gap:var(--space-12);align-items:flex-start">
+            <span style="font-size:18px;min-width:28px">3</span>
+            <div><div style="font-weight:700;font-size:13px;margin-bottom:4px">The path — confident, timeline-aware</div><div style="font-size:13px;color:var(--text-secondary)">"With SATs in May, we have [X weeks] — exactly the right window. Students who work on this now are the ones who feel ready on the day."</div></div>
+          </div>
+        </div>
+        <div class="dd-pair">
+          <div class="dd-side do">
+            <div class="dd-side-head"><span class="dd-side-icon">✓</span>Specific — high conversion</div>
+            <ul class="dd-list">
+              <li>"She solved the ratio problem correctly but rushed the checking step — that's where marks are lost in GCSEs."</li>
+              <li>"He remembered the method from earlier — that's long-term retention, which is exactly what we're building."</li>
+              <li>"When he explained his reasoning out loud — unprompted — that's mathematical confidence. That's what the 11+ rewards."</li>
+            </ul>
+          </div>
+          <div class="dd-side dont">
+            <div class="dd-side-head"><span class="dd-side-icon">✗</span>Generic — low conversion</div>
+            <ul class="dd-list">
+              <li>"He did really well today."</li>
+              <li>"She was engaged and enthusiastic."</li>
+              <li>"He needs to work on his maths a bit more."</li>
+              <li>"She's a bright child — she'll be fine with more practice."</li>
+            </ul>
+          </div>
+        </div>
+        <div class="ack"><button class="ack-btn pending" onclick="ack('uk_d1')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- uk_d2 -->
+    <div class="sec" data-region="EUK" data-id="uk_d2">
+      <div class="sec-head" onclick="toggle('uk_d2')">
+        <div class="sec-left">
+          <span class="sec-num n-green" id="n-uk_d2">E2</span>
+          <div><div class="sec-title">Close Strong — warm, specific, tentative timings</div><div class="sec-sub">Thank both parent and child by name. Leave them with a path forward.</div></div>
+        </div>
+        <span class="chev" id="c-uk_d2">›</span>
+      </div>
+      <div class="sec-body" id="b-uk_d2">
+        <div class="tldr">
+          <span class="tldr-kicker">TL;DR</span>
+          <div class="tldr-text">The last 90 seconds. Show the 3 Cuemath pillars briefly. Thank <strong>both the parent and child by name</strong>. Pick tentative timings — "If you do go ahead, what days work for you?" The last impression is the lasting one.</div>
+        </div>
+        <ol style="padding-left:var(--space-20);font-size:13px;line-height:2">
+          <li>Deliver the specific insight (strength + gap + path — from E1)</li>
+          <li>Show the 3 pillars briefly: 1:1 dedicated teacher · Curriculum-aligned · Progress visible to parent</li>
+          <li>Pick tentative timings: "If you do go ahead — what days tend to work for [child]?"</li>
+          <li>Hand off warmly: "My colleague from Admissions will reach out — they'll walk through the fee and get timings sorted"</li>
+          <li>Thank both by name: "Thank you [Parent's name] — and [Child's name], you did really well today"</li>
+        </ol>
+        <div class="sc-reveal" data-id="uk-d2-close">
+          <span class="sc-reveal-label">Full closing script — UK version</span>
+          <button class="sc-reveal-btn" onclick="scReveal(this)" aria-expanded="false">See the script ↓</button>
+          <div class="sc-reveal-answer">
+            <div class="sc-reveal-response">
+              <span class="sc-label">Closing script</span>
+              "Before I hand over — a quick summary. [Child] showed [specific strength]. The area we'd focus on first is [specific gap] — with [test/goal] in [timeline], that's exactly what we need. With Cuemath, [child] gets me every session — same face, same approach, building on what we did today. Progress is reported after every session. [Ask for timings.] Thank you so much, [parent's name] — and [child's name], brilliant work today. My colleague will be in touch shortly."
+            </div>
+            <div class="sc-reveal-why">
+              <span class="sc-label">Why it lands</span>
+              Specific observation builds trust. Naming the goal and timeline creates urgency. Three pillars in one sentence. Tentative timings give Admissions a hook. Thank both by name — parents remember this.
+            </div>
+          </div>
+        </div>
+        <div class="tldr" style="margin-top:var(--space-20);background:linear-gradient(90deg,var(--gold-50) 0%,var(--bg-secondary) 100%);border-left-color:var(--gold-400)">
+          <span class="tldr-kicker" style="color:var(--gold-700)">Remember</span>
+          <div class="tldr-text">After the trial, the Admissions Manager follows up. If the parent remembers your <strong>specific observations</strong>, your <strong>connection to their UK goal</strong>, and your <strong>genuine warmth</strong> — they're far more likely to go ahead. That memory is made in the last 2 minutes.</div>
+        </div>
+        <div class="ack"><button class="ack-btn pending" onclick="ack('uk_d2')">I've read this</button></div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- ═══════ END EUK CONTENT ════════════════════════ -->
+    <!-- ══════════════════════════════════════════════════ -->
+
     <!-- ═══════ QUIZ ═══════ -->
     <div class="part-divider" id="quiz-gate" style="display:none">
       <div class="part-label label-gold">Final Step</div>
@@ -3729,7 +4782,7 @@
 </div>
 
     <!-- ═══════ TEACHER'S REFERENCE GUIDE ═══════ -->
-    <div id="cheatsheet" style="display:none; margin-top:var(--space-48)">
+    <div id="cheatsheet" data-region="APAC" style="display:none; margin-top:var(--space-48)">
       <div class="cheat-card">
         <div class="cheat-header">
           <img src="img/cuemath-wordmark.svg" alt="Cuemath" class="cheat-logo" onerror="this.style.display='none'">
@@ -3832,7 +4885,7 @@
     </div>
 
     <!-- ════════ V3 — SRS FLASHCARDS (Daily Refresher, unlocks post-completion) ════════ -->
-    <div id="srs-panel" style="display:none; margin-top:var(--space-48)">
+    <div id="srs-panel" data-region="APAC" style="display:none; margin-top:var(--space-48)">
       <div class="srs-shell">
         <h3>✨ Daily Refresher</h3>
         <p class="srs-intro">Come back every day for a quick review. The scheduler brings back scenarios you got wrong more often, and the ones you've mastered less often. A few minutes a day keeps your trial game sharp.</p>
@@ -3846,6 +4899,82 @@
 
         <div id="srs-card-area"></div>
 
+        <div style="font-family:var(--font-label);font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.5px;margin-top:var(--space-20);padding-top:var(--space-16);border-top:1px dashed var(--border-tertiary)">
+          Based on spaced repetition · Leitner system · 1 · 3 · 7 · 14 · 30 day intervals
+        </div>
+      </div>
+    </div>
+
+    <!-- EUK Cheatsheet -->
+    <div id="cheatsheet-uk" data-region="EUK" style="display:none; margin-top:var(--space-48)">
+      <div class="cheat-card">
+        <div class="cheat-header">
+          <img src="img/cuemath-wordmark.svg" alt="Cuemath" class="cheat-logo" onerror="this.style.display='none'">
+          <div class="cheat-title">Teacher's Reference Guide — UK Edition</div>
+          <div class="cheat-subtitle">Trial Mastery · Keep this on your desk, your phone, or printed near your screen</div>
+        </div>
+        <div style="margin-bottom:var(--space-32)">
+          <h3 style="font-family:var(--font-heading);font-size:16px;margin-bottom:var(--space-12);color:var(--text-primary)">Page 1 · UK context at a glance</h3>
+          <table class="cheat-table">
+            <thead><tr><th style="width:28%">Topic</th><th>The quick reference</th></tr></thead>
+            <tbody>
+              <tr><td><strong>4 home nations</strong></td><td>England (National Curriculum) · Scotland (Curriculum for Excellence) · Wales (Curriculum for Wales) · Northern Ireland (NI Curriculum)</td></tr>
+              <tr><td><strong>Time zone → IST</strong></td><td>GMT (Oct–Mar) = IST −5:30 · BST (Mar–Oct) = IST −4:30</td></tr>
+              <tr><td><strong>School year</strong></td><td>September to July · 3 terms (Autumn, Spring, Summer) · Half-terms in Oct, Feb, May</td></tr>
+              <tr><td><strong>Key Stages</strong></td><td>KS1 = Y1–2 · KS2 = Y3–6 · KS3 = Y7–9 · KS4 (GCSE) = Y10–11 · KS5 (A-Level) = Y12–13</td></tr>
+              <tr><td><strong>Critical tests</strong></td><td>KS2 SATs (Y6, May) · 11+ (Y5/6, Sep–Oct) · 7+/8+/13+ (indie entry) · GCSE (Y10–11, Jun) · A-Level (Y12–13, Jun)</td></tr>
+              <tr><td><strong>Say this</strong></td><td>Year (not Grade) · Maths (not Math) · Term (not semester) · Fee (not price) · Primary / Secondary (not elementary / high school)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-bottom:var(--space-32)">
+          <h3 style="font-family:var(--font-heading);font-size:16px;margin-bottom:var(--space-12);color:var(--text-primary)">Page 2 · 5 parent archetypes</h3>
+          <table class="cheat-table">
+            <thead><tr><th style="width:28%">Archetype</th><th>Signal</th><th>Close language</th></tr></thead>
+            <tbody>
+              <tr><td><strong>11+ Mum</strong></td><td>"Does this help with the 11+?" — Y4/5, grammar school goal</td><td>"Our 11+ Prep module covers VR, NVR, and the maths grammar tests use. We build the speed and accuracy that make the difference."</td></tr>
+              <tr><td><strong>KS2 SATs Mum</strong></td><td>"Can you help with SATs?" — Y5/6, May anchor</td><td>"With SATs in May, we have exactly the right window — number sense and problem-solving, the areas that matter most."</td></tr>
+              <tr><td><strong>GCSE Crisis Parent</strong></td><td>"He's struggling. GCSEs are next year." — Y10/11</td><td>"Today I saw exactly where the gap is. With [X months] before the exams, this is very fixable."</td></tr>
+              <tr><td><strong>Indie Scholarship Chaser</strong></td><td>"We're applying to [private school]." — 7+/8+/13+</td><td>"Independent assessments test mathematical reasoning — exactly what we teach."</td></tr>
+              <tr><td><strong>NRI Returner</strong></td><td>"Back in India she was top of class." — recent NRI</td><td>"Cuemath builds the same depth that served Indian students so well — applied to the UK curriculum."</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-bottom:var(--space-32)">
+          <h3 style="font-family:var(--font-heading);font-size:16px;margin-bottom:var(--space-12);color:var(--text-primary)">Page 3 · Objections &amp; competitors</h3>
+          <table class="cheat-table">
+            <thead><tr><th style="width:28%">Objection / Competitor</th><th>Response</th></tr></thead>
+            <tbody>
+              <tr><td><strong>"Do you follow the curriculum?"</strong></td><td>Select their nation live on screen. "We align with and go deeper than the [NC / CfE / Wales / NI Curriculum]."</td></tr>
+              <tr><td><strong>"Can this help with the 11+?"</strong></td><td>"Our 11+ Prep module covers it — and more importantly, we build the mathematical reasoning that grammar schools test."</td></tr>
+              <tr><td><strong>"How much does this cost?"</strong></td><td>Acknowledge, reassure fee + three tenure options appear at session end, hand to Admissions Manager.</td></tr>
+              <tr><td><strong>Atom Learning</strong></td><td>Self-serve software, no live teacher. Cuemath = dedicated teacher who adapts live.</td></tr>
+              <tr><td><strong>MyTutor</strong></td><td>Marketplace, different tutor each time. Cuemath = same teacher, same method, every session.</td></tr>
+              <tr><td><strong>Kumon UK / Explore Learning</strong></td><td>Group / centre / worksheets. Cuemath = 1:1 online, dedicated specialist, at home.</td></tr>
+              <tr><td><strong>"Let me think"</strong></td><td>Respect the pause. Give a concrete summary. Ask for tentative timings.</td></tr>
+              <tr><td><strong>"We prefer face-to-face"</strong></td><td>Acknowledge. Name 3 advantages: same teacher every session · at home · flexible schedule. Then: "Did [child] feel engaged today?"</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="cheat-footer">
+          <strong>Trial Mastery — UK Edition</strong> · Cuemath · cuemath.com · For internal teacher use only
+        </div>
+      </div>
+      <button class="cheat-print-btn" onclick="window.print()">🖨️ Print Reference Guide</button>
+    </div>
+
+    <!-- EUK SRS Panel -->
+    <div id="srs-panel-uk" data-region="EUK" style="display:none; margin-top:var(--space-48)">
+      <div class="srs-shell">
+        <h3>✨ Daily Refresher</h3>
+        <p class="srs-intro">Come back every day for a quick review. The scheduler brings back scenarios you got wrong more often, and the ones you've mastered less often. A few minutes a day keeps your UK trial game sharp.</p>
+        <div class="srs-stats">
+          <div class="srs-stat"><div class="srs-stat-num" id="srs-due">0</div><div class="srs-stat-label">Due today</div></div>
+          <div class="srs-stat"><div class="srs-stat-num" id="srs-total">0</div><div class="srs-stat-label">In the deck</div></div>
+          <div class="srs-stat"><div class="srs-stat-num" id="srs-mastered">0</div><div class="srs-stat-label">Mastered</div></div>
+          <div class="srs-stat"><div class="srs-stat-num" id="srs-streak">0</div><div class="srs-stat-label">Day streak</div></div>
+        </div>
+        <div id="srs-card-area"></div>
         <div style="font-family:var(--font-label);font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.5px;margin-top:var(--space-20);padding-top:var(--space-16);border-top:1px dashed var(--border-tertiary)">
           Based on spaced repetition · Leitner system · 1 · 3 · 7 · 14 · 30 day intervals
         </div>
@@ -3877,7 +5006,7 @@
 <!-- ════════ SCRIPT ════════ -->
 <script>
 const TRACKING_URL = 'https://script.google.com/macros/s/AKfycbzb_sSqW4q6lULCot0WjccyWAU_ErNkRgYCuAa9r57ZR2_IqkWNpEgIg4qdVxKcxUXxjg/exec';
-const SECTION_META = [
+const APAC_SECTION_META = [
   { id:'a1', part:'A', short:'A1', nav:'Australia at a glance', tl:'Australia = 8 states/territories, 3 time zones (convert to IST for your calls), school year Feb–Dec.' },
   { id:'a2', part:'A', short:'A2', nav:'The Indian-Australian parent', tl:'Highly educated, professional, value education deeply. They expect substance and respect. The single biggest community you will teach.' },
   { id:'a3', part:'A', short:'A3', nav:'AU terminology', tl:'Say "Year" not "Grade". Use Australian test names. Know the state-wise senior certificates (HSC, VCE, WACE, QCE).' },
@@ -3899,10 +5028,66 @@ const SECTION_META = [
   { id:'d1', part:'D', short:'E1', nav:'Insights & goals', tl:'Student Insights = moment of truth. Specific > generic. Reference the parent goals by name.' },
   { id:'d2', part:'D', short:'E2', nav:'Close strong', tl:'Close warm. Tentative timings. Show the 3 pillars. Thank both parent and child by name.' },
 ];
+const EUK_SECTION_META = [
+  { id:'uk_a1', part:'A', short:'A1', nav:'The UK at a glance', tl:'UK = 4 home nations (England, Scotland, Wales, NI), 1 time zone (GMT/BST), school year Sep–Jul, 3 terms with half-terms.' },
+  { id:'uk_a2', part:'A', short:'A2', nav:'The British-Indian and UK NRI parent', tl:'Two distinct parents: settled British-Indian (UK-fluent, exam-driven) and recent UK NRI (CBSE/ICSE-anchored, comparing to India). Different languages, same Indian rigour.' },
+  { id:'uk_a3', part:'A', short:'A3', nav:'UK terminology', tl:'Year not Grade. Reception → Y13. KS1 (Y1-2) · KS2 (Y3-6) · KS3 (Y7-9) · KS4 (Y10-11, GCSE) · KS5 (Y12-13, A-Level).' },
+  { id:'uk_a4', part:'A', short:'A4', nav:'Curriculum by nation', tl:'England = National Curriculum. Scotland = Curriculum for Excellence. Wales = Curriculum for Wales. NI = Northern Ireland Curriculum. Pick the right one on screen.' },
+  { id:'uk_a5', part:'A', short:'A5', nav:'Tests & exams', tl:'KS1 SATs (Y2) · KS2 SATs (Y6, May 11–14 2026) · 11+ (selective regions, Sep) · 7+/8+/13+ (indie schools) · GCSE (Y10–11) · A-Level (Y12–13).' },
+  { id:'uk_u1', part:'U', short:'B1', nav:'5 UK parent archetypes', tl:'11+ Mum, KS2 SATs Mum, GCSE Crisis Parent, Indie Scholarship Chaser, NRI Returner. Spot which one you are talking to — tailor from there.' },
+  { id:'uk_u2', part:'U', short:'B2', nav:'Probing hidden goals', tl:'Not every parent knows their goal. 3-question ladder: the wish, the worry, the deadline. Probe, do not pitch.' },
+  { id:'uk_u3', part:'U', short:'B3', nav:'Goal-driven vs exploratory', tl:'Goal-driven: mirror their goal subtly through the standard trial flow. Exploratory: show them what good maths learning looks like.' },
+  { id:'uk_b1', part:'B', short:'C1', nav:'Curriculum alignment', tl:'Yes — you are selecting their nation curriculum live. Cuemath goes deeper than the National Curriculum, not sideways.' },
+  { id:'uk_b2', part:'B', short:'C2', nav:'Specific goals', tl:'Acknowledge the goal. Connect every screen back to it. Mention 11+ Prep / SATs Prep / GCSE Foundations modules where relevant.' },
+  { id:'uk_b3', part:'B', short:'C3', nav:'Fee question', tl:'Say "fee" not "price". Acknowledge, reassure the fee appears at session end, and hand specifics to the Admissions Manager gracefully.' },
+  { id:'uk_b4', part:'B', short:'C4', nav:'Competitors', tl:'Never bash. Atom (self-serve software) / MyTutor (1:1 GCSE) / Third Space (school-channel) / Kumon UK (worksheets) / Explore Learning (centres). Relate to the parent goal.' },
+  { id:'uk_b5', part:'B', short:'C5', nav:'"Let me think"', tl:'Respect the pause. Offer a summary they can share. Still pick tentative timings.' },
+  { id:'uk_b6', part:'B', short:'C6', nav:'Child not engaged', tl:'First sessions can feel flat. Engage the parent every 10 minutes, share a specific positive, reframe gaps as "we found the spot to help".' },
+  { id:'uk_b7', part:'B', short:'C7', nav:'"We prefer face-to-face"', tl:'Do not debate format. Show what online 1-on-1 uniquely delivers: same tutor every session, at the convenience of home, flexible.' },
+  { id:'uk_c1', part:'C', short:'D1', nav:'Reception – Year 2', tl:'Short. Fun. Parent involved. If the child enjoys it, the parent says yes. KS1 SATs are formative — keep it light.' },
+  { id:'uk_c2', part:'C', short:'D2', nav:'Year 3 – Year 6', tl:'KS2 sweet spot. Parents are goal-driven (KS2 SATs in Y6, 11+ in Y5/6). Show depth + visible progress.' },
+  { id:'uk_c3', part:'C', short:'D3', nav:'Year 7 – Year 9', tl:'KS3 transition. Start challenging. Involve the student — older kids become your advocate. Name the GCSE bridge.' },
+  { id:'uk_d1', part:'D', short:'E1', nav:'Insights & goals', tl:'Student Insights = moment of truth. Specific > generic. Reference the parent goals by name (11+, SATs, GCSE).' },
+  { id:'uk_d2', part:'D', short:'E2', nav:'Close strong', tl:'Close warm. Tentative timings. Show the 3 pillars. Thank both parent and child by name.' },
+];
+const SECTION_META_BY_REGION = { APAC: APAC_SECTION_META, EUK: EUK_SECTION_META };
 const PART_LABELS = { A: 'Part A · Context', U: 'Part B · Understanding the Parent', B: 'Part C · Handling Objections', C: 'Part D · By Year Group', D: 'Part E · Closing the Trial' };
-const SECTIONS = SECTION_META.map(s => s.id);
-const TOTAL = SECTIONS.length;
+const PART_BOUNDARIES_BY_REGION = {
+  APAC: { 'a5': 'pq-A', 'u3': 'pq-B', 'b7': 'pq-C', 'c3': 'pq-D' },
+  EUK:  { 'uk_a5': 'pq-uk-A', 'uk_u3': 'pq-uk-B', 'uk_b7': 'pq-uk-C', 'uk_c3': 'pq-uk-D' },
+};
+let SECTION_META = APAC_SECTION_META;
+let SECTIONS = SECTION_META.map(s => s.id);
+let TOTAL = SECTIONS.length;
+let PART_BOUNDARIES = PART_BOUNDARIES_BY_REGION.APAC;
+function setActiveRegion(region) {
+  const r = (region === 'EUK') ? 'EUK' : 'APAC';
+  SECTION_META = SECTION_META_BY_REGION[r];
+  SECTIONS = SECTION_META.map(s => s.id);
+  TOTAL = SECTIONS.length;
+  PART_BOUNDARIES = PART_BOUNDARIES_BY_REGION[r];
+  if (typeof QUIZ_BY_REGION !== 'undefined' && QUIZ_BY_REGION[r]) QUIZ = QUIZ_BY_REGION[r];
+}
+function applyRegionVisibility(region) {
+  const r = (region === 'EUK') ? 'EUK' : 'APAC';
+  document.querySelectorAll('[data-region]').forEach(el => {
+    el.classList.toggle('region-hidden', el.dataset.region !== r);
+  });
+}
+// Resolves to '-uk' suffixed id when EUK is active, otherwise the bare id.
+function regionalEl(baseId) {
+  if (user && user.region === 'EUK') {
+    const el = document.getElementById(baseId + '-uk');
+    if (el) return el;
+  }
+  return document.getElementById(baseId);
+}
 const SEC_COLORS = {a:'n-gold',u:'n-purple',b:'n-red',c:'n-blue',d:'n-green'};
+function secColorKey(id) {
+  // Strips "uk_" prefix so EUK ids share colour scheme with APAC parts.
+  const bare = id.startsWith('uk_') ? id.slice(3) : id;
+  return SEC_COLORS[bare.charAt(0)] || 'n-gold';
+}
 let user = null;
 let acked = {};
 let introAcked = false;
@@ -3934,7 +5119,7 @@ function loadUserState() {
 
 // ── Quiz Questions ──
 // Final quiz — 20 questions, 90% pass (18 of 20). Answer options balanced in length.
-const QUIZ = [
+const APAC_QUIZ = [
   // A — Context (5 questions)
   { q: 'A Sydney parent tells you on the trial call that 5pm suits them. Your CueTeacher app shows a different time for this session. What should you do?',
     opts: [
@@ -4105,12 +5290,203 @@ const QUIZ = [
     ],
     ans: 1 },
 ];
-const QUIZ_PASS_THRESHOLD = Math.ceil(QUIZ.length * 0.9); // 90% to pass (18 of 20)
+
+// EUK final quiz — 20 questions, 90% pass. UK-specific scenarios.
+const EUK_QUIZ = [
+  // A — Context (5 questions)
+  { q: 'A parent in Slough tells you on the trial call that 6pm UK time suits them. Your CueTeacher app shows a different time for this session. What should you do?',
+    opts: [
+      'Follow what the parent said over the app time',
+      'Follow the time shown on your CueTeacher app — that is the authoritative schedule set by admissions',
+      'Reschedule the class yourself without telling anyone',
+      'Pick the earlier of the two times and hope it works'
+    ],
+    ans: 1 },
+  { q: 'A parent in Leicester tells you their family is British-Indian, second generation, and the child is in Year 5. What is the most respectful framing for them?',
+    opts: [
+      'Assume they only want Indian-style drill and skip UK curriculum content',
+      'Tell them the UK curriculum is easier than Indian and not to worry',
+      'Acknowledge the British-Indian identity and show National Curriculum alignment with the conceptual depth Indian maths is known for',
+      'Focus only on Indian content and set aside all UK context'
+    ],
+    ans: 2 },
+  { q: 'A parent in Cardiff asks which curriculum you follow. What is the correct action during the trial?',
+    opts: [
+      'Say "UK curriculum" vaguely and move to the next screen',
+      'Tell them Cuemath uses the CBSE or Indian syllabus by default',
+      'Ask which nation they are in, then select the right curriculum on screen — for Wales it is the Curriculum for Wales, distinct from the English National Curriculum',
+      'Pick any curriculum from the dropdown because they are all very similar'
+    ],
+    ans: 2 },
+  { q: 'When are Year 6 KS2 SATs sat in 2026, and which subjects are tested?',
+    opts: [
+      'Across April 2026, English and Maths only with one paper each',
+      'Mon 11 May to Thu 14 May 2026, covering English Reading, GPS, and three Maths papers',
+      'Across June 2026, only Maths papers with no reasoning element',
+      'Across September 2026, with both English and Science but no Maths'
+    ],
+    ans: 1 },
+  { q: 'A parent in Redbridge says their Year 5 child is preparing for the 11+ Test in September. What is the most accurate statement you can make?',
+    opts: [
+      'The 11+ in Redbridge is on Fri 18 Sep 2026 and is sat by Year 5 students for grammar school placement; Cuemath has a dedicated 11+ Prep module',
+      '11+ is an easy test and parents should not worry about it at this age',
+      '11+ is taken in Year 8 and tests only English, so we cannot help much',
+      '11+ is held in December and tests only mental arithmetic'
+    ],
+    ans: 0 },
+
+  // B — Understanding (3 questions)
+  { q: 'At goal-setting, the parent says "we just want a bit of extra maths, no specific goal." What should you do next?',
+    opts: [
+      'Accept the vague goal and run a generic trial around general topics',
+      'Use three probe questions — the wish, the worry, the deadline — to surface what is really driving them',
+      'Tell the parent they can think about a goal later and move on',
+      'Skip the goal-setting phase and go straight into the learning session'
+    ],
+    ans: 1 },
+  { q: 'A parent says "she was doing Kumon UK but I felt it was too repetitive and worksheet-heavy." Which parent archetype is this?',
+    opts: [
+      'KS2 SATs Mum — they mainly want SATs-specific drills',
+      'The Switcher — they have decided they need tutoring and are picking one',
+      'Exploratory parent — they are just browsing without a clear need',
+      'GCSE Crisis Parent — there is an urgent crisis driving the call'
+    ],
+    ans: 1 },
+  { q: 'A parent in Watford says their child is preparing for the 11+ in September. How should you work with this in the trial?',
+    opts: [
+      'Change the trial format and replace the standard questions with 11+ practice papers',
+      'Follow the standard trial flow, and subtly mirror the goal in your language — echo the test and date, and connect observations you make back to the 11+ naturally',
+      'Ignore the test mention and run a standard trial without any reference',
+      'Tell the parent your trial is unrelated to 11+ and they should book elsewhere'
+    ],
+    ans: 1 },
+
+  // C — Objections (7 questions)
+  { q: 'A parent mentions they have also been looking at Atom Learning. What should you NOT do?',
+    opts: [
+      'Acknowledge Atom Learning and then differentiate the Cuemath approach calmly',
+      'Explain that Atom is software-led self-serve while Cuemath is one-on-one with a live teacher every session',
+      'Criticise Atom Learning sharply and tell the parent it does not work at all',
+      'Highlight that at Cuemath the child has a dedicated teacher every session, not just an algorithm'
+    ],
+    ans: 2 },
+  { q: 'A parent says "let me discuss with my husband first." What is the best approach in the closing minutes?',
+    opts: [
+      'Accept the deferral and end the call immediately without a summary',
+      'Pressure the parent to decide on the call before any offer expires',
+      'Respect the request, offer a short summary of the child they can share, and still select tentative session timings',
+      'Tell the parent that the counsellor will phone their husband directly'
+    ],
+    ans: 2 },
+  { q: 'A parent asks about fees mid-trial. What is the most graceful response?',
+    opts: [
+      'Refuse to discuss and say "that is not my area to handle at all"',
+      'Quote specific discount percentages and commit to a plan with them',
+      'Acknowledge calmly, tell the parent the fee will appear at the end of the session with three tenure options, and let them know the Admissions Manager will walk through the specifics',
+      'Freeze, go quiet for a moment, and then change the topic to the child'
+    ],
+    ans: 2 },
+  { q: 'You are talking about fees with a parent. What should you say about discounts?',
+    opts: [
+      'Quote exact percentages — for example "10% off six months, 20% off twelve months"',
+      'Tell the parent there are no discounts available anywhere in the plan',
+      'Use directional language — say that a higher tenure comes with a higher discount, without quoting specific percentages',
+      'Promise the parent you will personally secure the biggest discount for them'
+    ],
+    ans: 2 },
+  { q: 'A parent asks about MyTutor during the trial. What is the right framing?',
+    opts: [
+      'Tell the parent MyTutor is bad and they should not consider it at all',
+      'Acknowledge MyTutor offers 1:1 GCSE/A-Level tutors, and frame the choice around the goal — if the goal is GCSE coverage by a uni-student tutor, MyTutor works; if the goal is conceptual foundations and exam readiness with trained maths-only teachers, that is what Cuemath builds',
+      'Refuse to discuss competitors and change the topic quickly',
+      'Promise the parent that Cuemath can teach everything MyTutor teaches and more'
+    ],
+    ans: 1 },
+  { q: 'A Year 1 child seems disengaged during the learning session and the parent is watching. What should you do?',
+    opts: [
+      'Ignore the disengagement and keep going — children are often like this',
+      'Address it proactively — share a specific positive moment you noticed, normalise first-session nerves, and most importantly engage the parent with a specific observation',
+      'Agree with the parent that the child seems bored and end the session early',
+      'Stop the trial early and tell the parent to try again next week'
+    ],
+    ans: 1 },
+  { q: 'A parent says "we actually prefer face-to-face classes — we were thinking of Explore Learning or Kumon UK centre." How should you respond?',
+    opts: [
+      'Argue strongly that online classes are definitively better than face-to-face',
+      'Acknowledge the preference, ask what they hope an in-person centre would deliver, and let the trial show how one-on-one online delivers the same attention with the convenience of home and the same tutor every session',
+      'Dismiss the concern and move straight into the learning session',
+      'Agree with the parent that online probably will not work and end the call'
+    ],
+    ans: 1 },
+
+  // D — Year groups (2 questions)
+  { q: 'A Year 8 student seems disengaged 10 minutes into the trial. What is the best move?',
+    opts: [
+      'Continue with the same level of easy problems for the remainder',
+      'Switch to a more challenging problem and involve the student directly — KS3 students disengage when material feels too easy for their level',
+      'End the session early because the child is clearly not interested',
+      'Stop talking to the student and only interact with the parent'
+    ],
+    ans: 1 },
+  { q: 'A Reception child is losing focus during a longer activity. What approach prevents this best?',
+    opts: [
+      'Keep talking uninterrupted for half an hour to cover more content',
+      'Switch activities every 5 to 7 minutes, celebrate wins out loud, and involve the parent with a specific observation every 10 minutes',
+      'Lengthen the session to 70 minutes so there is more time to settle in',
+      'Only interact with the child directly and ignore the parent entirely'
+    ],
+    ans: 1 },
+
+  // E — Close (3 questions)
+  { q: 'During the Student Insights screen, what matters most?',
+    opts: [
+      'Reading out the numbers on the screen exactly as they appear',
+      'Sharing specific personalised observations about the child and tying them back to the goals the parent mentioned at the start',
+      'Skipping quickly through Insights to reach the class timings sooner',
+      'Listing only the weaknesses and leaving out the strengths entirely'
+    ],
+    ans: 1 },
+  { q: 'How should you end the trial class?',
+    opts: [
+      'Rush through the closing screens to save time for the next session',
+      'Spend real time on the final screens, select tentative timings, walk through the three pillars, and thank both the parent and child by name',
+      'End the call abruptly right after the Insights screen appears',
+      'Ask the parent to make their enrolment decision on the call right now'
+    ],
+    ans: 1 },
+  { q: 'A parent asks "is this aligned with the National Curriculum?" during goal-setting. What is the best first response?',
+    opts: [
+      'Tell the parent to check the Cuemath website for alignment details',
+      'Select the relevant nation curriculum on screen live, and tell the parent Cuemath goes deeper on the reasoning and understanding that the National Curriculum, KS2 SATs, and 11+ assess',
+      'Say that fees already include curriculum alignment with all nations',
+      'Skip the curriculum question and move directly to the next slide'
+    ],
+    ans: 1 },
+];
+
+const QUIZ_BY_REGION = { APAC: APAC_QUIZ, EUK: EUK_QUIZ };
+let QUIZ = APAC_QUIZ;
+function quizPassThreshold() { return Math.ceil(QUIZ.length * 0.9); }
+// (QUIZ_PASS_THRESHOLD replaced by quizPassThreshold() — region-aware)
+
+function markUKNationVisited(name) {
+  if (!window._UK_VISITED) window._UK_VISITED = new Set();
+  window._UK_VISITED.add(name);
+  const card = document.getElementById('ukn-' + name);
+  if (card) {
+    card.style.borderColor = 'var(--gold-400)';
+    card.style.background = 'var(--gold-50)';
+    const det = card.querySelector('.ukn-details');
+    if (det) det.style.display = '';
+  }
+  const counter = document.getElementById('uk-nation-counter');
+  if (counter) counter.textContent = window._UK_VISITED.size + ' of ' + (window._UK_TOTAL || 4) + ' nations explored';
+}
 
 function ackIntro() {
   introAcked = true;
   localStorage.setItem(keyFor('cm_intro'), 'true');
-  const btn = document.getElementById('intro-ack-btn');
+  const btn = regionalEl('intro-ack-btn') || document.getElementById('intro-ack-btn');
   btn.className = 'ack-btn acked';
   btn.textContent = 'Acknowledged ✓';
   btn.onclick = null;
@@ -4138,6 +5514,8 @@ function formLogin() {
   if (!grade) { alert('Please select your grade license'); return; }
   user = { email:e, mobile:m, name:n, region:region, grade:grade };
   localStorage.setItem('cm_user', JSON.stringify(user));
+  setActiveRegion(region);
+  applyRegionVisibility(region);
   loadUserState();
 
   const hasProgress = introAcked || Object.keys(acked).length > 0 || quizPassed || done;
@@ -4205,6 +5583,8 @@ window.onload = function() {
   const s = localStorage.getItem('cm_user');
   if (s) {
     user = JSON.parse(s);
+    setActiveRegion(user.region);
+    applyRegionVisibility(user.region);
     loadUserState();
     if (!sessionId) newSessionId();
     showModule();
@@ -4219,10 +5599,9 @@ window.onload = function() {
 // pq-X (part quizzes) shown between parts; final is the assessment entry point
 function slideOrder() {
   const order = ['intro'];
-  const partBoundaries = { 'a5': 'pq-A', 'u3': 'pq-B', 'b7': 'pq-C', 'c3': 'pq-D' };
   SECTIONS.forEach(id => {
     order.push(id);
-    if (partBoundaries[id]) order.push(partBoundaries[id]);
+    if (PART_BOUNDARIES[id]) order.push(PART_BOUNDARIES[id]);
   });
   order.push('final');
   return order;
@@ -4236,11 +5615,9 @@ function currentSlideIdx() {
   for (let i = 0; i < SECTIONS.length; i++) {
     if (!acked[SECTIONS[i]]) {
       // If just completed a part's last section, show that part's quiz next
-      const partEnd = { 'a5': 'pq-A', 'u3': 'pq-B', 'b7': 'pq-C', 'c3': 'pq-D' };
-      // Check if the prior section was a part-end and its quiz hasn't been "acked" via storage
       const prior = i > 0 ? SECTIONS[i-1] : null;
-      if (prior && partEnd[prior] && !localStorage.getItem(keyFor('cm_' + partEnd[prior] + '_passed'))) {
-        return order.indexOf(partEnd[prior]);
+      if (prior && PART_BOUNDARIES[prior] && !localStorage.getItem(keyFor('cm_' + PART_BOUNDARIES[prior] + '_passed'))) {
+        return order.indexOf(PART_BOUNDARIES[prior]);
       }
       return order.indexOf(SECTIONS[i]);
     }
@@ -4264,15 +5641,16 @@ function showCurrentSlide() {
   if (el) { el.classList.add('current-view'); el.scrollIntoView({ block: 'start', behavior: 'instant' }); window.scrollTo({top: 0, behavior: 'instant'}); }
   // V3: show reference guide + SRS only when on the final slide AND module is done
   const onFinal = (slideId === 'final');
-  const cheat = document.getElementById('cheatsheet');
-  const srsPanel = document.getElementById('srs-panel');
+  const cheat = regionalEl('cheatsheet');
+  const srsPanel = regionalEl('srs-panel');
   if (cheat) cheat.style.display = (onFinal && (done || quizPassed)) ? '' : 'none';
   if (srsPanel) srsPanel.style.display = (onFinal && (done || quizPassed)) ? '' : 'none';
   if (onFinal && (done || quizPassed) && typeof srsInit === 'function') srsInit();
-  // V3: animate probe ladder when U2 is shown
-  if (slideId === 'u2') {
+  // V3: animate probe ladder when U2 is shown (works for both APAC u2 and EUK uk_u2)
+  if (slideId === 'u2' || slideId === 'uk_u2') {
     setTimeout(() => {
-      const pl = document.getElementById('probe-ladder');
+      const plId = slideId === 'uk_u2' ? 'probe-ladder-uk' : 'probe-ladder';
+      const pl = document.getElementById(plId);
       if (pl) { pl.classList.remove('animate-in'); void pl.offsetWidth; pl.classList.add('animate-in'); }
     }, 200);
   }
@@ -4500,10 +5878,17 @@ function ack(id) {
   if (!introAcked) { showToast('Click "I understand" on the intro first'); return; }
   const idx = SECTIONS.indexOf(id);
   if (idx !== currentIdx()) { showToast('Please finish sections in order'); return; }
-  // Section-specific gates (e.g. A1 requires visiting all 8 states)
+  // Section-specific gates
+  // APAC A1 requires visiting all 8 AU states/territories
   if (id === 'a1' && window._AU_VISITED && window._AU_VISITED.size < (window._AU_TOTAL || 8)) {
     const left = (window._AU_TOTAL || 8) - window._AU_VISITED.size;
     showToast('Click all 8 states first — ' + left + ' left');
+    return;
+  }
+  // EUK A1 requires visiting all 4 UK home nations
+  if (id === 'uk_a1' && window._UK_VISITED && window._UK_VISITED.size < (window._UK_TOTAL || 4)) {
+    const left = (window._UK_TOTAL || 4) - window._UK_VISITED.size;
+    showToast('Click all 4 nations first — ' + left + ' left');
     return;
   }
   acked[id] = new Date().toISOString();
@@ -4597,7 +5982,7 @@ function submitQuiz() {
   });
   const result = document.getElementById('quiz-result');
   track('quiz_score', score + '/' + QUIZ.length);
-  if (score >= QUIZ_PASS_THRESHOLD) {
+  if (score >= quizPassThreshold()) {
     result.innerHTML = `<span style="color:var(--success-700);font-weight:500">You scored ${score}/${QUIZ.length}. Assessment passed!</span>`;
     quizPassed = true;
     localStorage.setItem(keyFor('cm_quiz'), 'true');
@@ -4610,7 +5995,7 @@ function submitQuiz() {
       document.getElementById('final').scrollIntoView({ behavior: 'smooth' });
     }, 1500);
   } else {
-    result.innerHTML = `<span style="color:var(--error-700);font-weight:500">You scored ${score}/${QUIZ.length}. You need ${QUIZ_PASS_THRESHOLD}/${QUIZ.length} (75%) to pass.</span><br><button onclick="startQuiz()" style="margin-top:var(--space-12);background:var(--bg-secondary);border:1px solid var(--border-secondary);padding:var(--space-8) var(--space-20);font-family:var(--font-label);font-size:13px;cursor:pointer">Retry Assessment</button>`;
+    result.innerHTML = `<span style="color:var(--error-700);font-weight:500">You scored ${score}/${QUIZ.length}. You need ${quizPassThreshold()}/${QUIZ.length} (75%) to pass.</span><br><button onclick="startQuiz()" style="margin-top:var(--space-12);background:var(--bg-secondary);border:1px solid var(--border-secondary);padding:var(--space-8) var(--space-20);font-family:var(--font-label);font-size:13px;cursor:pointer">Retry Assessment</button>`;
   }
 }
 
@@ -4620,12 +6005,12 @@ function showDone() {
   document.getElementById('final-btn').style.display = 'none';
   document.getElementById('final-ok').style.display = 'block';
   document.getElementById('final-text').textContent = 'All sections acknowledged and assessment passed.';
-  document.getElementById('cheatsheet').style.display = '';
+  { const cs = regionalEl('cheatsheet'); if (cs) cs.style.display = ''; }
   document.getElementById('progress-pill').className = 'pill pill-green';
   document.getElementById('progress-fill').style.width = '100%';
   document.getElementById('progress-label').textContent = '100%';
   // V3 — unlock SRS refresher
-  const srsPanel = document.getElementById('srs-panel');
+  const srsPanel = regionalEl('srs-panel');
   if (srsPanel) { srsPanel.style.display = ''; srsInit(); }
 }
 
@@ -4700,12 +6085,15 @@ function srsRender() {
   const today = srsToday();
   const due = _srsState.deck.filter(c => c.dueDay <= today && c.box < SRS_MASTERED_BOX).length;
   const mastered = _srsState.deck.filter(c => c.box >= SRS_MASTERED_BOX).length;
-  document.getElementById('srs-due').textContent = Math.max(_srsState.queue.length - _srsState.idx, 0);
-  document.getElementById('srs-total').textContent = _srsState.deck.length;
-  document.getElementById('srs-mastered').textContent = mastered;
-  document.getElementById('srs-streak').textContent = srsLoadStreak();
+  // Scope to the active panel so APAC and EUK panels don't clash on shared IDs
+  const srsPanel = regionalEl('srs-panel') || document.getElementById('srs-panel');
+  function srsEl(id) { return srsPanel ? srsPanel.querySelector('#' + id) : document.getElementById(id); }
+  srsEl('srs-due').textContent = Math.max(_srsState.queue.length - _srsState.idx, 0);
+  srsEl('srs-total').textContent = _srsState.deck.length;
+  srsEl('srs-mastered').textContent = mastered;
+  srsEl('srs-streak').textContent = srsLoadStreak();
 
-  const area = document.getElementById('srs-card-area');
+  const area = srsEl('srs-card-area');
   if (_srsState.idx >= _srsState.queue.length) {
     // Done for the day
     area.innerHTML = `
@@ -5299,13 +6687,19 @@ function logout() {
   window._viewingIdx = 0;
   document.getElementById('slide-nav').style.display = 'none';
   localStorage.removeItem('cm_user');
-  const introBtn = document.getElementById('intro-ack-btn');
-  if (introBtn) { introBtn.className = 'ack-btn pending'; introBtn.textContent = 'I understand'; introBtn.onclick = ackIntro; }
+  ['intro-ack-btn', 'intro-ack-btn-uk'].forEach(function(id) {
+    const introBtn = document.getElementById(id);
+    if (introBtn) { introBtn.className = 'ack-btn pending'; introBtn.textContent = 'I understand — let\'s begin'; introBtn.onclick = ackIntro; }
+  });
   document.getElementById('module').classList.remove('active');
   document.getElementById('login-screen').style.display = '';
   SECTIONS.forEach(id => {
     const n = document.getElementById('n-' + id);
-    if (n) { n.className = 'sec-num ' + SEC_COLORS[id.charAt(0)]; n.textContent = id.toUpperCase(); }
+    if (n) {
+      const meta = SECTION_META.find(m => m.id === id);
+      n.className = 'sec-num ' + secColorKey(id);
+      n.textContent = (meta && meta.short) ? meta.short : id.toUpperCase();
+    }
     const card = n?.closest('.sec');
     if (card) card.classList.remove('done');
     const btn = card?.querySelector('.ack-btn');
@@ -5322,7 +6716,8 @@ function logout() {
   document.getElementById('quiz-gate').style.display = 'none';
   document.getElementById('quiz-container').style.display = 'none';
   document.getElementById('quiz-container').innerHTML = '';
-  document.getElementById('cheatsheet').style.display = 'none';
+  { const cs = regionalEl('cheatsheet'); if (cs) cs.style.display = 'none'; }
+  { const cu = document.getElementById('cheatsheet-uk'); if (cu) cu.style.display = 'none'; }
   renderStepper();
   updateSectionStates();
   updateProgress();
