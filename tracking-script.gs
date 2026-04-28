@@ -9,7 +9,7 @@
  *    (the web app URL stays the same)
  *
  * V3 changes from V2:
- *   - Two separate Progress tabs: Progress_APAC and Progress_EUK
+ *   - Separate Progress tab per region: "Progress APAC", "Progress EUK" (space-separated, ready for ME and US)
  *   - Region column added to Events tab
  *   - EUK section IDs (uk_a1..uk_d2) map to same display labels (A1..E2)
  *   - data.region field from the module payload routes the row correctly
@@ -70,7 +70,7 @@ const STATUS_STYLE = {
 
 // Progress sheet column headers — shared by both APAC and EUK tabs
 const PROGRESS_HEADERS = [
-  'Email', 'Name', 'Mobile',
+  'Email', 'Name', 'Mobile', 'Region', 'Grade',
   'Status', 'Progress',
   'Intro',
 ].concat(DISPLAY_LABELS).concat([
@@ -79,7 +79,7 @@ const PROGRESS_HEADERS = [
   'Session ID',
 ]);
 
-const EVENTS_HEADERS = ['Timestamp', 'Email', 'Name', 'Mobile', 'Region', 'Action', 'Detail', 'Session ID'];
+const EVENTS_HEADERS = ['Timestamp', 'Email', 'Name', 'Mobile', 'Region', 'Grade', 'Action', 'Detail', 'Session ID'];
 
 // Column indices (1-based for Apps Script ranges)
 const COL = {};
@@ -140,20 +140,22 @@ function logEvent(ss, ts, data) {
     sheet.setColumnWidth(3, 150);
     sheet.setColumnWidth(4, 130);
     sheet.setColumnWidth(5, 80);
-    sheet.setColumnWidth(6, 140);
-    sheet.setColumnWidth(7, 180);
+    sheet.setColumnWidth(6, 120);
+    sheet.setColumnWidth(7, 140);
     sheet.setColumnWidth(8, 180);
+    sheet.setColumnWidth(9, 180);
   }
   // Force Detail column to plain text so "5/6" etc. are not auto-converted to dates
-  sheet.getRange(1, 7, sheet.getMaxRows(), 1).setNumberFormat('@');
+  sheet.getRange(1, 8, sheet.getMaxRows(), 1).setNumberFormat('@');
   sheet.appendRow([
     ts,
-    data.email   || '',
-    data.name    || '',
-    data.mobile  || '',
-    data.region  || 'APAC',
-    data.action  || '',
-    data.section || '',
+    data.email      || '',
+    data.name       || '',
+    data.mobile     || '',
+    data.region     || 'APAC',
+    data.grade      || '',
+    data.action     || '',
+    data.section    || '',
     data.session_id || '',
   ]);
 }
@@ -162,7 +164,7 @@ function logEvent(ss, ts, data) {
 
 function updateProgress(ss, ts, data) {
   const region = String(data.region || 'APAC').toUpperCase() === 'EUK' ? 'EUK' : 'APAC';
-  const sheetName = 'Progress_' + region;
+  const sheetName = 'Progress ' + region;
   const sheet = getOrCreateProgressSheet(ss, sheetName);
   const email = String(data.email || '').toLowerCase().trim();
   if (!email) return;
@@ -173,6 +175,8 @@ function updateProgress(ss, ts, data) {
   sheet.getRange(row, COL['Last Activity']).setValue(ts);
   if (data.name)   sheet.getRange(row, COL['Name']).setValue(String(data.name));
   if (data.mobile) sheet.getRange(row, COL['Mobile']).setValue(String(data.mobile));
+  if (data.grade)  sheet.getRange(row, COL['Grade']).setValue(String(data.grade));
+  sheet.getRange(row, COL['Region']).setValue(region);
 
   const action  = String(data.action  || '');
   const section = String(data.section || '').toLowerCase();
@@ -241,6 +245,8 @@ function getOrCreateProgressSheet(ss, sheetName) {
     sheet.setColumnWidth(COL['Email'],    220);
     sheet.setColumnWidth(COL['Name'],     150);
     sheet.setColumnWidth(COL['Mobile'],   130);
+    sheet.setColumnWidth(COL['Region'],    70);
+    sheet.setColumnWidth(COL['Grade'],    120);
     sheet.setColumnWidth(COL['Status'],   170);
     sheet.setColumnWidth(COL['Progress'],  80);
     sheet.setColumnWidth(COL['Intro'],     46);
@@ -272,6 +278,8 @@ function findOrCreateUserRow(sheet, email, session, data, ts) {
   sheet.getRange(row, COL['Email']).setValue(email);
   sheet.getRange(row, COL['Name']).setValue(data.name || '');
   sheet.getRange(row, COL['Mobile']).setValue(data.mobile || '');
+  sheet.getRange(row, COL['Region']).setValue(String(data.region || 'APAC').toUpperCase());
+  sheet.getRange(row, COL['Grade']).setValue(data.grade || '');
   sheet.getRange(row, COL['Session ID']).setValue(session);
   sheet.getRange(row, COL['First Login']).setValue(ts);
   sheet.getRange(row, COL['Last Activity']).setValue(ts);
@@ -324,13 +332,13 @@ function setStatus(sheet, row, status) {
 function rebuildProgress(region) {
   region = (region || 'APAC').toUpperCase();
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const sheetName = 'Progress_' + region;
+  const sheetName = 'Progress ' + region;
   const old = ss.getSheetByName(sheetName);
   if (old) ss.deleteSheet(old);
   const events = ss.getSheetByName('Events');
   if (!events) return;
   const data = events.getDataRange().getDisplayValues();
-  // Events headers: Timestamp, Email, Name, Mobile, Region, Action, Detail, Session ID
+  // Events headers: Timestamp, Email, Name, Mobile, Region, Grade, Action, Detail, Session ID
   for (var i = 1; i < data.length; i++) {
     const r = data[i];
     if (String(r[4]).toUpperCase() !== region) continue;

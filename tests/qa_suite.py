@@ -49,11 +49,13 @@ def new_context(browser, viewport=None):
     return ctx, page
 
 
-def do_login(page, email, name='QA Bot', mobile='0000000000'):
+def do_login(page, email, name='QA Bot', mobile='0000000000', region='APAC', grade='K-5'):
     """Fill login form and click Continue."""
     page.fill('#login-email', email)
     page.fill('#login-mobile', mobile)
     page.fill('#login-name', name)
+    page.select_option('#login-region', region)
+    page.select_option('#login-grade', grade)
     page.click('.login-btn')
     page.wait_for_timeout(800)
 
