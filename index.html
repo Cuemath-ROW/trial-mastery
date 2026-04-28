@@ -6059,7 +6059,7 @@ function showDone() {
 const SRS_INTERVALS = [0, 1, 3, 7, 14, 30];
 const SRS_MASTERED_BOX = 5;
 
-const SRS_SEED = [
+const APAC_SRS_SEED = [
   { id: 'srs1', q: 'A Perth parent says "let\'s do 4pm, my time." What time should you expect to be ready at, in IST?', a: 'About 1:30 PM IST. Perth is AWST — always IST + 2.5 hours, no daylight saving. Sydney or Melbourne would be different (IST + 4.5h or + 5.5h summer).' },
   { id: 'srs2', q: 'NAPLAN — when is it held, and which year levels take it?', a: 'NAPLAN is held in mid-March every year. Students in Years 3, 5, 7 and 9 sit it. (Moved from May to March in 2023.)' },
   { id: 'srs3', q: 'OC Test — when, which state, which year of schooling sits it?', a: 'The OC (Opportunity Class) Test is in May. It\'s NSW only. Year 4 students sit it for Year 5 placement.' },
@@ -6082,7 +6082,39 @@ const SRS_SEED = [
   { id: 'srs20', q: 'What does "mirror the goal in your language" actually mean during a trial?', a: 'You don\'t alter the trial format — that\'s fixed. You wrap language around it. Echo the test and date back. Pick observations during the session that connect to the goal naturally. Anchor your Student Insights summary to the goal they named.' },
 ];
 
-function srsStorageKey(k) { return keyFor('cm_srs_' + k); }
+const EUK_SRS_SEED = [
+  { id: 'uksrs1', q: 'A London parent says "let\'s do 4pm, my time" during BST (summer). What time is that in IST?', a: 'BST = IST − 4:30. So 4:00 PM BST = 8:30 PM IST. In GMT (winter) it\'s IST − 5:30, so 4:00 PM GMT = 9:30 PM IST.' },
+  { id: 'uksrs2', q: 'KS2 SATs — when are they held, which year group sits them, and what subjects are tested?', a: 'May annually. Year 6 students (ages 10–11). Three papers: Reading, Grammar/Punctuation/Spelling (GPS), and three Maths papers (Arithmetic + two Reasoning).' },
+  { id: 'uksrs3', q: 'The 11+ — when is it held, who sits it, and what does it test?', a: 'September–October. Year 5 or Year 6 students (ages 10–11) sit it for grammar school entry in Year 7. Tests: Verbal Reasoning, Non-Verbal Reasoning, Maths, and English — varies by region (GL Assessment or CEM).' },
+  { id: 'uksrs4', q: 'GCSE — when, which year group, and how many maths papers?', a: 'June of Year 11 (ages 15–16). Three papers: one non-calculator and two calculator. Foundation (grades 1–5) or Higher (grades 4–9) tier. UK equivalent of Class 10 boards.' },
+  { id: 'uksrs5', q: 'A parent says "we just want general improvement — no specific goal." What do you do?', a: 'Use the 3-question probe ladder one at a time: (1) Wish — "if maths was going really well in 6 months, what would that look like?" (2) Worry — "what made you book this trial today?" (3) Deadline — "anything coming up — a test, a school move?" A hidden goal almost always surfaces by minute 10.' },
+  { id: 'uksrs6', q: 'What do you select on-screen for the curriculum — regardless of whether the student is in England, Scotland, Wales, or NI?', a: 'UK National Curriculum — Cuemath uses one consolidated selection for all UK nations. For IGCSE students select IGCSE; for IB students select IB.' },
+  { id: 'uksrs7', q: 'Say "fee" or "price" — and why does it matter in the UK context?', a: '"Fee." It\'s the word British parents use for school, music lessons, sports clubs — it frames Cuemath as an educational investment, not a product purchase. "Price" sounds transactional and cheap.' },
+  { id: 'uksrs8', q: 'A parent mentions Atom Learning. How do you differentiate — without bashing?', a: 'Atom is self-serve software — great for drilling, no live teacher. Cuemath gives the child a dedicated teacher who adapts in real time, builds the reasoning behind every question, and is there for every session.' },
+  { id: 'uksrs9', q: 'A parent mentions MyTutor. What\'s the main contrast to draw?', a: 'MyTutor is a marketplace — a different tutor can appear each session. At Cuemath, the same teacher stays with the child session after session. Continuity builds the trust and understanding that accelerates progress.' },
+  { id: 'uksrs10', q: 'A parent mentions Kumon UK or Explore Learning. How do you frame Cuemath?', a: 'Kumon = worksheets at a centre, group setting, commute required. Explore Learning = learning centre, group. Cuemath = 1:1 online, dedicated specialist, at home, flexible schedule. Never bash — acknowledge and differentiate calmly.' },
+  { id: 'uksrs11', q: 'How do you spot the "11+ Mum" archetype — and what\'s your play?', a: 'She mentions the 11+, a grammar school by name, or asks "does this help with selective schools?" in the first 3 minutes. Play: name the 11+ Prep module early, use the test vocabulary (VR, NVR, Maths Reasoning), and reference the timeline ("With the 11+ in September, you have X months").' },
+  { id: 'uksrs12', q: 'How do you spot the "GCSE Crisis Parent" — and what do they need to hear?', a: 'They say "GCSEs are next year and he\'s falling behind" or bring up a bad mock result. They need: reassurance first, a visible gap diagnosis in the trial, a realistic timeline (e.g. "with 6 months before the exams, this is very fixable"), and the GCSE Foundations module named.' },
+  { id: 'uksrs13', q: 'A parent says "Back in India she was always top of class." What archetype is this, and what\'s your response?', a: 'NRI Returner (recent UK NRI). They\'re calibrating — is UK maths easier? Harder? Will their child fall behind? Response: acknowledge the Indian maths strength, explain UK curriculum has different emphasis (reasoning over procedures), reassure the child may actually be ahead, then reframe: "now we apply that strength to UK exam formats."' },
+  { id: 'uksrs14', q: 'What is EYFS, and how does it change your trial approach?', a: 'Early Years Foundation Stage — Reception, ages 4–5. Play-based learning, no formal exams. Keep the trial game-like and visual. The parent is judging enjoyment and warmth, not academic output. If the child smiles and "gets it," you\'ve won.' },
+  { id: 'uksrs15', q: 'KS2 SATs Mum is in the room. What do you name in your Student Insights close?', a: 'Name the 3 SATs paper types: Arithmetic and the two Reasoning papers. Connect what you observed ("he set up the word problem correctly — that\'s the Reasoning paper skill"). Name the exact window ("SATs in May — that\'s [X] weeks").' },
+  { id: 'uksrs16', q: 'The 3-step objection framework?', a: 'Acknowledge → Reframe → Anchor. 1. Acknowledge: make the parent feel heard. 2. Reframe: shift doubt to clarity with facts, not pressure. 3. Anchor: tie back to the child\'s named goal. Never dismiss, never bash, never oversell.' },
+  { id: 'uksrs17', q: 'Year 10–11 GCSE parent says "he\'s struggling but exams are months away." What\'s your close?', a: '"Today I found exactly where the gap is — [specific observation]. With [X months] before the June exams, this is very fixable. The students who start now are the ones who feel confident on exam day, not panicked." Name the GCSE Foundations module.' },
+  { id: 'uksrs18', q: '"Let me think / discuss with my husband first." Best response?', a: 'Respect the pause. Give a concrete 3-line summary of the child they can share with their partner. Still ask for tentative session timings so a slot is held. Warm handoff to the Admissions Manager. Never push for a same-call decision.' },
+  { id: 'uksrs19', q: 'KS1 trial (Y1–Y2, ages 5–7) — what\'s the single rule?', a: 'Switch activities every 5–7 minutes and celebrate wins loudly. Attention spans are short. The parent converts based on vibe — if the child looks engaged and happy, the session has succeeded. Engage the parent every 5 minutes with a specific observation.' },
+  { id: 'uksrs20', q: 'What are the 5 steps of the UK trial closing sequence?', a: '1. Student Insights — name a specific observation tied to the parent\'s goal. 2. Learning Plan — connect chapters to the test. 3. Class Timings — guide to tentative days and times. 4. Way Forward — 3 pillars (sessions, app, parent-tutor conference). 5. Thank You — name the parent and child warmly.' },
+];
+
+function activeSRSSeed() {
+  return (user && user.region === 'EUK') ? EUK_SRS_SEED : APAC_SRS_SEED;
+}
+
+const SRS_SEED = APAC_SRS_SEED; // backward-compat reference (used in srsLoadDeck below)
+
+function srsStorageKey(k) {
+  const region = (user && user.region === 'EUK') ? 'euk' : 'apac';
+  return keyFor('cm_srs_' + region + '_' + k);
+}
 function srsToday() { return Math.floor(Date.now() / (24 * 3600 * 1000)); }
 
 function srsLoadDeck() {
@@ -6090,7 +6122,7 @@ function srsLoadDeck() {
   if (raw) { try { return JSON.parse(raw); } catch(e){} }
   // Seed: each card starts in box 0, due today
   const today = srsToday();
-  return SRS_SEED.map(c => ({ id: c.id, box: 0, dueDay: today }));
+  return activeSRSSeed().map(c => ({ id: c.id, box: 0, dueDay: today }));
 }
 function srsSaveDeck(deck) { localStorage.setItem(srsStorageKey('deck'), JSON.stringify(deck)); }
 function srsLoadStreak() {
@@ -6147,7 +6179,7 @@ function srsRender() {
   }
 
   const cardId = _srsState.queue[_srsState.idx];
-  const seed = SRS_SEED.find(s => s.id === cardId);
+  const seed = activeSRSSeed().find(s => s.id === cardId);
   if (!seed) { _srsState.idx++; srsRender(); return; }
   const deckCard = _srsState.deck.find(c => c.id === cardId);
   const boxLabel = ['New', 'Box 2 · +1 day', 'Box 3 · +3 days', 'Box 4 · +7 days', 'Box 5 · +14 days'][deckCard.box] || 'Mastered';
