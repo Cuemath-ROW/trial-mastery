@@ -690,8 +690,58 @@
     .ack-btn.pending { background: var(--gold-500); color: var(--neutral-1000); }
     .ack-btn.pending:hover { background: var(--gold-600); }
     .ack-btn.acked { background: var(--success-100); color: var(--success-700); cursor: default; }
-    #intro-ack-btn.pending, #intro-ack-btn-uk.pending { animation: introPulse 2s ease-in-out infinite; }
+    #intro-ack-btn.pending, #intro-ack-btn-uk.pending, #intro-ack-btn-ime.pending { animation: introPulse 2s ease-in-out infinite; }
     @keyframes introPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(201, 162, 39, 0.5); } 50% { box-shadow: 0 0 0 8px rgba(201, 162, 39, 0); } }
+
+    /* ── Intro wizard steps (T1-A / T1-B) ── */
+    .intro-step { animation: fadeInUp 0.3s ease; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .identity-frame { background: var(--bg-secondary); border: 1px solid var(--border-secondary); padding: var(--space-24); margin: var(--space-20) 0; }
+    .identity-frame h3 { font-family: var(--font-heading); font-size: 16px; font-weight: 600; margin-bottom: var(--space-16); color: var(--text-primary); }
+    .identity-opt { display: flex; align-items: flex-start; gap: var(--space-12); padding: var(--space-12) var(--space-16); margin-bottom: var(--space-8); border: 1px solid var(--border-secondary); cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+    .identity-opt:hover { border-color: var(--gold-400); background: var(--gold-50); }
+    .identity-opt input[type=radio] { margin-top: 2px; accent-color: var(--gold-500); flex-shrink: 0; }
+    .identity-opt-body { font-family: var(--font-body); font-size: 14px; color: var(--text-primary); line-height: 1.5; }
+    .identity-opt-body strong { font-family: var(--font-label); font-weight: 600; display: block; margin-bottom: 2px; }
+    .identity-msg { padding: var(--space-16); border-left: 3px solid var(--gold-400); background: var(--gold-50); margin: var(--space-20) 0; font-family: var(--font-body); font-size: 14px; line-height: 1.6; color: var(--text-primary); }
+    .identity-err { font-family: var(--font-body); font-size: 13px; color: var(--error-600); margin-bottom: var(--space-8); display: none; }
+    .tc-bridge { background: var(--info-50, #f0f7ff); border: 1px solid var(--info-200, #bae0ff); padding: var(--space-20) var(--space-24); margin: var(--space-20) 0; }
+    .tc-bridge h3 { font-family: var(--font-heading); font-size: 15px; font-weight: 600; color: var(--info-800, #003a70); margin-bottom: var(--space-12); }
+    .tc-bridge p { font-family: var(--font-body); font-size: 13px; line-height: 1.65; color: var(--text-secondary); margin-bottom: var(--space-8); }
+    .tc-bridge p:last-child { margin-bottom: 0; }
+    .tc-bridge strong { color: var(--text-primary); }
+
+    /* ── Social proof stat line (T1-E) ── */
+    .sp-stat { display: inline-block; font-family: var(--font-label); font-size: 12px; font-weight: 500; color: var(--success-700); background: var(--success-50); border: 1px solid var(--success-200); padding: 3px 10px; margin-top: var(--space-8); letter-spacing: 0.01em; }
+
+    /* ── Part quiz commitment card (T1-C) ── */
+    .pq-commitment { display: none; margin-top: var(--space-16); padding: var(--space-16) var(--space-20); background: var(--gold-50); border: 1px solid var(--gold-200); border-left: 3px solid var(--gold-500); }
+    .pq-result.ok ~ .pq-commitment { display: block; animation: fadeInUp 0.3s ease; }
+    .pq-commitment h4 { font-family: var(--font-heading); font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-12); }
+    .pq-commit-opt { display: flex; align-items: flex-start; gap: var(--space-8); padding: var(--space-8) var(--space-12); margin-bottom: 4px; cursor: pointer; border: 1px solid var(--border-tertiary); font-family: var(--font-body); font-size: 13px; color: var(--text-secondary); line-height: 1.5; background: var(--bg-primary); }
+    .pq-commit-opt:hover { background: var(--bg-secondary); }
+    .pq-commit-opt input[type=radio] { margin-top: 3px; flex-shrink: 0; }
+    .pq-commit-err { font-family: var(--font-body); font-size: 12px; color: var(--error-600); margin-bottom: var(--space-8); display: none; }
+    .pq-commit-btn { margin-top: var(--space-12); font-family: var(--font-label); padding: var(--space-8) var(--space-20); font-size: 13px; font-weight: 500; cursor: pointer; border: none; background: var(--gold-500); color: var(--neutral-1000); }
+    .pq-commit-btn:hover { background: var(--gold-600); }
+
+    /* ── Scenario challenge (T1-F retrieval practice) ── */
+    .sc-challenge { margin: var(--space-20) 0 var(--space-8); border: 1px solid var(--border-secondary); background: var(--bg-secondary); }
+    .sc-challenge-head { background: var(--neutral-200); padding: var(--space-10) var(--space-16); font-family: var(--font-label); font-size: 11px; font-weight: 600; letter-spacing: 0.06em; color: var(--text-secondary); text-transform: uppercase; }
+    .sc-challenge-q { padding: var(--space-16); font-family: var(--font-body); font-size: 14px; line-height: 1.6; color: var(--text-primary); border-bottom: 1px solid var(--border-tertiary); font-style: italic; }
+    .sc-challenge-opts { padding: var(--space-12) var(--space-16); }
+    .sc-ch-opt { display: flex; align-items: flex-start; gap: var(--space-8); padding: var(--space-8) var(--space-12); margin-bottom: 4px; cursor: pointer; border: 1px solid var(--border-tertiary); font-family: var(--font-body); font-size: 13px; color: var(--text-secondary); line-height: 1.5; background: var(--bg-primary); }
+    .sc-ch-opt:hover { background: var(--bg-secondary); }
+    .sc-ch-opt input[type=radio] { margin-top: 3px; flex-shrink: 0; }
+    .sc-ch-opt.sc-correct { border-color: var(--success-400); background: var(--success-50); color: var(--success-800); }
+    .sc-ch-opt.sc-wrong { border-color: var(--error-300); background: var(--error-50); color: var(--error-700); }
+    .sc-ch-foot { padding: var(--space-8) var(--space-16) var(--space-12); display: flex; align-items: center; gap: var(--space-12); flex-wrap: wrap; }
+    .sc-ch-err { font-family: var(--font-body); font-size: 12px; color: var(--error-600); display: none; }
+    .sc-ch-explain { display: none; padding: var(--space-12) var(--space-16); background: var(--success-50); border-top: 1px solid var(--success-200); font-family: var(--font-body); font-size: 13px; line-height: 1.55; color: var(--success-800); }
+    .sc-ch-explain strong { font-family: var(--font-label); }
+    .sc-ch-submit { font-family: var(--font-label); padding: var(--space-8) var(--space-20); font-size: 13px; font-weight: 500; cursor: pointer; border: none; background: var(--gold-500); color: var(--neutral-1000); }
+    .sc-ch-submit:hover { background: var(--gold-600); }
+    .ack-btn.sc-locked { opacity: 0.45; cursor: not-allowed; }
 
     /* ── Final ── */
     .final { background: var(--bg-secondary); border: 2px solid var(--border-tertiary); padding: var(--space-40); text-align: center; margin-top: var(--space-48); }
@@ -982,53 +1032,98 @@
   </aside>
   <div class="content">
     <div class="intro intro-v2" data-region="APAC">
-      <div class="intro-hero">
-        <div class="intro-hero-title">Trial Mastery</div>
-        <div class="intro-hero-sub">Master the Australian trial. Grow with every student you enrol.</div>
-      </div>
 
-      <div class="intro-brief">
-        <span class="intro-brief-kicker">What this module covers</span>
-        This module equips you with the <strong>context, frameworks, and language</strong> to run a confident Australian trial end-to-end — from the first minute with the parent to the final handoff to Admissions. Across 20 sections, you'll learn to read parent archetypes quickly, handle the <strong>seven most common objections</strong> without friction, and close each trial on a specific, credible note. Every pattern here is drawn from real trials your colleagues have run — the aim is fluency, not memorisation. As your context deepens, your trial quality compounds.
-      </div>
-
-      <div class="intro-flow">
-        <div class="intro-flow-node">
-          <div class="intro-flow-icon">🇦🇺</div>
-          <div class="intro-flow-label">Context</div>
-          <div class="intro-flow-desc">Australia, curriculum, tests</div>
+      <!-- Step 1: Welcome -->
+      <div class="intro-step" data-step="1">
+        <div class="intro-hero">
+          <div class="intro-hero-title">Trial Mastery</div>
+          <div class="intro-hero-sub">Master the Australian trial. Grow with every student you enrol.</div>
         </div>
-        <div class="intro-flow-arrow">→</div>
-        <div class="intro-flow-node">
-          <div class="intro-flow-icon">👪</div>
-          <div class="intro-flow-label">Understanding</div>
-          <div class="intro-flow-desc">Who the parent really is</div>
+        <div class="intro-brief">
+          <span class="intro-brief-kicker">What this module covers</span>
+          This module equips you with the <strong>context, frameworks, and language</strong> to run a confident Australian trial end-to-end — from the first minute with the parent to the final handoff to Admissions. Across 20 sections, you'll learn to read parent archetypes quickly, handle the <strong>seven most common objections</strong> without friction, and close each trial on a specific, credible note. Every pattern here is drawn from real trials your colleagues have run — the aim is fluency, not memorisation. As your context deepens, your trial quality compounds.
         </div>
-        <div class="intro-flow-arrow">→</div>
-        <div class="intro-flow-node">
-          <div class="intro-flow-icon">💬</div>
-          <div class="intro-flow-label">Objections</div>
-          <div class="intro-flow-desc">Handle with confidence</div>
+        <div class="intro-flow">
+          <div class="intro-flow-node">
+            <div class="intro-flow-icon">🇦🇺</div>
+            <div class="intro-flow-label">Context</div>
+            <div class="intro-flow-desc">Australia, curriculum, tests</div>
+          </div>
+          <div class="intro-flow-arrow">→</div>
+          <div class="intro-flow-node">
+            <div class="intro-flow-icon">👪</div>
+            <div class="intro-flow-label">Understanding</div>
+            <div class="intro-flow-desc">Who the parent really is</div>
+          </div>
+          <div class="intro-flow-arrow">→</div>
+          <div class="intro-flow-node">
+            <div class="intro-flow-icon">💬</div>
+            <div class="intro-flow-label">Objections</div>
+            <div class="intro-flow-desc">Handle with confidence</div>
+          </div>
+          <div class="intro-flow-arrow">→</div>
+          <div class="intro-flow-node intro-flow-node-end">
+            <div class="intro-flow-icon">✨</div>
+            <div class="intro-flow-label">Enrolment</div>
+            <div class="intro-flow-desc">Student stays. You grow.</div>
+          </div>
         </div>
-        <div class="intro-flow-arrow">→</div>
-        <div class="intro-flow-node intro-flow-node-end">
-          <div class="intro-flow-icon">✨</div>
-          <div class="intro-flow-label">Enrolment</div>
-          <div class="intro-flow-desc">Student stays. You grow.</div>
+        <div class="intro-meta">
+          <div class="intro-meta-stat"><span>20</span>sections</div>
+          <div class="intro-meta-stat"><span>2–3</span>hours</div>
+          <div class="intro-meta-stat"><span>∞</span>refresh anytime</div>
+        </div>
+        <p class="intro-oneline">Built from analysing hundreds of real Australian trials. Written by colleagues who teach too.</p>
+        <div style="margin-top:var(--space-20);padding-top:var(--space-16);border-top:1px solid var(--gold-300);text-align:center">
+          <button class="ack-btn pending" onclick="nextIntroStep(2,'apac')">Let's get started →</button>
         </div>
       </div>
 
-      <div class="intro-meta">
-        <div class="intro-meta-stat"><span>20</span>sections</div>
-        <div class="intro-meta-stat"><span>2–3</span>hours</div>
-        <div class="intro-meta-stat"><span>∞</span>refresh anytime</div>
+      <!-- Step 2: Identity frame -->
+      <div class="intro-step" data-step="2" style="display:none">
+        <div class="identity-frame">
+          <h3>Before we start — how many trial sessions have you taken so far?</h3>
+          <label class="identity-opt">
+            <input type="radio" name="intro-experience-apac" value="first">
+            <div class="identity-opt-body"><strong>This is my first trial</strong>I haven't done a trial session yet — I'm preparing before my first one.</div>
+          </label>
+          <label class="identity-opt">
+            <input type="radio" name="intro-experience-apac" value="few">
+            <div class="identity-opt-body"><strong>A few (2–10 trials)</strong>I've done some trials — some converted, some didn't. I want to understand why.</div>
+          </label>
+          <label class="identity-opt">
+            <input type="radio" name="intro-experience-apac" value="many">
+            <div class="identity-opt-body"><strong>Many (10+ trials)</strong>I've been doing trials for a while and have my own approach.</div>
+          </label>
+          <p class="identity-err" id="identity-err-apac">Please select one option to continue.</p>
+        </div>
+        <div style="text-align:center">
+          <button class="ack-btn pending" onclick="setIdentityFrame('apac')">Continue →</button>
+        </div>
       </div>
 
-      <p class="intro-oneline">Built from analysing hundreds of real Australian trials. Written by colleagues who teach too.</p>
-
-      <div style="margin-top:var(--space-20);padding-top:var(--space-16);border-top:1px solid var(--gold-300);text-align:center">
-        <button id="intro-ack-btn" class="ack-btn pending" onclick="ackIntro()">I understand — let's begin</button>
+      <!-- Step 3: Personalised frame + TCScore bridge -->
+      <div class="intro-step" data-step="3" style="display:none">
+        <div class="identity-msg" id="identity-msg-apac-first" style="display:none">
+          You're starting fresh — which is actually an advantage. This module gives you the exact framework top-converting teachers use. By the end, you'll walk into every Australian trial knowing what to do in any situation a parent throws at you. No guessing.
+        </div>
+        <div class="identity-msg" id="identity-msg-apac-few" style="display:none">
+          You've already seen what a trial feels like — the pressure, the unexpected questions, the moments that went well and the ones that didn't. This module will help you understand <em>why</em> some trials converted and some didn't, so you can do more of what worked. Deliberately.
+        </div>
+        <div class="identity-msg" id="identity-msg-apac-many" style="display:none">
+          You have real experience — and that matters. This module will give a name and a system to things you've already been doing instinctively. It will also surface the gaps you haven't been able to identify yet — the specific moments where conversions are slipping, and what to do differently.
+        </div>
+        <div class="tc-bridge">
+          <h3>One thing you should know before you start</h3>
+          <p>Cuemath has more teachers than trials available at any given time. Trials are not assigned randomly — they're allocated based on your <strong>Trial Conversion Score (TCScore)</strong>, which reflects your conversion rate across recent sessions.</p>
+          <p>A higher TCScore means you're prioritised for the next available trial. A lower TCScore means you may wait longer. This is the direct, mechanical link between your conversion rate and your earning capacity.</p>
+          <p><strong>This module exists because the techniques in it measurably improve conversion.</strong> That's the only reason it exists — and why it's worth doing properly.</p>
+        </div>
+        <div style="margin-top:var(--space-20);padding-top:var(--space-16);border-top:1px solid var(--gold-300);text-align:center">
+          <button id="intro-ack-btn" class="ack-btn pending" onclick="ackIntro()">I understand — let's begin</button>
+        </div>
       </div>
+
     </div>
 
     <!-- ═══════ PART A — AUSTRALIA CONTEXT ═══════ -->
@@ -1349,20 +1444,25 @@
           </div>
         </div>
 
-        <h3>What to do and not do</h3>
-        <div class="dd">
-          <div class="dd-do"><ul>
-            <li>Expect rigour — go beyond school-level work during the trial</li>
-            <li>Be substantive and specific. Name topics. Show depth.</li>
-            <li>Respect the parent's experience and education — speak as a professional to a professional</li>
-            <li>Demonstrate progress visibly within the session</li>
-          </ul></div>
-          <div class="dd-dont"><ul>
-            <li>Don't oversell "fun" at the cost of substance</li>
-            <li>Don't assume they know the Australian test system — newer migrants often don't</li>
-            <li>Don't default to "basics only" if the child is capable of more</li>
-            <li>Don't make sales-style claims; let your teaching speak</li>
-          </ul></div>
+        <div class="dd-pair">
+          <div class="dd-side do">
+            <div class="dd-side-head"><span class="dd-side-icon">✓</span>Do</div>
+            <ul class="dd-list">
+              <li>Expect rigour — go beyond school-level work during the trial</li>
+              <li>Be substantive and specific. Name topics. Show depth.</li>
+              <li>Respect the parent's experience and education — speak as a professional to a professional</li>
+              <li>Demonstrate progress visibly within the session</li>
+            </ul>
+          </div>
+          <div class="dd-side dont">
+            <div class="dd-side-head"><span class="dd-side-icon">✗</span>Don't</div>
+            <ul class="dd-list">
+              <li>Oversell "fun" at the cost of substance</li>
+              <li>Assume they know the Australian test system — newer migrants often don't</li>
+              <li>Default to "basics only" if the child is capable of more</li>
+              <li>Make sales-style claims; let your teaching speak</li>
+            </ul>
+          </div>
         </div>
 
         <div class="callout" style="background:var(--info-100);border-left-color:var(--info-500)"><strong>Vs. native Australian parents:</strong> If you are teaching a non-Indian Australian family, adapt — they tend to be more relaxed about academic rigour, more focused on enjoyment and confidence-building, and less likely to chase competitive exams.</div>
@@ -1775,6 +1875,15 @@
       </div>
       <button class="pq-submit" onclick="submitPartQuiz('A',[1,1,2])">Check my answers</button>
       <div class="pq-result" id="pq-A-result" style="display:none"></div>
+      <div class="pq-commitment" id="pq-commit-A">
+        <h4>Before Part B — make one commitment</h4>
+        <p style="font-family:var(--font-body);font-size:13px;color:var(--text-secondary);margin-bottom:var(--space-12)">Choose the one thing you will do in your next trial. It takes 5 seconds — and it's the step that turns knowledge into habit.</p>
+        <label class="pq-commit-opt"><input type="radio" name="commit-A" value="When a parent confirms a timezone, I will calculate my IST and repeat it back: 'That's [time] for me — confirmed.'"> When a parent confirms a timezone, I will calculate my IST and repeat it back: "That's [time] for me — confirmed."</label>
+        <label class="pq-commit-opt"><input type="radio" name="commit-A" value="When a parent asks about curriculum, I will open the selector live and name one Year-level topic on the spot."> When a parent asks about curriculum, I will open the selector live and name one Year-level topic on the spot.</label>
+        <label class="pq-commit-opt"><input type="radio" name="commit-A" value="When NAPLAN or a state exam is mentioned, I will name the exact test window back to the parent."> When NAPLAN or a state exam is mentioned, I will name the exact test window back to the parent.</label>
+        <p class="pq-commit-err" id="commit-err-A">Please select one commitment to continue.</p>
+        <button class="pq-commit-btn" onclick="commitAndContinue('A')">Commit &amp; continue to Part B →</button>
+      </div>
     </div>
 
     <!-- ═══════ PART B — Understanding the Parent ═══════ -->
@@ -1782,6 +1891,7 @@
       <div class="part-label label-purple">Part B</div>
       <div class="part-name">Understanding the Parent</div>
       <div class="part-desc">Context teaches you Australia. Understanding teaches you the person on the other side of the screen.</div>
+      <div><span class="sp-stat">Teachers who identify the parent archetype early convert at significantly higher rates than those who run a generic trial</span></div>
     </div>
 
     <!-- U1 — 5 archetypes -->
@@ -1964,7 +2074,22 @@
           </div>
         </div>
 
-        <div class="ack"><button class="ack-btn pending" onclick="ack('u1')">I've read this</button></div>
+        <div id="sc-ch-u1" class="sc-challenge">
+          <div class="sc-challenge-head">Scenario — try it before you continue</div>
+          <div class="sc-challenge-q">"She's always been ahead at school, but her Year 4 teacher just said she needs to work on 'extending.' I'm not sure what to do with that." — Which archetype is this parent most likely to be, and what's your first move?</div>
+          <div class="sc-challenge-opts">
+            <label class="sc-ch-opt"><input type="radio" name="sc-u1" value="0"> NAPLAN Mum — name the next NAPLAN date and show NAPLAN-style questions immediately.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-u1" value="1"> Panic Parent — reassure first ("that's completely fixable"), then diagnose the specific gap live.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-u1" value="2"> OC/Selective Chaser — open the Selective test prep module and reference the OC test timeline.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-u1" value="3"> Exploratory Parent — run a general trial and let the goal surface naturally.</label>
+          </div>
+          <div class="sc-ch-foot">
+            <p class="sc-ch-err">Please select an answer before continuing.</p>
+            <button class="sc-ch-submit" onclick="submitScChallenge('u1', 1)">Submit →</button>
+          </div>
+          <div class="sc-ch-explain"><strong>Correct answer: Panic Parent.</strong> "I don't know what to do with that" is the Panic Parent signal — sudden anxiety triggered by an external event (a teacher's comment). Reassure first, never minimise. Then diagnose the gap live. If a test surfaces during the probe, layer it in — but don't lead with NAPLAN or OC until you've heard the worry.</div>
+        </div>
+        <div class="ack"><button class="ack-btn pending sc-locked" onclick="ackIfScDone('u1')">I've read this</button></div>
       </div>
     </div>
 
@@ -2044,7 +2169,22 @@
           </div>
         </div>
 
-        <div class="ack"><button class="ack-btn pending" onclick="ack('u2')">I've read this</button></div>
+        <div id="sc-ch-u2" class="sc-challenge">
+          <div class="sc-challenge-head">Scenario — try it before you continue</div>
+          <div class="sc-challenge-q">At goal-setting the parent says: "We just want him to do a bit of extra maths. No specific goal. Just keep him exposed." What do you do next?</div>
+          <div class="sc-challenge-opts">
+            <label class="sc-ch-opt"><input type="radio" name="sc-u2" value="0"> Accept this and run a general trial — "extra maths" is a valid goal and the session will surface more.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-u2" value="1"> Ask all three probe questions at once to save time: wish, worry, and deadline together.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-u2" value="2"> Start with the wish question only: "If maths was going really well for him in 6 months, what would that look like?"</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-u2" value="3"> Skip goal-setting and move straight into the trial content — the goal isn't clear enough to anchor to.</label>
+          </div>
+          <div class="sc-ch-foot">
+            <p class="sc-ch-err">Please select an answer before continuing.</p>
+            <button class="sc-ch-submit" onclick="submitScChallenge('u2', 2)">Submit →</button>
+          </div>
+          <div class="sc-ch-explain"><strong>Correct answer: Start with the wish question only.</strong> One question, listen, then the next — never all three at once. The wish question opens space without pressure. Internal data shows "Exposure / Habit" as a stated goal converts at 0% — there is almost always a real goal underneath it. Your job is to surface it respectfully, one question at a time.</div>
+        </div>
+        <div class="ack"><button class="ack-btn pending sc-locked" onclick="ackIfScDone('u2')">I've read this</button></div>
       </div>
     </div>
 
@@ -2149,6 +2289,15 @@
       </div>
       <button class="pq-submit" onclick="submitPartQuiz('B',[1,1,1])">Check my answers</button>
       <div class="pq-result" id="pq-B-result" style="display:none"></div>
+      <div class="pq-commitment" id="pq-commit-B">
+        <h4>Before Part C — make one commitment</h4>
+        <p style="font-family:var(--font-body);font-size:13px;color:var(--text-secondary);margin-bottom:var(--space-12)">You've just learned how to read the parent. Now commit to using it.</p>
+        <label class="pq-commit-opt"><input type="radio" name="commit-B" value="When a parent says 'just overall improvement', I will ask the wish question first: 'If maths was going really well in 6 months, what would that look like?'"> When a parent says "just overall improvement", I will ask the wish question first: "If maths was going really well in 6 months, what would that look like?"</label>
+        <label class="pq-commit-opt"><input type="radio" name="commit-B" value="When I spot an archetype in the first 5 minutes, I will adjust my language to match what that parent actually cares about."> When I spot an archetype in the first 5 minutes, I will adjust my language to match what that parent actually cares about.</label>
+        <label class="pq-commit-opt"><input type="radio" name="commit-B" value="Before each trial, I will identify which of the 5 archetypes this parent is most likely to be, and prepare one archetype-specific opening."> Before each trial, I will identify which of the 5 archetypes this parent is most likely to be, and prepare one archetype-specific opening.</label>
+        <p class="pq-commit-err" id="commit-err-B">Please select one commitment to continue.</p>
+        <button class="pq-commit-btn" onclick="commitAndContinue('B')">Commit &amp; continue to Part C →</button>
+      </div>
     </div>
 
     <!-- ═══════ PART B — OBJECTION HANDLING ═══════ -->
@@ -2156,6 +2305,7 @@
       <div class="part-label label-red">Part C</div>
       <div class="part-name">Handling Parent Objections</div>
       <div class="part-desc">7 objection types we have seen repeatedly in Australian trials — with a calm, respectful approach for each.</div>
+      <div><span class="sp-stat">Objection handling is the most common differentiator between teachers who convert above 50% and those who don't — this Part is where conversions are won or lost</span></div>
     </div>
 
     <div class="framework">
@@ -2350,7 +2500,22 @@
           </div>
         </details>
 
-        <div class="ack"><button class="ack-btn pending" onclick="ack('b1')">I've read this</button></div>
+        <div id="sc-ch-b1" class="sc-challenge">
+          <div class="sc-challenge-head">Scenario — try it before you continue</div>
+          <div class="sc-challenge-q">Mid goal-setting, a parent says firmly: "I just want you to stick to the Australian curriculum — nothing extra, nothing else." What do you do first?</div>
+          <div class="sc-challenge-opts">
+            <label class="sc-ch-opt"><input type="radio" name="sc-b1" value="0"> Explain that Cuemath goes deeper than the curriculum — the "why" behind each concept is what makes the difference.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-b1" value="1"> Open the curriculum selector and pick their state right now — action first, explanation after if needed.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-b1" value="2"> Ask which state curriculum they follow before selecting anything on screen.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-b1" value="3"> Reassure them verbally: "Yes, we are 100% aligned with the Australian curriculum."</label>
+          </div>
+          <div class="sc-ch-foot">
+            <p class="sc-ch-err">Please select an answer before continuing.</p>
+            <button class="sc-ch-submit" onclick="submitScChallenge('b1', 1)">Submit →</button>
+          </div>
+          <div class="sc-ch-explain"><strong>Correct answer: Open the curriculum selector and act immediately.</strong> This parent wants reassurance, not a pitch. A fast, visible action — "Let me pick Victoria now" — is the reassurance. Don't debate and don't delay with a question. Show them, then name a Year-level topic. Visible action beats any verbal claim.</div>
+        </div>
+        <div class="ack"><button class="ack-btn pending sc-locked" onclick="ackIfScDone('b1')">I've read this</button></div>
       </div>
     </div>
 
@@ -3228,6 +3393,15 @@
       </div>
       <button class="pq-submit" onclick="submitPartQuiz('C',[2,2,2])">Check my answers</button>
       <div class="pq-result" id="pq-C-result" style="display:none"></div>
+      <div class="pq-commitment" id="pq-commit-C">
+        <h4>Before Part D — make one commitment</h4>
+        <p style="font-family:var(--font-body);font-size:13px;color:var(--text-secondary);margin-bottom:var(--space-12)">Objections are the highest-stakes moments in any trial. Commit to one habit that changes how you handle them.</p>
+        <label class="pq-commit-opt"><input type="radio" name="commit-C" value="When any objection comes up, I will Acknowledge it fully before I say anything else — no exceptions."> When any objection comes up, I will Acknowledge it fully before I say anything else — no exceptions.</label>
+        <label class="pq-commit-opt"><input type="radio" name="commit-C" value="When a parent mentions a competitor, I will not bash — I will acknowledge what it does, then contrast calmly on one specific differentiator."> When a parent mentions a competitor, I will not bash — I will acknowledge what it does, then contrast calmly on one specific differentiator.</label>
+        <label class="pq-commit-opt"><input type="radio" name="commit-C" value="When a parent hesitates on fees, I will hand it to the Admissions Manager and not try to answer the pricing question myself."> When a parent hesitates on fees, I will hand it to the Admissions Manager and not try to answer the pricing question myself.</label>
+        <p class="pq-commit-err" id="commit-err-C">Please select one commitment to continue.</p>
+        <button class="pq-commit-btn" onclick="commitAndContinue('C')">Commit &amp; continue to Part D →</button>
+      </div>
     </div>
 
     <!-- ═══════ PART C — GRADE TIPS ═══════ -->
@@ -3235,6 +3409,7 @@
       <div class="part-label label-blue">Part D</div>
       <div class="part-name">By Year Group — K-2, 3-5, 6-8</div>
       <div class="part-desc">Different year groups behave differently. Adapt your energy, depth, and involvement level.</div>
+      <div><span class="sp-stat">Matching your trial style to the child's year group is one of the most visible signals of competence to parents — and a key driver of conversion</span></div>
     </div>
 
     <div class="age-timeline">
@@ -3504,6 +3679,15 @@
       </div>
       <button class="pq-submit" onclick="submitPartQuizD()">Check my answers</button>
       <div class="pq-result" id="pq-D-result" style="display:none"></div>
+      <div class="pq-commitment" id="pq-commit-D">
+        <h4>Before Part E — make one commitment</h4>
+        <p style="font-family:var(--font-body);font-size:13px;color:var(--text-secondary);margin-bottom:var(--space-12)">You're nearly at the close. This is where trials are won or lost — commit to one thing that will make your closing stronger.</p>
+        <label class="pq-commit-opt"><input type="radio" name="commit-D" value="When I do my Student Insights summary, I will name one specific observation tied to the parent's exact goal — not a generic positive."> When I do my Student Insights summary, I will name one specific observation tied to the parent's exact goal — not a generic positive.</label>
+        <label class="pq-commit-opt"><input type="radio" name="commit-D" value="When guiding Class Timings, I will present it as the natural next step — not as a closing question."> When guiding Class Timings, I will present it as the natural next step — not as a closing question.</label>
+        <label class="pq-commit-opt"><input type="radio" name="commit-D" value="I will end every trial by thanking both the parent and the child by name — specific, warm, genuine."> I will end every trial by thanking both the parent and the child by name — specific, warm, genuine.</label>
+        <p class="pq-commit-err" id="commit-err-D">Please select one commitment to continue.</p>
+        <button class="pq-commit-btn" onclick="commitAndContinue('D')">Commit &amp; continue to Part E →</button>
+      </div>
     </div>
 
     <!-- ═══════ PART D — CLOSURE ═══════ -->
@@ -3511,6 +3695,7 @@
       <div class="part-label label-green">Part E</div>
       <div class="part-name">Closing the Trial on a Strong Note</div>
       <div class="part-desc">The last 10 minutes decide whether the parent moves forward. Make them count.</div>
+      <div><span class="sp-stat">A structured, warm close — with a specific observation about the child — is the single biggest driver of same-session enrolment</span></div>
     </div>
 
     <div class="close-flow">
@@ -3694,7 +3879,22 @@
           <div class="tldr-text">After the trial, the Admissions Manager follows up. If the parent remembers your <strong>specific observations</strong>, your <strong>connection to their goals</strong>, and your <strong>genuine enthusiasm</strong> — they're far more likely to move forward.</div>
         </div>
 
-        <div class="ack"><button class="ack-btn pending" onclick="ack('d2')">I've read this</button></div>
+        <div id="sc-ch-d2" class="sc-challenge">
+          <div class="sc-challenge-head">Scenario — try it before you continue</div>
+          <div class="sc-challenge-q">The trial has gone well. The parent has been engaged. It's the last 5 minutes. What's the correct sequence for closing?</div>
+          <div class="sc-challenge-opts">
+            <label class="sc-ch-opt"><input type="radio" name="sc-d2" value="0"> Summarise what you covered in the trial, invite questions about pricing, then close.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-d2" value="1"> Go straight to Class Timings while momentum is high — lock in a slot before the parent can overthink it.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-d2" value="2"> Student Insights → Class Timings → Way Forward (3 pillars) → invite questions → warm close by name.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-d2" value="3"> Hand over to the Admissions Manager immediately so they can close while the parent is still warm.</label>
+          </div>
+          <div class="sc-ch-foot">
+            <p class="sc-ch-err">Please select an answer before continuing.</p>
+            <button class="sc-ch-submit" onclick="submitScChallenge('d2', 2)">Submit →</button>
+          </div>
+          <div class="sc-ch-explain"><strong>Correct answer: Student Insights → Timings → Way Forward → questions → warm close.</strong> Don't rush and don't skip steps. Start with a specific observation about the child tied to the parent's goal — this is what the parent will remember. Then timings as a natural next step (not a closing question). Then the 3 pillars. Then invite questions and hand pricing to Admissions. End by naming both the parent and the child warmly.</div>
+        </div>
+        <div class="ack"><button class="ack-btn pending sc-locked" onclick="ackIfScDone('d2')">I've read this</button></div>
       </div>
     </div>
 
@@ -3704,48 +3904,98 @@
 
     <!-- EUK INTRO -->
     <div class="intro intro-v2" data-region="EUK">
-      <div class="intro-hero">
-        <div class="intro-hero-title">Trial Mastery — UK Edition</div>
-        <div class="intro-hero-sub">Master the British trial. Grow with every student you enrol.</div>
-      </div>
-      <div class="intro-brief">
-        <span class="intro-brief-kicker">What this module covers</span>
-        This module equips you with the <strong>context, frameworks, and language</strong> to run a confident UK trial end-to-end — from the first minute with the parent to the final handoff to Admissions. Across 20 sections, you'll learn to navigate four national curricula, read the five UK parent archetypes quickly, handle the <strong>seven most common objections</strong> without friction, and close each trial on a specific, credible note. The UK market has its own rhythm — Year groups not Grades, 11+ not Selective, GCSE not HSC. Every pattern here is drawn from real trials in the British-Indian and NRI community.
-      </div>
-      <div class="intro-flow">
-        <div class="intro-flow-node">
-          <div class="intro-flow-icon">🇬🇧</div>
-          <div class="intro-flow-label">Context</div>
-          <div class="intro-flow-desc">4 nations, curricula, tests</div>
+
+      <!-- Step 1: Welcome -->
+      <div class="intro-step" data-step="1">
+        <div class="intro-hero">
+          <div class="intro-hero-title">Trial Mastery — UK Edition</div>
+          <div class="intro-hero-sub">Master the British trial. Grow with every student you enrol.</div>
         </div>
-        <div class="intro-flow-arrow">→</div>
-        <div class="intro-flow-node">
-          <div class="intro-flow-icon">👪</div>
-          <div class="intro-flow-label">Understanding</div>
-          <div class="intro-flow-desc">Who the UK parent really is</div>
+        <div class="intro-brief">
+          <span class="intro-brief-kicker">What this module covers</span>
+          This module equips you with the <strong>context, frameworks, and language</strong> to run a confident UK trial end-to-end — from the first minute with the parent to the final handoff to Admissions. Across 19 sections, you'll learn to navigate four national curricula, read the five UK parent archetypes quickly, handle the <strong>six most common objections</strong> without friction, and close each trial on a specific, credible note. The UK market has its own rhythm — Year groups not Grades, 11+ not Selective, GCSE not HSC. Every pattern here is drawn from real trials in the British-Indian and NRI community.
         </div>
-        <div class="intro-flow-arrow">→</div>
-        <div class="intro-flow-node">
-          <div class="intro-flow-icon">💬</div>
-          <div class="intro-flow-label">Objections</div>
-          <div class="intro-flow-desc">Handle with confidence</div>
+        <div class="intro-flow">
+          <div class="intro-flow-node">
+            <div class="intro-flow-icon">🇬🇧</div>
+            <div class="intro-flow-label">Context</div>
+            <div class="intro-flow-desc">4 nations, curricula, tests</div>
+          </div>
+          <div class="intro-flow-arrow">→</div>
+          <div class="intro-flow-node">
+            <div class="intro-flow-icon">👪</div>
+            <div class="intro-flow-label">Understanding</div>
+            <div class="intro-flow-desc">Who the UK parent really is</div>
+          </div>
+          <div class="intro-flow-arrow">→</div>
+          <div class="intro-flow-node">
+            <div class="intro-flow-icon">💬</div>
+            <div class="intro-flow-label">Objections</div>
+            <div class="intro-flow-desc">Handle with confidence</div>
+          </div>
+          <div class="intro-flow-arrow">→</div>
+          <div class="intro-flow-node intro-flow-node-end">
+            <div class="intro-flow-icon">✨</div>
+            <div class="intro-flow-label">Enrolment</div>
+            <div class="intro-flow-desc">Student stays. You grow.</div>
+          </div>
         </div>
-        <div class="intro-flow-arrow">→</div>
-        <div class="intro-flow-node intro-flow-node-end">
-          <div class="intro-flow-icon">✨</div>
-          <div class="intro-flow-label">Enrolment</div>
-          <div class="intro-flow-desc">Student stays. You grow.</div>
+        <div class="intro-meta">
+          <div class="intro-meta-stat"><span>19</span>sections</div>
+          <div class="intro-meta-stat"><span>2–3</span>hours</div>
+          <div class="intro-meta-stat"><span>∞</span>refresh anytime</div>
+        </div>
+        <p class="intro-oneline">Built from the UK market — 4 home nations, the NRI community, and the tests that really matter.</p>
+        <div style="margin-top:var(--space-20);padding-top:var(--space-16);border-top:1px solid var(--gold-300);text-align:center">
+          <button class="ack-btn pending" onclick="nextIntroStep(2,'euk')">Let's get started →</button>
         </div>
       </div>
-      <div class="intro-meta">
-        <div class="intro-meta-stat"><span>20</span>sections</div>
-        <div class="intro-meta-stat"><span>2–3</span>hours</div>
-        <div class="intro-meta-stat"><span>∞</span>refresh anytime</div>
+
+      <!-- Step 2: Identity frame -->
+      <div class="intro-step" data-step="2" style="display:none">
+        <div class="identity-frame">
+          <h3>Before we start — how many trial sessions have you taken so far?</h3>
+          <label class="identity-opt">
+            <input type="radio" name="intro-experience-euk" value="first">
+            <div class="identity-opt-body"><strong>This is my first trial</strong>I haven't done a trial session yet — I'm preparing before my first one.</div>
+          </label>
+          <label class="identity-opt">
+            <input type="radio" name="intro-experience-euk" value="few">
+            <div class="identity-opt-body"><strong>A few (2–10 trials)</strong>I've done some trials — some converted, some didn't. I want to understand why.</div>
+          </label>
+          <label class="identity-opt">
+            <input type="radio" name="intro-experience-euk" value="many">
+            <div class="identity-opt-body"><strong>Many (10+ trials)</strong>I've been doing trials for a while and have my own approach.</div>
+          </label>
+          <p class="identity-err" id="identity-err-euk">Please select one option to continue.</p>
+        </div>
+        <div style="text-align:center">
+          <button class="ack-btn pending" onclick="setIdentityFrame('euk')">Continue →</button>
+        </div>
       </div>
-      <p class="intro-oneline">Built from the UK market — 4 home nations, the NRI community, and the tests that really matter.</p>
-      <div style="margin-top:var(--space-20);padding-top:var(--space-16);border-top:1px solid var(--gold-300);text-align:center">
-        <button id="intro-ack-btn-uk" class="ack-btn pending" onclick="ackIntro()">I understand — let's begin</button>
+
+      <!-- Step 3: Personalised frame + TCScore bridge -->
+      <div class="intro-step" data-step="3" style="display:none">
+        <div class="identity-msg" id="identity-msg-euk-first" style="display:none">
+          You're starting fresh — which is actually an advantage. This module gives you the exact framework top-converting UK teachers use. By the end, you'll walk into every British trial knowing what to do in any situation a parent throws at you — from SATs parents to GCSE pressure to the 11+ race. No guessing.
+        </div>
+        <div class="identity-msg" id="identity-msg-euk-few" style="display:none">
+          You've already seen what a UK trial feels like — the Year-group confusion, the 11+ anxiety, the parents who want to "think about it." This module will help you understand <em>why</em> some trials converted and some didn't, so you can do more of what worked. Deliberately.
+        </div>
+        <div class="identity-msg" id="identity-msg-euk-many" style="display:none">
+          You have real UK trial experience — and that matters. This module will give a name and a system to things you've already been doing instinctively. It will also surface the specific gaps that separate a 40% conversion rate from a 65% one — and what to change.
+        </div>
+        <div class="tc-bridge">
+          <h3>One thing you should know before you start</h3>
+          <p>Cuemath has more teachers than trials available at any given time. Trials are not assigned randomly — they're allocated based on your <strong>Trial Conversion Score (TCScore)</strong>, which reflects your conversion rate across recent sessions.</p>
+          <p>A higher TCScore means you're prioritised for the next available trial. A lower TCScore means you may wait longer. This is the direct, mechanical link between your conversion rate and your earning capacity.</p>
+          <p><strong>This module exists because the techniques in it measurably improve conversion.</strong> That's the only reason it exists — and why it's worth doing properly.</p>
+        </div>
+        <div style="margin-top:var(--space-20);padding-top:var(--space-16);border-top:1px solid var(--gold-300);text-align:center">
+          <button id="intro-ack-btn-uk" class="ack-btn pending" onclick="ackIntro()">I understand — let's begin</button>
+        </div>
       </div>
+
     </div>
 
     <!-- ═══════ PART A — UK CONTEXT ═══════ -->
@@ -4111,6 +4361,15 @@
       </div>
       <button class="pq-submit" onclick="submitPartQuiz('uk-A',[0,2,1])">Check my answers</button>
       <div class="pq-result" id="pq-uk-A-result" style="display:none"></div>
+      <div class="pq-commitment" id="pq-commit-uk-A">
+        <h4>Before Part B — make one commitment</h4>
+        <p style="font-family:var(--font-body);font-size:13px;color:var(--text-secondary);margin-bottom:var(--space-12)">You now know the UK context. Commit to one thing that will make your next trial sharper.</p>
+        <label class="pq-commit-opt"><input type="radio" name="commit-uk-A" value="When a parent mentions a Year group, I will map it to Key Stage before continuing — internally or aloud."> When a parent mentions a Year group, I will map it to Key Stage before continuing — internally or aloud.</label>
+        <label class="pq-commit-opt"><input type="radio" name="commit-uk-A" value="When curriculum comes up, I will select UK National Curriculum on screen immediately (or IGCSE/IB if relevant)."> When curriculum comes up, I will select UK National Curriculum on screen immediately (or IGCSE/IB if relevant).</label>
+        <label class="pq-commit-opt"><input type="radio" name="commit-uk-A" value="When SATs or 11+ is mentioned, I will name the exact test window and the specific paper types back to the parent."> When SATs or 11+ is mentioned, I will name the exact test window and the specific paper types back to the parent.</label>
+        <p class="pq-commit-err" id="commit-err-uk-A">Please select one commitment to continue.</p>
+        <button class="pq-commit-btn" onclick="commitAndContinue('uk-A')">Commit &amp; continue to Part B →</button>
+      </div>
     </div>
 
     <!-- ═══════ PART B — Understanding the UK Parent ═══════ -->
@@ -4118,6 +4377,7 @@
       <div class="part-label label-purple">Part B</div>
       <div class="part-name">Understanding the UK Parent</div>
       <div class="part-desc">Context teaches you the UK. Understanding teaches you the person on the other side of the screen.</div>
+      <div><span class="sp-stat">Teachers who correctly identify the UK parent archetype in the first 5 minutes run materially stronger trials — the probe ladder is the single most transferable skill in this module</span></div>
     </div>
 
     <!-- uk_u1 -->
@@ -4166,7 +4426,22 @@
             <div style="font-size:13px"><strong>Close language:</strong> "Cuemath teaches the same depth of maths thinking that serves Indian students so well — applied to the UK curriculum. Your daughter won't lose that edge; she'll build on it."</div>
           </div>
         </div>
-        <div class="ack"><button class="ack-btn pending" onclick="ack('uk_u1')">I've read this</button></div>
+        <div id="sc-ch-uk_u1" class="sc-challenge">
+          <div class="sc-challenge-head">Scenario — try it before you continue</div>
+          <div class="sc-challenge-q">"The 11+ is next September — we've left it a bit late, I think." Which archetype is this, and what's your opening move?</div>
+          <div class="sc-challenge-opts">
+            <label class="sc-ch-opt"><input type="radio" name="sc-uk_u1" value="0"> GCSE Crisis Parent — reassure them it's not too late and show the GCSE Foundations module.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-uk_u1" value="1"> 11+ Mum — name the 11+ Prep module and reference the September timeline immediately.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-uk_u1" value="2"> NRI Returner — acknowledge their child's Indian maths strength and reframe it for UK exam formats.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-uk_u1" value="3"> Exploratory Parent — use the probe ladder to uncover the real goal before committing to 11+ prep.</label>
+          </div>
+          <div class="sc-ch-foot">
+            <p class="sc-ch-err">Please select an answer before continuing.</p>
+            <button class="sc-ch-submit" onclick="submitScChallenge('uk_u1', 1)">Submit →</button>
+          </div>
+          <div class="sc-ch-explain"><strong>Correct answer: 11+ Mum.</strong> "The 11+ is next September" names the test and the timeline — the defining signal. Name the 11+ Prep module early, use the test vocabulary (VR, NVR, Maths Reasoning), and reference the timeline: "With September coming, you have roughly [X months] — that's very workable." The urgency she's feeling is your opening, not an obstacle.</div>
+        </div>
+        <div class="ack"><button class="ack-btn pending sc-locked" onclick="ackIfScDone('uk_u1')">I've read this</button></div>
       </div>
     </div>
 
@@ -4237,7 +4512,22 @@
             </div>
           </div>
         </div>
-        <div class="ack" style="margin-top:var(--space-20)"><button class="ack-btn pending" onclick="ack('uk_u2')">I've read this</button></div>
+        <div id="sc-ch-uk_u2" class="sc-challenge" style="margin-top:var(--space-20)">
+          <div class="sc-challenge-head">Scenario — try it before you continue</div>
+          <div class="sc-challenge-q">A UK parent says: "We just want general maths support — nothing specific, just to keep him on track." What's your first question?</div>
+          <div class="sc-challenge-opts">
+            <label class="sc-ch-opt"><input type="radio" name="sc-uk_u2" value="0"> "Which year group is your child in?" — establish context before probing for goals.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-uk_u2" value="1"> "If maths was going really well for him in 6 months, what would that look like?"</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-uk_u2" value="2"> "Have you tried any other tutoring before?" — understand what hasn't worked first.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-uk_u2" value="3"> Proceed with the trial — a goal will surface naturally as you work through the content.</label>
+          </div>
+          <div class="sc-ch-foot">
+            <p class="sc-ch-err">Please select an answer before continuing.</p>
+            <button class="sc-ch-submit" onclick="submitScChallenge('uk_u2', 1)">Submit →</button>
+          </div>
+          <div class="sc-ch-explain"><strong>Correct answer: The wish question.</strong> "If maths was going really well in 6 months, what would that look like?" opens space without pressure. A hidden goal almost always surfaces by minute 10 — a test, a school move, a confidence issue. "General support" converts at close to 0% if it stays vague. Start with the wish — it's the most natural probe and the hardest to resist answering honestly.</div>
+        </div>
+        <div class="ack" style="margin-top:var(--space-20)"><button class="ack-btn pending sc-locked" onclick="ackIfScDone('uk_u2')">I've read this</button></div>
       </div>
     </div>
 
@@ -4310,6 +4600,15 @@
       </div>
       <button class="pq-submit" onclick="submitPartQuiz('uk-B',[2,1,1])">Check my answers</button>
       <div class="pq-result" id="pq-uk-B-result" style="display:none"></div>
+      <div class="pq-commitment" id="pq-commit-uk-B">
+        <h4>Before Part C — make one commitment</h4>
+        <p style="font-family:var(--font-body);font-size:13px;color:var(--text-secondary);margin-bottom:var(--space-12)">You've just learned how to read the UK parent. Commit to using it in your next trial.</p>
+        <label class="pq-commit-opt"><input type="radio" name="commit-uk-B" value="When a parent says 'just general improvement', I will use the 3-question probe ladder — wish, worry, deadline — one question at a time."> When a parent says "just general improvement", I will use the 3-question probe ladder — wish, worry, deadline — one question at a time.</label>
+        <label class="pq-commit-opt"><input type="radio" name="commit-uk-B" value="When I identify an archetype (11+ Mum, GCSE Crisis, NRI Returner), I will name the specific test or milestone that matters to them within the first 5 minutes."> When I identify an archetype (11+ Mum, GCSE Crisis, NRI Returner), I will name the specific test or milestone that matters to them within the first 5 minutes.</label>
+        <label class="pq-commit-opt"><input type="radio" name="commit-uk-B" value="I will identify the UK parent archetype in the first 5 minutes and adjust my trial language accordingly — test names, urgency framing, competitor contrast."> I will identify the UK parent archetype in the first 5 minutes and adjust my trial language accordingly — test names, urgency framing, competitor contrast.</label>
+        <p class="pq-commit-err" id="commit-err-uk-B">Please select one commitment to continue.</p>
+        <button class="pq-commit-btn" onclick="commitAndContinue('uk-B')">Commit &amp; continue to Part C →</button>
+      </div>
     </div>
 
     <!-- ═══════ PART C — Handling Objections (UK) ═══════ -->
@@ -4317,6 +4616,7 @@
       <div class="part-label label-red">Part C</div>
       <div class="part-name">Handling Objections — UK</div>
       <div class="part-desc">The seven objections every UK teacher hears. Know the response cold before they ask it.</div>
+      <div><span class="sp-stat">UK parents are analytical and research-heavy — the Acknowledge → Reframe → Anchor sequence consistently outperforms improvised responses across all objection types</span></div>
     </div>
 
     <!-- uk_b1 -->
@@ -4347,7 +4647,22 @@
             </div>
           </div>
         </div>
-        <div class="ack" style="margin-top:var(--space-20)"><button class="ack-btn pending" onclick="ack('uk_b1')">I've read this</button></div>
+        <div id="sc-ch-uk_b1" class="sc-challenge" style="margin-top:var(--space-20)">
+          <div class="sc-challenge-head">Scenario — try it before you continue</div>
+          <div class="sc-challenge-q">A parent asks at goal-setting: "My son is in Year 8 — does Cuemath follow the national curriculum?" What do you do first?</div>
+          <div class="sc-challenge-opts">
+            <label class="sc-ch-opt"><input type="radio" name="sc-uk_b1" value="0"> Explain that Cuemath covers all UK curricula and goes deeper into reasoning — the kind GCSE tests.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-uk_b1" value="1"> Select "UK National Curriculum" on screen immediately, then name one KS3 topic for Year 8.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-uk_b1" value="2"> Ask which of the 4 home nations they're in before selecting anything on screen.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-uk_b1" value="3"> Reassure them verbally — "Yes, we are fully aligned with the national curriculum."</label>
+          </div>
+          <div class="sc-ch-foot">
+            <p class="sc-ch-err">Please select an answer before continuing.</p>
+            <button class="sc-ch-submit" onclick="submitScChallenge('uk_b1', 1)">Submit →</button>
+          </div>
+          <div class="sc-ch-explain"><strong>Correct answer: Select UK National Curriculum on screen immediately.</strong> For UK home nations, always select UK National Curriculum — one selection covers all four nations. Don't ask which nation first; just act. Then name a KS3 topic relevant to Year 8 (e.g. algebra, ratios). Visible action beats verbal claims every time. If the student is IGCSE or IB, select those instead — but for any UK state school, it's UK National Curriculum.</div>
+        </div>
+        <div class="ack" style="margin-top:var(--space-20)"><button class="ack-btn pending sc-locked" onclick="ackIfScDone('uk_b1')">I've read this</button></div>
       </div>
     </div>
 
@@ -4534,6 +4849,15 @@
       </div>
       <button class="pq-submit" onclick="submitPartQuiz('uk-C',[2,1,1])">Check my answers</button>
       <div class="pq-result" id="pq-uk-C-result" style="display:none"></div>
+      <div class="pq-commitment" id="pq-commit-uk-C">
+        <h4>Before Part D — make one commitment</h4>
+        <p style="font-family:var(--font-body);font-size:13px;color:var(--text-secondary);margin-bottom:var(--space-12)">UK parents are analytical and cautious. How you handle objections often decides the outcome more than the trial itself.</p>
+        <label class="pq-commit-opt"><input type="radio" name="commit-uk-C" value="When any objection comes up, I will Acknowledge it before reframing — every time, without exception."> When any objection comes up, I will Acknowledge it before reframing — every time, without exception.</label>
+        <label class="pq-commit-opt"><input type="radio" name="commit-uk-C" value="When a parent mentions Atom Learning or MyTutor, I will differentiate on continuity — same teacher, every session — not on features."> When a parent mentions Atom Learning or MyTutor, I will differentiate on continuity — same teacher, every session — not on features.</label>
+        <label class="pq-commit-opt"><input type="radio" name="commit-uk-C" value="When a parent wants to 'think about it', I will not push for a same-call decision — I will offer tentative timings and a warm handoff instead."> When a parent wants to "think about it", I will not push for a same-call decision — I will offer tentative timings and a warm handoff instead.</label>
+        <p class="pq-commit-err" id="commit-err-uk-C">Please select one commitment to continue.</p>
+        <button class="pq-commit-btn" onclick="commitAndContinue('uk-C')">Commit &amp; continue to Part D →</button>
+      </div>
     </div>
 
     <!-- ═══════ PART D — By Year Group (UK) ═══════ -->
@@ -4541,6 +4865,7 @@
       <div class="part-label label-blue">Part D</div>
       <div class="part-name">By Year Group — UK</div>
       <div class="part-desc">Reception to KS3. The parent changes. The student changes. Your approach needs to too.</div>
+      <div><span class="sp-stat">Adjusting your trial energy and language to the child's Key Stage is one of the most visible markers of expertise to UK parents</span></div>
     </div>
 
     <!-- uk_c1 -->
@@ -4680,6 +5005,15 @@
       </div>
       <button class="pq-submit" onclick="submitPartQuiz('uk-D',[1,1,1])">Check my answers</button>
       <div class="pq-result" id="pq-uk-D-result" style="display:none"></div>
+      <div class="pq-commitment" id="pq-commit-uk-D">
+        <h4>Before Part E — make one commitment</h4>
+        <p style="font-family:var(--font-body);font-size:13px;color:var(--text-secondary);margin-bottom:var(--space-12)">The close is where everything you've learned lands. Make it count.</p>
+        <label class="pq-commit-opt"><input type="radio" name="commit-uk-D" value="When I deliver Student Insights, I will name one specific observation tied to the parent's named goal — 11+, SATs, GCSE — not a generic compliment."> When I deliver Student Insights, I will name one specific observation tied to the parent's named goal — 11+, SATs, GCSE — not a generic compliment.</label>
+        <label class="pq-commit-opt"><input type="radio" name="commit-uk-D" value="When guiding Class Timings, I will present it as the natural next step — not as a question that invites hesitation."> When guiding Class Timings, I will present it as the natural next step — not as a question that invites hesitation.</label>
+        <label class="pq-commit-opt"><input type="radio" name="commit-uk-D" value="I will end every UK trial by thanking both parent and child by name — warm, specific, genuine."> I will end every UK trial by thanking both parent and child by name — warm, specific, genuine.</label>
+        <p class="pq-commit-err" id="commit-err-uk-D">Please select one commitment to continue.</p>
+        <button class="pq-commit-btn" onclick="commitAndContinue('uk-D')">Commit &amp; continue to Part E →</button>
+      </div>
     </div>
 
     <!-- ═══════ PART E — Closing the UK Trial ═══════ -->
@@ -4687,6 +5021,7 @@
       <div class="part-label label-green">Part E</div>
       <div class="part-name">Closing the Trial — UK</div>
       <div class="part-desc">The last 5 minutes are where the trial is won or lost. Leave the parent with a specific observation, a clear next step, and genuine warmth.</div>
+      <div><span class="sp-stat">A structured UK close — Student Insights tied to the parent's named goal, then timings, then warmth — is the highest-leverage 10 minutes in any trial</span></div>
     </div>
 
     <!-- uk_d1 -->
@@ -4779,7 +5114,22 @@
           <span class="tldr-kicker" style="color:var(--gold-700)">Remember</span>
           <div class="tldr-text">After the trial, the Admissions Manager follows up. If the parent remembers your <strong>specific observations</strong>, your <strong>connection to their UK goal</strong>, and your <strong>genuine warmth</strong> — they're far more likely to go ahead. That memory is made in the last 2 minutes.</div>
         </div>
-        <div class="ack"><button class="ack-btn pending" onclick="ack('uk_d2')">I've read this</button></div>
+        <div id="sc-ch-uk_d2" class="sc-challenge">
+          <div class="sc-challenge-head">Scenario — try it before you continue</div>
+          <div class="sc-challenge-q">It's the final minutes of a great UK trial. The parent has a Year 6 child preparing for the 11+. What's the right closing sequence?</div>
+          <div class="sc-challenge-opts">
+            <label class="sc-ch-opt"><input type="radio" name="sc-uk_d2" value="0"> Summarise the trial content covered, then ask if they'd like to enrol.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-uk_d2" value="1"> Student Insights tied to the 11+ → Class Timings → Way Forward (3 pillars) → warm close by name.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-uk_d2" value="2"> Hand over to the Admissions Manager immediately — they're warm and ready to convert.</label>
+            <label class="sc-ch-opt"><input type="radio" name="sc-uk_d2" value="3"> Ask the parent how they felt the trial went before moving to timings.</label>
+          </div>
+          <div class="sc-ch-foot">
+            <p class="sc-ch-err">Please select an answer before continuing.</p>
+            <button class="sc-ch-submit" onclick="submitScChallenge('uk_d2', 1)">Submit →</button>
+          </div>
+          <div class="sc-ch-explain"><strong>Correct answer: Student Insights → Timings → Way Forward → warm close.</strong> Start with a specific observation about the child tied to the 11+ — "She set up the VR analogy question correctly — that's exactly the skill the 11+ tests." Then timings as the natural next step. Then the 3 pillars. End by naming both the parent and child warmly. Don't rush, don't skip steps, don't ask open-ended "how did you feel" — it introduces doubt.</div>
+        </div>
+        <div class="ack"><button class="ack-btn pending sc-locked" onclick="ackIfScDone('uk_d2')">I've read this</button></div>
       </div>
     </div>
 
@@ -7088,6 +7438,93 @@ function track(action, detail) {
       section: detail || ''
     }),
   }).catch(() => {});
+}
+
+// ── T1-A / T1-B: Intro wizard ──────────────────────────────────────────────
+function nextIntroStep(step, region) {
+  const intro = document.querySelector('.intro.intro-v2:not(.region-hidden)');
+  if (!intro) return;
+  intro.querySelectorAll('.intro-step').forEach(s => { s.style.display = 'none'; });
+  const target = intro.querySelector('[data-step="' + step + '"]');
+  if (target) { target.style.display = ''; target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+}
+
+function setIdentityFrame(region) {
+  const intro = document.querySelector('.intro.intro-v2:not(.region-hidden)');
+  if (!intro) return;
+  const selected = intro.querySelector('input[name="intro-experience-' + region + '"]:checked');
+  if (!selected) {
+    const err = document.getElementById('identity-err-' + region);
+    if (err) err.style.display = '';
+    return;
+  }
+  const val = selected.value;
+  // Hide all personalised messages, show the right one
+  intro.querySelectorAll('[id^="identity-msg-' + region + '-"]').forEach(m => { m.style.display = 'none'; });
+  const msg = document.getElementById('identity-msg-' + region + '-' + val);
+  if (msg) msg.style.display = '';
+  nextIntroStep(3, region);
+}
+
+// ── T1-C: Part quiz commitment ──────────────────────────────────────────────
+function commitAndContinue(partId) {
+  const errEl = document.getElementById('commit-err-' + partId);
+  const selected = document.querySelector('input[name="commit-' + partId + '"]:checked');
+  if (!selected) {
+    if (errEl) errEl.style.display = '';
+    return;
+  }
+  if (errEl) errEl.style.display = 'none';
+  // Save to localStorage
+  try {
+    const key = keyFor('cm_commitments');
+    const all = JSON.parse(localStorage.getItem(key) || '{}');
+    all['part_' + partId] = { text: selected.value, ts: Date.now() };
+    localStorage.setItem(key, JSON.stringify(all));
+  } catch (e) {}
+  track('commitment', partId + ':' + selected.value.slice(0, 60));
+  slideNext();
+}
+
+// ── T1-F: Scenario challenge (retrieval practice) ───────────────────────────
+function submitScChallenge(sectionId, correctIdx) {
+  const container = document.getElementById('sc-ch-' + sectionId);
+  if (!container) return;
+  const selected = container.querySelector('input[name="sc-' + sectionId + '"]:checked');
+  const errEl = container.querySelector('.sc-ch-err');
+  if (!selected) {
+    if (errEl) errEl.style.display = '';
+    return;
+  }
+  if (errEl) errEl.style.display = 'none';
+  // Grade and mark options
+  container.querySelectorAll('input[name="sc-' + sectionId + '"]').forEach(r => {
+    r.disabled = true;
+    const label = r.parentElement;
+    if (parseInt(r.value) === correctIdx) label.classList.add('sc-correct');
+    else if (r.checked && parseInt(r.value) !== correctIdx) label.classList.add('sc-wrong');
+  });
+  // Show explanation
+  const explain = container.querySelector('.sc-ch-explain');
+  if (explain) explain.style.display = '';
+  // Hide submit button
+  const submitBtn = container.querySelector('.sc-ch-submit');
+  if (submitBtn) submitBtn.style.display = 'none';
+  // Mark container as attempted
+  container.classList.add('sc-attempted');
+  // Unlock the ack button
+  const ackBtn = document.querySelector('[onclick="ackIfScDone(\'' + sectionId + '\')"]');
+  if (ackBtn) ackBtn.classList.remove('sc-locked');
+  track('scenario_attempt', sectionId + ':' + (parseInt(selected.value) === correctIdx ? 'correct' : 'wrong'));
+}
+
+function ackIfScDone(sectionId) {
+  const container = document.getElementById('sc-ch-' + sectionId);
+  if (container && !container.classList.contains('sc-attempted')) {
+    showToast('Try the scenario above before continuing');
+    return;
+  }
+  ack(sectionId);
 }
 </script>
 </body>
