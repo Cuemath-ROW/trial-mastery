@@ -6220,12 +6220,15 @@ function openOnly(id) {
 
 function gotoSection(id) {
   if (!introAcked) { showToast('Click "I understand" on the intro first'); return; }
-  const chip = document.querySelector(`.step-chip[onclick*="'${id}'"]`);
-  if (chip?.dataset.locked === 'true') { showToast('Finish the current section first'); return; }
-  // V3: jump to this section in focus mode
+  // V3: jump to this section in focus mode — enforce ceiling based on actual progress
   const order = slideOrder();
   const idx = order.indexOf(id);
-  if (idx >= 0) { window._viewingIdx = idx; showCurrentSlide(); track('goto_section', id); return; }
+  if (idx >= 0) {
+    if (idx > currentSlideIdx()) { showToast('Finish the current section first'); return; }
+    window._viewingIdx = idx; showCurrentSlide(); track('goto_section', id); return;
+  }
+  const chip = document.querySelector(`.step-chip[onclick*="'${id}'"]`);
+  if (chip?.dataset.locked === 'true') { showToast('Finish the current section first'); return; }
   openOnly(id);
   const el = document.querySelector(`.sec[data-id="${id}"]`);
   if (el) {
@@ -6345,18 +6348,34 @@ function startQuiz() {
     `;
     container.appendChild(div);
   });
-  // Submit button
+  // Submit button — starts disabled until all questions answered
   const submitDiv = document.createElement('div');
   submitDiv.style.cssText = 'text-align:center;margin-top:var(--space-24)';
-  submitDiv.innerHTML = `<button onclick="submitQuiz()" style="background:var(--gold-500);color:var(--neutral-1000);border:none;padding:var(--space-12) var(--space-32);font-family:var(--font-label);font-size:14px;font-weight:500;cursor:pointer">Submit Assessment</button>
+  submitDiv.innerHTML = `<button id="quiz-submit-btn" onclick="submitQuiz()" disabled style="background:var(--neutral-300);color:var(--neutral-600);border:none;padding:var(--space-12) var(--space-32);font-family:var(--font-label);font-size:14px;font-weight:500;cursor:not-allowed;transition:background 0.2s,color 0.2s">Submit Assessment</button>
+    <div id="quiz-hint" style="margin-top:var(--space-8);font-family:var(--font-body);font-size:12px;color:var(--text-tertiary)">Answer all questions to submit</div>
     <div id="quiz-result" style="margin-top:var(--space-16);font-family:var(--font-body);font-size:14px"></div>`;
   container.appendChild(submitDiv);
+  // Enable submit only when every question has a selection
+  function checkAllAnswered() {
+    const allAnswered = QUIZ.every((_, i) => !!container.querySelector(`input[name="q${i}"]:checked`));
+    const btn = document.getElementById('quiz-submit-btn');
+    const hint = document.getElementById('quiz-hint');
+    if (!btn) return;
+    btn.disabled = !allAnswered;
+    btn.style.background = allAnswered ? 'var(--gold-500)' : 'var(--neutral-300)';
+    btn.style.color = allAnswered ? 'var(--neutral-1000)' : 'var(--neutral-600)';
+    btn.style.cursor = allAnswered ? 'pointer' : 'not-allowed';
+    if (hint) hint.style.display = allAnswered ? 'none' : '';
+  }
+  container.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener('change', checkAllAnswered));
   document.getElementById('quiz-gate').scrollIntoView({ behavior: 'smooth' });
   document.getElementById('final').style.display = 'none';
   track('quiz_started');
 }
 
 function submitQuiz() {
+  const allAnswered = QUIZ.every((_, i) => !!document.querySelector(`input[name="q${i}"]:checked`));
+  if (!allAnswered) { showToast('Please answer all questions before submitting'); return; }
   let score = 0;
   QUIZ.forEach((q, i) => {
     const selected = document.querySelector(`input[name="q${i}"]:checked`);
